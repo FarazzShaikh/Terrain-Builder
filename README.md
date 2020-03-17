@@ -11,6 +11,9 @@ git clone https://github.com/FarazzShaikh/Threejs-procedural-terrain.git
 cd .../Threejs-procedural-terrain-master
 ```
 ```
+npm install
+```
+```
 npm start
 ```
 Served on http://localhost:3000
