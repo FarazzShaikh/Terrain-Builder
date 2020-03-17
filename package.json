@@ -1,23 +1,16 @@
 {
-  "name": "Threejs-procedural-terrain",
-  "version": "1.0.0",
-  "description": "Three.js Procedural Terrain created using various npm modules.\r Demo : https://farazzshaikh.github.io/Threejs-procedural-terrain/",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
+  "name": "express-test",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "start": "node server.js"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/FarazzShaikh/Threejs-procedural-terrain.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/FarazzShaikh/Threejs-procedural-terrain/issues"
-  },
-  "homepage": "https://github.com/FarazzShaikh/Threejs-procedural-terrain#readme"
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-handlebars": "^3.1.0",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1"
+  }
 }
