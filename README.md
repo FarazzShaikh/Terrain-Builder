@@ -7,7 +7,7 @@ To run -
 git clone https://github.com/FarazzShaikh/Threejs-procedural-terrain.git
 ```
 ```
-cd .../Threejs-procedural-terrain-master
+cd Threejs-procedural-terrain
 ```
 ```
 npm install
