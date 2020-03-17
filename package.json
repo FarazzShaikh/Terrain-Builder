@@ -1,0 +1,23 @@
+{
+  "name": "Threejs-procedural-terrain",
+  "version": "1.0.0",
+  "description": "Three.js Procedural Terrain created using various npm modules.\r Demo : https://farazzshaikh.github.io/Threejs-procedural-terrain/",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FarazzShaikh/Threejs-procedural-terrain.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FarazzShaikh/Threejs-procedural-terrain/issues"
+  },
+  "homepage": "https://github.com/FarazzShaikh/Threejs-procedural-terrain#readme"
+}

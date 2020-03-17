@@ -1,17 +1,19 @@
-import * as THREE from '../lib/three.js';
-import { OrbitControls } from '../lib/OrbitControls.js'
+import * as THREE from '../../lib/three.js';
+import { OrbitControls } from '../../lib/OrbitControls.js'
 import Plane from './Plane.js'
 
 let scene, camera, renderer, planeMesh, controls
+
 let stylized = false
+let greyscale = true
 
 function initScene() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(
     75, window.innerWidth / window.innerHeight, 0.1, 1000
   );
-  
-  renderer = new THREE.WebGLRenderer({antialias: true});
+
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement)
   camera.position.set(15, 15, 15)
@@ -25,6 +27,14 @@ function initScene() {
 
   controls.minPolarAngle = 0;
   controls.maxPolarAngle = Math.PI / 2;
+
+  let gridSize = 30;
+  let gridDivisions = 100;
+  let gridHelper = new THREE.GridHelper(gridSize, gridDivisions, true);
+  scene.add(gridHelper);
+
+  let axesHelper = new THREE.AxesHelper(50);
+  scene.add(axesHelper);
 }
 
 function initLight() {
@@ -35,36 +45,37 @@ function initLight() {
   light.shadow.radius = 30;
   scene.add(light)
 
-  const ambLight = new THREE.AmbientLight( 0x404040, 0.9 )
+  const ambLight = new THREE.AmbientLight(0x404040, 0.9)
   scene.add(ambLight)
 }
 
 function initGeometry() {
   const plane = new Plane(32, 32)
   planeMesh = plane.mesh
-  planeMesh.rotation.x = Math.PI / 2 + Math.PI
   plane.displace(stylized);
-  plane.color()
+  plane.color(greyscale)
+  plane.generateMap()
   scene.add(planeMesh);
+
 }
 
 function render() {
   window.requestAnimationFrame(render);
 
-  if(planeMesh) {
-   // planeMesh.rotation.z += 0.005;
+  if (planeMesh) {
+    // planeMesh.rotation.z += 0.005;
   }
-  
+
   controls.update()
   renderer.render(scene, camera);
 }
 
 function onWindowResize() {
 
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(window.innerWidth, window.innerHeight);
 
 }
 

@@ -1,5 +1,5 @@
-import * as THREE from '../lib/three.js';
-import Perlin from '../lib/perlin.js'
+import * as THREE from '../../lib/three.js';
+import Perlin from '../../lib/perlin.js'
 
 export default class Plane {
 
@@ -21,11 +21,12 @@ export default class Plane {
 
         });
         this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.mesh.rotation.x = Math.PI / 2 + Math.PI
     }
 
     displace(stylized) {
 
-        var pn = new Perlin(Math.random());
+        var pn = new Perlin(2);
 
         let octaves = 7
         let scale = 0.09
@@ -62,7 +63,7 @@ export default class Plane {
         this.geometry.verticesNeedUpdate = true;
     }
 
-    color() {
+    color(greyscale) {
         this.geometry.computeBoundingBox();
         let zMin = this.geometry.boundingBox.min.z;
         let zMax = this.geometry.boundingBox.max.z;
@@ -75,8 +76,15 @@ export default class Plane {
         // first, assign colors to vertices as desired
         for (let i = 0; i < this.geometry.vertices.length; i++) {
             point = this.geometry.vertices[i];
-            color = new THREE.Color(0x0000ff);
-            color.setHSL(0.7 * (zMax - point.z) / zRange, 1, 0.5);
+
+            if(greyscale) {
+                color = new THREE.Color(0x000000);
+                let calc = 0.7 * (zMax - point.z) / zRange
+                color.setRGB(calc, calc, calc)
+            } else {
+                color = new THREE.Color(0x0000ff);
+                color.setHSL(0.7 * (zMax - point.z) / zRange, 1, 0.5);
+            }
             this.geometry.colors[i] = color; // use this array for convenience
         }
         
@@ -90,26 +98,30 @@ export default class Plane {
             }
         }
 
-        // let data = []
+        
 
-        // var c = document.querySelector(".myCanvas");
-        // c.width = c.height *
-        //     (c.clientWidth / c.clientHeight);
-        // var ctx = c.getContext("2d");
-        // var imgData = ctx.createImageData(256, 256);
+    }
 
-        // for (var i = 0; i < this.geometry.colors.length; i+=4) {
+    generateMap() {
+        var c = document.querySelector(".myCanvas");
+        c.width = c.height * (c.clientWidth / c.clientHeight);
+        var ctx = c.getContext("2d");
+        ctx.fillStyle = "blue";
+        ctx.fillRect(0, 0, c.width, c.height);
+        var imgData = ctx.createImageData(this.wSeg+1, this.hSeg+1);
 
-        //     imgData.data[i + 0] = this.geometry.colors[i].r * 255;
-        //     imgData.data[i + 1] = this.geometry.colors[i].g * 255;
-        //     imgData.data[i + 2] = this.geometry.colors[i].b * 255;
-        //     imgData.data[i + 3] = 255;
-            
-
-        // }
-        // ctx.putImageData(imgData, 10, 10);
-
-
-
+        let mapData = new Uint8ClampedArray(imgData.data.length)
+        let dataind = 0;
+        for (var i = 0; i < this.geometry.colors.length; i+=1) {
+            mapData[dataind + 0] = this.geometry.colors[i].r * 255;
+            mapData[dataind + 1] = this.geometry.colors[i].g * 255;
+            mapData[dataind + 2] = this.geometry.colors[i].b * 255;
+            mapData[dataind + 3] = 255;
+            dataind+=4
+        }
+        for (let i = 0; i < imgData.data.length; i++) {
+            imgData.data[i] = mapData[i]   
+        }
+        ctx.putImageData(imgData, 0, 0);
     }
 }
