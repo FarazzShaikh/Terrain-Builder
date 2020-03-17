@@ -25,8 +25,8 @@ export default class Plane {
     }
 
     displace(stylized) {
-
-        var pn = new Perlin(2);
+        let seed = Math.random()
+        let pn = new Perlin(seed);
 
         let octaves = 7
         let scale = 0.09

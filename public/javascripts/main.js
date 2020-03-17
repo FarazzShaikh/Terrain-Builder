@@ -13,7 +13,7 @@ function initScene() {
     75, window.innerWidth / window.innerHeight, 0.1, 1000
   );
 
-  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement)
   camera.position.set(15, 15, 15)
@@ -77,6 +77,18 @@ function onWindowResize() {
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 
+}
+
+document.querySelector('.myCanvas').addEventListener("click", () => {
+  download()
+});
+
+function download() {
+  let canvas = document.querySelector('.myCanvas')
+  let link = document.getElementById('link');
+  link.setAttribute('download', 'heightMap.png');
+  link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+  link.click();
 }
 
 initScene()
