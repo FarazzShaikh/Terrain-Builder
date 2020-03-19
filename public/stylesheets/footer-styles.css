@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap');
+
+:root {
+    --main-color: #FBD385;
+    --main-color-dark: #ccac6d;
+    --main-color-shadow: #ffd788bb;
+  }
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+footer ul{
+    font-family: 'Open Sans', sans-serif;
+    color: var(--main-color);;
+    font-weight: 300;
+    font-size: 1em;
+    font-style: italic;
+    text-align: center;
+    text-shadow: 0px 0px 10px var(--main-color-shadow);
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 0 30%;
+    margin-bottom: 3%;
+}
+
+footer ul li {
+
+    display: inline;
+}
+
+footer ul li img{
+    width: 1.5em;
+    filter: invert(97%) sepia(50%) saturate(1433%) hue-rotate(310deg) brightness(105%) contrast(97%);
+    padding-bottom: 10px;
+
+    pointer-events: all;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+footer ul li img:hover{
+    transform: rotate(360deg);
+    transform-origin: center;
+  }

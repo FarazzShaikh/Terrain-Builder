@@ -25,9 +25,13 @@ export default class Plane {
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.mesh.rotation.x = Math.PI / 2 + Math.PI
         this.mesh.name = 'main'
+        
+        this.tris = this.mesh.geometry.faces.length
+        this.verts = this.mesh.geometry.vertices.length
     }
 
     displace() {
+        let timerStart = Date.now();
         let seed = (sessionStorage.getItem('seed') === null || sessionStorage.getItem('seed') === '' ) ? Math.random() : sessionStorage.getItem('seed')
         let pn = new Perlin(seed);
 
@@ -68,6 +72,7 @@ export default class Plane {
         }
         
         this.geometry.verticesNeedUpdate = true;
+        this.timeToDisplace = Date.now()-timerStart
     }
 
     color() {

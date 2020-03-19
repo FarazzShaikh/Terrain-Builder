@@ -1,0 +1,21 @@
+.switches {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    height: 100%;
+    width: 30%;
+}
+
+.switches ul {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.switches ul li {
+    display: inline;
+}
