@@ -7,6 +7,13 @@ let scene, camera, renderer, planeMesh, controls, plane
 let stylized = true
 let greyscale = true
 let subdivs = 256
+let wireframe = false
+
+sessionStorage.setItem('isStylized', stylized)
+sessionStorage.setItem('isGreyscale', greyscale)
+sessionStorage.setItem('subdivs', subdivs)
+sessionStorage.setItem('isWireframe', wireframe)
+
 
 function initScene() {
   scene = new THREE.Scene();
@@ -51,7 +58,7 @@ function initLight() {
 }
 
 function initGeometry() {
-  plane = new Plane(stylized, greyscale, subdivs)
+  plane = new Plane(stylized, greyscale, wireframe, subdivs)
   planeMesh = plane.mesh
   plane.displace();
   plane.color()

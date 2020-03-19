@@ -3,7 +3,7 @@ import Perlin from '../lib/perlin.js'
 
 export default class Plane {
 
-    constructor(stylized, greyscale, subdivs) {
+    constructor(stylized, greyscale, wireframe, subdivs) {
         this.max = 0;
         this.stylized = stylized
         this.greyscale = greyscale
@@ -11,10 +11,11 @@ export default class Plane {
         this.wSeg = this.hSeg = subdivs
         this.geometry = new THREE.PlaneGeometry(20, 20, this.wSeg, this.hSeg);
         // this.geometry = new THREE.BoxGeometry( 5, 5, 5, this.wSeg, this.hSeg)
+        this.isWire = wireframe
         this.material = new THREE.MeshPhysicalMaterial({ 
             color: 0xffffff, 
             flatShading: false,
-            wireframe: false, 
+            wireframe: this.isWire, 
             side: THREE.DoubleSide, 
             vertexColors: THREE.VertexColors,
 
@@ -31,6 +32,7 @@ export default class Plane {
     }
 
     displace() {
+        this.resetNormals();
         let timerStart = Date.now();
         let seed = (sessionStorage.getItem('seed') === null || sessionStorage.getItem('seed') === '' ) ? Math.random() : sessionStorage.getItem('seed')
         let pn = new Perlin(seed);
@@ -89,7 +91,7 @@ export default class Plane {
         for (let i = 0; i < this.geometry.vertices.length; i++) {
             point = this.geometry.vertices[i];
 
-            if( this.greyscale) {
+            if(this.greyscale) {
                 color = new THREE.Color(0x000000);
                 let calc = 0.7 * (zMax - point.z) / zRange
                 color.setRGB(calc, calc, calc)
@@ -108,10 +110,10 @@ export default class Plane {
                 vertexIndex = face[faceIndices[j]];
                 face.vertexColors[j] = this.geometry.colors[vertexIndex];
             }
+            
         }
 
-        
-
+        this.geometry.elementsNeedUpdate = true
     }
 
     generateMap() {
@@ -135,5 +137,12 @@ export default class Plane {
             imgData.data[i] = mapData[i]   
         }
         ctx.putImageData(imgData, 0, 0);
+    }
+
+    resetNormals() {
+        for (var i = 0; i < this.mesh.geometry.vertices.length; i++) {
+            this.mesh.geometry.vertices[i].z = 0;
+        }
+        this.geometry.computeVertexNormals();
     }
 }
