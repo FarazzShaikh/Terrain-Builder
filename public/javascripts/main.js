@@ -2,10 +2,11 @@ import * as THREE from '../lib/three.js';
 import { OrbitControls } from '../lib/OrbitControls.js'
 import Plane from './Plane.js'
 
-let scene, camera, renderer, planeMesh, controls
+let scene, camera, renderer, planeMesh, controls, plane
 
-let stylized = false
+let stylized = true
 let greyscale = true
+let subdivs = 256
 
 function initScene() {
   scene = new THREE.Scene();
@@ -33,7 +34,7 @@ function initScene() {
   // let gridHelper = new THREE.GridHelper(gridSize, gridDivisions, true);
   // scene.add(gridHelper);
 
-  let axesHelper = new THREE.AxesHelper(15);
+  let axesHelper = new THREE.AxesHelper(10);
   scene.add(axesHelper);
 }
 
@@ -50,10 +51,10 @@ function initLight() {
 }
 
 function initGeometry() {
-  const plane = new Plane(32, 32)
+  plane = new Plane(stylized, greyscale, subdivs)
   planeMesh = plane.mesh
-  plane.displace(stylized);
-  plane.color(greyscale)
+  plane.displace();
+  plane.color()
   plane.generateMap()
   scene.add(planeMesh);
 
@@ -63,7 +64,7 @@ function render() {
   window.requestAnimationFrame(render);
 
   if (planeMesh) {
-    // planeMesh.rotation.z += 0.005;
+    planeMesh.rotation.z += 0.005;
   }
 
   controls.update()
@@ -91,8 +92,17 @@ function download() {
   link.click();
 }
 
+function costomizeRenderer() {
+  let ele = renderer.domElement
+  ele.className = "mainRenderer"
+}
+
+
 initScene()
+costomizeRenderer()
 initLight()
 initGeometry()
 render();
 window.addEventListener('resize', onWindowResize, false);
+
+export default plane

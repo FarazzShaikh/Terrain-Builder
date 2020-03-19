@@ -3,10 +3,12 @@ import Perlin from '../lib/perlin.js'
 
 export default class Plane {
 
-    constructor() {
+    constructor(stylized, greyscale, subdivs) {
         this.max = 0;
+        this.stylized = stylized
+        this.greyscale = greyscale
         this.vertColorData = []
-        this.wSeg = this.hSeg = 256
+        this.wSeg = this.hSeg = subdivs
         this.geometry = new THREE.PlaneGeometry(20, 20, this.wSeg, this.hSeg);
         // this.geometry = new THREE.BoxGeometry( 5, 5, 5, this.wSeg, this.hSeg)
         this.material = new THREE.MeshPhysicalMaterial({ 
@@ -22,11 +24,16 @@ export default class Plane {
         });
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.mesh.rotation.x = Math.PI / 2 + Math.PI
+        this.mesh.name = 'main'
     }
 
-    displace(stylized) {
-        let seed = Math.random()
+    displace() {
+        let seed = (sessionStorage.getItem('seed') === null || sessionStorage.getItem('seed') === '' ) ? Math.random() : sessionStorage.getItem('seed')
         let pn = new Perlin(seed);
+
+        let seedText = document.querySelector('header .seed-txt .val input')
+        seedText.placeholder = seed
+
 
         let octaves = 7
         let scale = 0.09
@@ -56,14 +63,14 @@ export default class Plane {
 
         }
 
-        if(!stylized) {
+        if(!this.stylized) {
             this.geometry.computeVertexNormals();
         }
         
         this.geometry.verticesNeedUpdate = true;
     }
 
-    color(greyscale) {
+    color() {
         this.geometry.computeBoundingBox();
         let zMin = this.geometry.boundingBox.min.z;
         let zMax = this.geometry.boundingBox.max.z;
@@ -77,7 +84,7 @@ export default class Plane {
         for (let i = 0; i < this.geometry.vertices.length; i++) {
             point = this.geometry.vertices[i];
 
-            if(greyscale) {
+            if( this.greyscale) {
                 color = new THREE.Color(0x000000);
                 let calc = 0.7 * (zMax - point.z) / zRange
                 color.setRGB(calc, calc, calc)
