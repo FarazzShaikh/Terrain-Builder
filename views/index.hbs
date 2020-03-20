@@ -1,5 +1,4 @@
 <script defer type="module" src="../javascripts/main.js"></script>
-<script defer type="module" src="../javascripts/uiButtons.js"></script>
 
 <header>
 
@@ -10,10 +9,10 @@
                 <div class="title">SEED :</div>
                 <img src="../images/refresh.svg">
             </div>
-            
+
             <div class="val"><input type="text"></div>
         </div>
-        
+
         <img class="three" src="../images/image (3).png" alt="">
     </div>
 
@@ -22,20 +21,35 @@
 
 <div class="switches">
     <ul>
-        <li class="style"> {{{ sw }}} <div class="switch-txt"> Stylized </div> </li>
-        <li class="grey"> {{{ sw }}} <div class="switch-txt"> Greyscale </div> </li>
-        <li class="wire"> {{{ sw }}} <div class="switch-txt"> Wireframe </div> </li>
-        <li></li>
+        <li class="style"> {{{ sw }}} <div class="switch-txt"> Stylized </div>
+        </li>
+        <li class="grey"> {{{ sw }}} <div class="switch-txt"> Greyscale </div>
+        </li>
+        <li class="wire"> {{{ sw }}} <div class="switch-txt"> Wireframe </div>
+        </li>
+        <li class="slider">
+            <input type="range" min="0" max="1" id="b" step="0.25" value="0.5">
+            <div class="switch-txt"> 256 </div>
+        </li>
     </ul>
 </div>
 
 
 <footer>
     <ul>
-        <li class="tris"><img src="../images/triangle.svg" alt=""><div class="caption">Tris</div></li>
-        <li class="verts"><img src="../images/share.svg" alt=""><div class="caption">Verts</div></li>
-        <li class="time"><img src="../images/hourglass.svg" alt=""><div class="caption">00ms</div></li>
+        <li class="tris"><img src="../images/triangle.svg" alt="">
+            <div class="caption">Tris</div>
+        </li>
+        <li class="verts"><img src="../images/share.svg" alt="">
+            <div class="caption">Verts</div>
+        </li>
+        <li class="time"><img src="../images/hourglass.svg" alt="">
+            <div class="caption">00ms</div>
+        </li>
     </ul>
 </footer>
 
-<canvas class="myCanvas" style="width: 0px; height: 0px;"></canvas>
+
+<div class="myCanvas">
+    <canvas style="width: 256px; height: 256px;"></canvas>
+</div>

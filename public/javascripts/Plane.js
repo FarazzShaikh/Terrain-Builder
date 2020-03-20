@@ -12,33 +12,39 @@ export default class Plane {
         this.geometry = new THREE.PlaneGeometry(20, 20, this.wSeg, this.hSeg);
         // this.geometry = new THREE.BoxGeometry( 5, 5, 5, this.wSeg, this.hSeg)
         this.isWire = wireframe
-        this.material = new THREE.MeshPhysicalMaterial({ 
-            color: 0xffffff, 
+        this.material = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
             flatShading: false,
-            wireframe: this.isWire, 
-            side: THREE.DoubleSide, 
+            wireframe: this.isWire,
+            side: THREE.DoubleSide,
             vertexColors: THREE.VertexColors,
 
-           roughness: 1,
-           metalness: 0,
+            roughness: 1,
+            metalness: 0,
 
         });
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.mesh.rotation.x = Math.PI / 2 + Math.PI
         this.mesh.name = 'main'
-        
+
         this.tris = this.mesh.geometry.faces.length
         this.verts = this.mesh.geometry.vertices.length
     }
 
-    displace() {
+    displace(preserveSeed) {
+
         this.resetNormals();
         let timerStart = Date.now();
-        let seed = (sessionStorage.getItem('seed') === null || sessionStorage.getItem('seed') === '' ) ? Math.random() : sessionStorage.getItem('seed')
-        let pn = new Perlin(seed);
+        if (preserveSeed) {
+
+        } else {
+            this.seed = (sessionStorage.getItem('seed') === null || sessionStorage.getItem('seed') === '') ? Math.random() : sessionStorage.getItem('seed')
+        }
+
+        let pn = new Perlin(this.seed);
 
         let seedText = document.querySelector('header .seed-txt .val input')
-        seedText.placeholder = seed
+        seedText.placeholder = this.seed
 
 
         let octaves = 7
@@ -69,12 +75,14 @@ export default class Plane {
 
         }
 
-        if(!this.stylized) {
+        if (!this.stylized) {
             this.geometry.computeVertexNormals();
         }
-        
+
         this.geometry.verticesNeedUpdate = true;
-        this.timeToDisplace = Date.now()-timerStart
+        this.tris = this.mesh.geometry.faces.length
+        this.verts = this.mesh.geometry.vertices.length
+        this.timeToDisplace = Date.now() - timerStart
     }
 
     color() {
@@ -91,7 +99,7 @@ export default class Plane {
         for (let i = 0; i < this.geometry.vertices.length; i++) {
             point = this.geometry.vertices[i];
 
-            if(this.greyscale) {
+            if (this.greyscale) {
                 color = new THREE.Color(0x000000);
                 let calc = 0.7 * (zMax - point.z) / zRange
                 color.setRGB(calc, calc, calc)
@@ -101,7 +109,7 @@ export default class Plane {
             }
             this.geometry.colors[i] = color; // use this array for convenience
         }
-        
+
         // copy the colors as necessary to the face's vertexColors array.
         for (let i = 0; i < this.geometry.faces.length; i++) {
             face = this.geometry.faces[i];
@@ -110,31 +118,31 @@ export default class Plane {
                 vertexIndex = face[faceIndices[j]];
                 face.vertexColors[j] = this.geometry.colors[vertexIndex];
             }
-            
+
         }
 
         this.geometry.elementsNeedUpdate = true
     }
 
     generateMap() {
-        var c = document.querySelector(".myCanvas");
+        var c = document.querySelector(".myCanvas canvas");
         c.width = c.height * (c.clientWidth / c.clientHeight);
         var ctx = c.getContext("2d");
         ctx.fillStyle = "blue";
         ctx.fillRect(0, 0, c.width, c.height);
-        var imgData = ctx.createImageData(this.wSeg+1, this.hSeg+1);
+        var imgData = ctx.createImageData(this.wSeg + 1, this.hSeg + 1);
 
         let mapData = new Uint8ClampedArray(imgData.data.length)
         let dataind = 0;
-        for (var i = 0; i < this.geometry.colors.length; i+=1) {
+        for (var i = 0; i < this.geometry.colors.length; i += 1) {
             mapData[dataind + 0] = this.geometry.colors[i].r * 255;
             mapData[dataind + 1] = this.geometry.colors[i].g * 255;
             mapData[dataind + 2] = this.geometry.colors[i].b * 255;
             mapData[dataind + 3] = 255;
-            dataind+=4
+            dataind += 4
         }
         for (let i = 0; i < imgData.data.length; i++) {
-            imgData.data[i] = mapData[i]   
+            imgData.data[i] = mapData[i]
         }
         ctx.putImageData(imgData, 0, 0);
     }
