@@ -58,10 +58,10 @@ function initLight() {
     scene.add(ambLight)
 }
 
-function initGeometry() {
+function initGeometry(preserveSeed, seed) {
     plane = new Plane(stylized, greyscale, wireframe, subdivs)
     planeMesh = plane.mesh
-    plane.displace();
+    plane.displace(preserveSeed, seed);
     plane.color()
     plane.generateMap()
     scene.add(planeMesh);
@@ -88,17 +88,6 @@ function onWindowResize() {
 
 }
 
-document.querySelector('.myCanvas').addEventListener("click", () => {
-    download()
-});
-
-function download() {
-    let canvas = document.querySelector('.myCanvas canvas')
-    let link = document.getElementById('link');
-    link.setAttribute('download', 'heightMap.png');
-    link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
-    link.click();
-}
 
 function costomizeRenderer() {
     let ele = renderer.domElement
@@ -110,7 +99,7 @@ function costomizeRenderer() {
 initScene()
 costomizeRenderer()
 initLight()
-initGeometry()
+initGeometry(false, 0)
 render();
 window.addEventListener('resize', onWindowResize, false);
 
@@ -118,23 +107,31 @@ window.addEventListener('resize', onWindowResize, false);
 
 let ui = new UI()
 
+ui.downloadButtom.addEventListener('click', () => {
+    let canvas = document.querySelector('.myCanvas canvas')
+    let link = document.getElementById('link');
+    link.setAttribute('download', 'heightMap.png');
+    link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+    link.click();
+})
+
 ui.switches.slider.addEventListener("change", () => {
     let val;
     switch (document.querySelector(".switches ul .slider input").value) {
         case '0':
-            val = '32';
+            val = '8';
             break;
         case '0.25':
-            val = '128';
+            val = '16';
             break;
         case '0.5':
-            val = '256';
+            val = '32';
             break;
         case '0.75':
-            val = '1024';
+            val = '64';
             break;
         case '1':
-            val = '2048';
+            val = '256';
             break;
     }
 
@@ -142,9 +139,10 @@ ui.switches.slider.addEventListener("change", () => {
     object.geometry.dispose();
     object.material.dispose();
     scene.remove(object);
+    let seed = plane.seed
     plane = null;
     subdivs = Number(val)
-    initGeometry();
+    initGeometry(true, seed);
     setDataLabels()
 })
 
@@ -152,19 +150,19 @@ ui.switches.slider.addEventListener("input", () => {
     let val;
     switch (ui.switches.slider.value) {
         case '0':
-            val = '32';
+            val = '8';
             break;
         case '0.25':
-            val = '128';
+            val = '16';
             break;
         case '0.5':
-            val = '256';
+            val = '32';
             break;
         case '0.75':
-            val = '1024';
+            val = '64';
             break;
         case '1':
-            val = '2048';
+            val = '256';
             break;
     }
     document.querySelector('.switches ul .slider .switch-txt').innerHTML = val

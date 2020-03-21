@@ -31,12 +31,12 @@ export default class Plane {
         this.verts = this.mesh.geometry.vertices.length
     }
 
-    displace(preserveSeed) {
+    displace(preserveSeed, seed) {
 
         this.resetNormals();
         let timerStart = Date.now();
         if (preserveSeed) {
-
+            this.seed = seed
         } else {
             this.seed = (sessionStorage.getItem('seed') === null || sessionStorage.getItem('seed') === '') ? Math.random() : sessionStorage.getItem('seed')
         }
@@ -125,7 +125,9 @@ export default class Plane {
     }
 
     generateMap() {
+
         var c = document.querySelector(".myCanvas canvas");
+
         c.width = c.height * (c.clientWidth / c.clientHeight);
         var ctx = c.getContext("2d");
         ctx.fillStyle = "blue";
@@ -144,7 +146,34 @@ export default class Plane {
         for (let i = 0; i < imgData.data.length; i++) {
             imgData.data[i] = mapData[i]
         }
-        ctx.putImageData(imgData, 0, 0);
+
+        // create a temporary canvas
+        var tempCanvas = document.createElement("canvas");
+        var tempCtx = tempCanvas.getContext("2d");
+
+        // set the temp canvas size == the canvas size
+        tempCanvas.width = c.width;
+        tempCanvas.height = c.height;
+
+        // put the modified pixels on the temp canvas
+        tempCtx.putImageData(imgData, 0, 0);
+
+        // use the tempCanvas.toDataURL to create an img object
+        var img = new Image();
+
+
+        img.onload = function() {
+            // drawImage the img on the canvas
+            ctx.drawImage(img, 0, 0)
+        }
+        img.src = tempCanvas.toDataURL();
+
+        let scalingFactor = 256 / this.hSeg
+        console.log(scalingFactor)
+
+        ctx.scale(scalingFactor, scalingFactor)
+
+
     }
 
     resetNormals() {
