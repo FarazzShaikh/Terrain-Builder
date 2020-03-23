@@ -40,7 +40,7 @@ export default class Plane {
         } else {
             this.seed = (sessionStorage.getItem('seed') === null || sessionStorage.getItem('seed') === '') ? Math.random() : sessionStorage.getItem('seed')
         }
-
+        console.log(this.seed)
         let pn = new Perlin(this.seed);
 
         let seedText = document.querySelector('header .seed-txt .val input')

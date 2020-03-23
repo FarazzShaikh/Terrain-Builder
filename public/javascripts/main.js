@@ -103,14 +103,46 @@ initGeometry(false, 0)
 render();
 window.addEventListener('resize', onWindowResize, false);
 
-//--------------------------------------------------------------------------
+//=========================================== UI stuff ===========================================
 
 let ui = new UI()
+
+document.body.addEventListener("mousemove", (mouse) => {
+    let mouseX = mouse.pageX - (window.innerWidth / 2)
+    let mouseY = mouse.pageY - (window.innerHeight / 2)
+
+    document.querySelector('.myCanvas').style.transition = document.querySelector('footer').style.transition = document.querySelector('.switches').style.transition = document.querySelector('header .seed-txt').style.transition = 'opacity 500ms'
+
+
+    if (mouseX < -(0.2 * window.innerWidth) || mouseX > (0.2 * window.innerWidth) || mouseY < -(0.2 * window.innerHeight) || mouseY > (0.2 * window.innerHeight)) {
+
+        document.querySelector('.myCanvas').style.opacity = '100%'
+
+        document.querySelector('footer').style.opacity = '100%'
+
+        document.querySelector('.switches').style.opacity = '100%'
+
+        document.querySelector('header .seed-txt').style.opacity = '100%'
+    } else {
+
+
+        document.querySelector('.myCanvas').style.opacity = '10%'
+
+        document.querySelector('footer').style.opacity = '10%'
+
+        document.querySelector('.switches').style.opacity = '10%'
+
+        document.querySelector('header .seed-txt').style.opacity = '10%'
+    }
+
+});
 
 ui.downloadButtom.addEventListener('click', () => {
     let canvas = document.querySelector('.myCanvas canvas')
     let link = document.getElementById('link');
-    link.setAttribute('download', 'heightMap.png');
+    let name = document.querySelector('.myCanvas .main .info input').value
+    name = (name === undefined || name === null || name === "") ? "heightMap.png" : (name + ".png")
+    link.setAttribute('download', name);
     link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
     link.click();
 })
@@ -195,8 +227,8 @@ ui.refreshButton.addEventListener('click', () => {
 ui.switches.style.addEventListener('change', () => {
     plane.stylized = ui.switches.style.checked
     stylized = ui.switches.style.checked
-
-    plane.displace(true)
+    let seed = plane.seed
+    plane.displace(true, seed)
 
 })
 
