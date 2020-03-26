@@ -5,7 +5,7 @@ import UI from './uiButtons.js'
 
 let scene, camera, renderer, planeMesh, controls, plane
 
-let stylized = true
+let stylized = false
 let greyscale = true
 let subdivs = 256
 let wireframe = false
@@ -48,7 +48,7 @@ function initScene() {
 
 function initLight() {
     const light = new THREE.PointLight(0x404040, 3)
-    light.position.set(3, 3, 3)
+    light.position.set(3, 10, 3)
     light.rotation.set(1, 1, 1)
     light.castShadow = true;
     light.shadow.radius = 30;
@@ -62,17 +62,21 @@ function initGeometry(preserveSeed, seed) {
     plane = new Plane(stylized, greyscale, wireframe, subdivs)
     planeMesh = plane.mesh
     plane.displace(preserveSeed, seed);
+    plane.modifier.erode()
     plane.color()
     plane.generateMap()
     scene.add(planeMesh);
 
 }
 
+
+
 function render() {
     window.requestAnimationFrame(render);
 
     if (planeMesh) {
-        planeMesh.rotation.z += 0.005;
+        // planeMesh.rotation.z += 0.005;
+
     }
 
     controls.update()
@@ -94,6 +98,17 @@ function costomizeRenderer() {
     ele.className = "mainRenderer"
 }
 
+// let a = 0;
+// setInterval(() => {
+
+
+//     if (a < 500) {
+//         plane.modifier.simWater(a)
+//         plane.color()
+//         a++
+//     }
+
+// }, 100);
 
 
 initScene()
@@ -221,6 +236,8 @@ ui.refreshButton.addEventListener('click', () => {
 
 
     plane.displace()
+    plane.modifier.erode()
+    plane.color()
     setDataLabels()
 })
 
@@ -229,6 +246,7 @@ ui.switches.style.addEventListener('change', () => {
     stylized = ui.switches.style.checked
     let seed = plane.seed
     plane.displace(true, seed)
+    plane.modifier.erode()
 
 })
 
