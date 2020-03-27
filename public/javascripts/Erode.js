@@ -9,13 +9,14 @@ export default class Erode {
 
         this.lifetime = 0.5 //% of time after which the drop evaporates
 
-        this.sedimentDeposition = 7
-        this.waterErosion = 7
+        this.sedimentDeposition = 3
+        this.waterErosion = 8
 
         this.steps = 300
     }
 
     erode() {
+        let timerStart = Date.now();
         this.geometry.dropletData = {
             waterLevel: new Array((this.wSeg + 1) * (this.wSeg + 1)).fill(0),
             lifetime: new Array((this.wSeg + 1) * (this.wSeg + 1)).fill(0.75),
@@ -38,6 +39,7 @@ export default class Erode {
         }
 
 
+        this.timeToErode = Date.now() - timerStart
     }
 
     rain() {
@@ -59,13 +61,15 @@ export default class Erode {
             let greaterFlag = false
             let calcLifetime = 500 * this.geometry.dropletData.lifetime[j]
 
+
             if (this.geometry.dropletData.waterLevel[j] > 0) {
+
                 if (this.geometry.neighboursData[j].n !== null) {
                     if (this.geometry.neighboursData[j].n.z < cPoint.z) {
                         this.geometry.dropletData.waterLevel[this.geometry.neighboursData[j].ni] += 0.2
                         this.geometry.dropletData.waterLevel[j] -= 0.2
 
-                        this.geometry.vertices[j].z += (this.geometry.vertices[j].z - this.geometry.vertices[this.geometry.neighboursData[j].ni].z) / this.waterErosion
+                        this.geometry.vertices[j].z -= (this.geometry.vertices[j].z - this.geometry.vertices[this.geometry.neighboursData[j].ni].z) / this.waterErosion
 
                         if (this.geometry.dropletData.sedimentLevel[j] > 0) {
                             this.geometry.dropletData.sedimentLevel[j] -= 0.1
@@ -104,7 +108,7 @@ export default class Erode {
                         this.geometry.dropletData.waterLevel[this.geometry.neighboursData[j].si] += 0.2
                         this.geometry.dropletData.waterLevel[j] -= 0.2
 
-                        this.geometry.vertices[j].z += (this.geometry.vertices[j].z - this.geometry.vertices[this.geometry.neighboursData[j].si].z) / this.waterErosion
+                        this.geometry.vertices[j].z -= (this.geometry.vertices[j].z - this.geometry.vertices[this.geometry.neighboursData[j].si].z) / this.waterErosion
 
                         if (this.geometry.dropletData.sedimentLevel[j] > 0) {
                             this.geometry.dropletData.sedimentLevel[j] -= 0.1
@@ -123,7 +127,7 @@ export default class Erode {
                         this.geometry.dropletData.waterLevel[this.geometry.neighboursData[j].wi] += 0.2
                         this.geometry.dropletData.waterLevel[j] -= 0.2
 
-                        this.geometry.vertices[j].z += (this.geometry.vertices[j].z - this.geometry.vertices[this.geometry.neighboursData[j].wi].z) / this.waterErosion
+                        this.geometry.vertices[j].z -= (this.geometry.vertices[j].z - this.geometry.vertices[this.geometry.neighboursData[j].wi].z) / this.waterErosion
 
                         if (this.geometry.dropletData.sedimentLevel[j] > 0) {
                             this.geometry.dropletData.sedimentLevel[j] -= 0.1
@@ -203,20 +207,20 @@ export default class Erode {
                     e: (y - 1 < 0) ? null : verts[x][y - 1],
                     w: (x - 1 < 0) ? null : verts[x - 1][y],
                     //--------------------------------------------
-                    ne: (y + 1 > verts[x].length - 1 || x + 1 > verts.length - 1) ? null : verts[x + 1][y + 1],
-                    nw: (y + 1 > verts[x].length - 1 || x - 1 < 0) ? null : verts[x - 1][y + 1],
-                    se: (y - 1 < 0 || x + 1 > verts.length - 1) ? null : verts[x + 1][y - 1],
-                    sw: (y - 1 < 0 || x - 1 < 0) ? null : verts[x - 1][y - 1],
+                    // ne: (y + 1 > verts[x].length - 1 || x + 1 > verts.length - 1) ? null : verts[x + 1][y + 1],
+                    // nw: (y + 1 > verts[x].length - 1 || x - 1 < 0) ? null : verts[x - 1][y + 1],
+                    // se: (y - 1 < 0 || x + 1 > verts.length - 1) ? null : verts[x + 1][y - 1],
+                    // sw: (y - 1 < 0 || x - 1 < 0) ? null : verts[x - 1][y - 1],
                     //--------------------------------------------
                     ni: (x * (this.wSeg + 1)) + (y + 1),
                     si: ((x + 1) * (this.wSeg + 1)) + y,
                     ei: (x * (this.wSeg + 1)) + (y - 1),
                     wi: ((x - 1) * (this.wSeg + 1)) + y,
                     //--------------------------------------------
-                    nei: ((x + 1) * (this.wSeg + 1)) + (y + 1),
-                    nwi: ((x - 1) * (this.wSeg + 1)) + (y + 1),
-                    sei: ((x + 1) * (this.wSeg + 1)) + (y - 1),
-                    swi: ((x - 1) * (this.wSeg + 1)) + (y - 1),
+                    // nei: ((x + 1) * (this.wSeg + 1)) + (y + 1),
+                    // nwi: ((x - 1) * (this.wSeg + 1)) + (y + 1),
+                    // sei: ((x + 1) * (this.wSeg + 1)) + (y - 1),
+                    // swi: ((x - 1) * (this.wSeg + 1)) + (y - 1),
                     //--------------------------------------------
                     waterLevelIndex: index
                 }

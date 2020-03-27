@@ -35,9 +35,9 @@ export default class Plane {
     }
 
     displace(preserveSeed, seed) {
-
-        this.resetNormals();
         let timerStart = Date.now();
+        this.resetNormals();
+
         if (preserveSeed) {
             this.seed = seed
         } else {
@@ -50,7 +50,7 @@ export default class Plane {
 
 
         let octaves = 8
-        let scale = 0.065
+        let scale = 0.06
         let persistance = 2
         let lacunarity = 2
 
@@ -69,7 +69,7 @@ export default class Plane {
                 amplitude *= persistance;
                 frequency *= lacunarity;
             }
-            this.mesh.geometry.vertices[i].z = total / 17 - 7
+            this.mesh.geometry.vertices[i].z = total / 15 - 5
             this.max = (total > this.max) ? total : this.max
 
             this.vertColorData.push(total)
@@ -102,11 +102,11 @@ export default class Plane {
 
             if (this.greyscale) {
                 color = new THREE.Color(0xffffff);
-                let calc = (0.7 * (zMax - point.z) / zRange)
+                let calc = (0.7 * (point.z) / zRange)
                 color.setRGB(calc, calc, calc)
             } else {
                 color = new THREE.Color(0x0000ff);
-                color.setHSL(0.7 * (zMax - point.z) / zRange, 1, 0.5);
+                color.setHSL(0.1 * (zMax - point.z) / zRange, 1, 0.5);
             }
             this.geometry.colors[i] = color; // use this array for convenience
 
@@ -139,13 +139,15 @@ export default class Plane {
 
     generateMap() {
 
+        let canvasRes = (this.wSeg > 256) ? 256 : this.wSeg
+
         var c = document.querySelector(".myCanvas canvas");
 
         c.width = c.height * (c.clientWidth / c.clientHeight);
         var ctx = c.getContext("2d");
         ctx.fillStyle = "blue";
         ctx.fillRect(0, 0, c.width, c.height);
-        var imgData = ctx.createImageData(this.wSeg + 1, this.hSeg + 1);
+        var imgData = ctx.createImageData(canvasRes + 1, canvasRes + 1);
 
         let mapData = new Uint8ClampedArray(imgData.data.length)
         let dataind = 0;
@@ -181,7 +183,7 @@ export default class Plane {
         }
         img.src = tempCanvas.toDataURL();
 
-        let scalingFactor = 256 / this.hSeg
+        let scalingFactor = 256 / canvasRes
 
         ctx.scale(scalingFactor, scalingFactor)
 

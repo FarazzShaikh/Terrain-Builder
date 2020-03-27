@@ -75,7 +75,7 @@ function render() {
     window.requestAnimationFrame(render);
 
     if (planeMesh) {
-        // planeMesh.rotation.z += 0.005;
+        planeMesh.rotation.z += 0.005;
 
     }
 
@@ -180,6 +180,9 @@ ui.switches.slider.addEventListener("change", () => {
         case '1':
             val = '256';
             break;
+        case '1.25':
+            val = '512';
+              break;
     }
 
     const object = scene.getObjectByProperty('name', 'main')
@@ -211,6 +214,9 @@ ui.switches.slider.addEventListener("input", () => {
         case '1':
             val = '256';
             break;
+        case '1.25':
+          val = '512';
+          break;
     }
     document.querySelector('.switches ul .slider .switch-txt').innerHTML = val
 })
@@ -219,7 +225,7 @@ ui.switches.slider.addEventListener("input", () => {
 function setDataLabels() {
     ui.trisLabel.innerHTML = kFormatter(plane.tris)
     ui.vertsLabel.innerHTML = kFormatter(plane.verts)
-    ui.timeLabel.innerHTML = plane.timeToDisplace + 'ms'
+    ui.timeLabel.innerHTML = (plane.timeToDisplace + plane.modifier.timeToErode) + 'ms'
 }
 
 function setSwitchesFromCookie() {
