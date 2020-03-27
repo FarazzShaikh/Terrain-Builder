@@ -19,8 +19,6 @@ npm start
 ```
 Served on http://localhost:3000
 
-Click height map to download as png, refresh to generate new.
-
 ### Libraries Used:
  - Three.js   : https://threejs.org/
  - Perlin.js  : https://github.com/wwwtyro/perlin.js
