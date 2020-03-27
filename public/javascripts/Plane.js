@@ -1,9 +1,11 @@
 import * as THREE from '../lib/three.js';
 import Perlin from '../lib/perlin.js'
+import Erode from './Erode.js'
 
 export default class Plane {
 
     constructor(stylized, greyscale, wireframe, subdivs) {
+
         this.max = 0;
         this.stylized = stylized
         this.greyscale = greyscale
@@ -29,29 +31,28 @@ export default class Plane {
 
         this.tris = this.mesh.geometry.faces.length
         this.verts = this.mesh.geometry.vertices.length
+        this.modifier = new Erode(this.geometry, this.wSeg)
     }
 
     displace(preserveSeed, seed) {
-
-        this.resetNormals();
         let timerStart = Date.now();
+        this.resetNormals();
+
         if (preserveSeed) {
             this.seed = seed
         } else {
             this.seed = (sessionStorage.getItem('seed') === null || sessionStorage.getItem('seed') === '') ? Math.random() : sessionStorage.getItem('seed')
         }
-        console.log(this.seed)
         let pn = new Perlin(this.seed);
 
         let seedText = document.querySelector('header .seed-txt .val input')
         seedText.placeholder = this.seed
 
 
-        let octaves = 7
-        let scale = 0.09
+        let octaves = 8
+        let scale = 0.06
         let persistance = 2
         let lacunarity = 2
-
 
         for (var i = 0; i < this.mesh.geometry.vertices.length; i++) {
             let total = 0;
@@ -68,7 +69,7 @@ export default class Plane {
                 amplitude *= persistance;
                 frequency *= lacunarity;
             }
-            this.mesh.geometry.vertices[i].z = total / 10 - 5
+            this.mesh.geometry.vertices[i].z = total / 15 - 5
             this.max = (total > this.max) ? total : this.max
 
             this.vertColorData.push(total)
@@ -100,15 +101,27 @@ export default class Plane {
             point = this.geometry.vertices[i];
 
             if (this.greyscale) {
-                color = new THREE.Color(0x000000);
-                let calc = 0.7 * (zMax - point.z) / zRange
+                color = new THREE.Color(0xffffff);
+                let calc = (0.7 * (point.z) / zRange)
                 color.setRGB(calc, calc, calc)
             } else {
                 color = new THREE.Color(0x0000ff);
-                color.setHSL(0.7 * (zMax - point.z) / zRange, 1, 0.5);
+                color.setHSL(0.1 * (zMax - point.z) / zRange, 1, 0.5);
             }
             this.geometry.colors[i] = color; // use this array for convenience
+
+            //-----------------------------------------------------------------------------
+
+            // point = this.geometry.vertices[i]
+            // color = new THREE.Color(0x000000);
+            // let b = 255 * this.geometry.dropletData.waterLevel[i]
+            // let g = 255 * this.geometry.dropletData.sedimentLevel[i]
+            // color.b = b
+            // color.g = g
+            // this.geometry.colors[i] = color
         }
+
+        this.geometry.colors[0] = new THREE.Color(0xff0000)
 
         // copy the colors as necessary to the face's vertexColors array.
         for (let i = 0; i < this.geometry.faces.length; i++) {
@@ -126,13 +139,15 @@ export default class Plane {
 
     generateMap() {
 
+        let canvasRes = (this.wSeg > 256) ? 256 : this.wSeg
+
         var c = document.querySelector(".myCanvas canvas");
 
         c.width = c.height * (c.clientWidth / c.clientHeight);
         var ctx = c.getContext("2d");
         ctx.fillStyle = "blue";
         ctx.fillRect(0, 0, c.width, c.height);
-        var imgData = ctx.createImageData(this.wSeg + 1, this.hSeg + 1);
+        var imgData = ctx.createImageData(canvasRes + 1, canvasRes + 1);
 
         let mapData = new Uint8ClampedArray(imgData.data.length)
         let dataind = 0;
@@ -168,8 +183,7 @@ export default class Plane {
         }
         img.src = tempCanvas.toDataURL();
 
-        let scalingFactor = 256 / this.hSeg
-        console.log(scalingFactor)
+        let scalingFactor = 256 / canvasRes
 
         ctx.scale(scalingFactor, scalingFactor)
 
@@ -182,4 +196,10 @@ export default class Plane {
         }
         this.geometry.computeVertexNormals();
     }
+
+    recalcNormals() {
+        this.geometry.computeVertexNormals();
+    }
+
+
 }
