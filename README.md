@@ -3,6 +3,8 @@ Three.js Procedural Terrain created using various npm modules.
 
 Demo : 	https://threejs-procedural-terrain.herokuapp.com/
 
+![Demo](https://github.com/FarazzShaikh/Threejs-procedural-terrain/blob/master/public/images/Screenshot.png)
+
 To run -
 
 ```
