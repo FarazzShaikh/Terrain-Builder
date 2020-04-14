@@ -39,7 +39,7 @@ export default class Erode {
         }
 
 
-        this.timeToErode = Date.now() - timerStart
+        return Date.now() - timerStart
     }
 
     rain() {

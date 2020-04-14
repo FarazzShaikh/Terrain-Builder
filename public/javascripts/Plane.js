@@ -45,10 +45,6 @@ export default class Plane {
         }
         let pn = new Perlin(this.seed);
 
-        let seedText = document.querySelector('header .seed-txt .val input')
-        seedText.placeholder = this.seed
-
-
         let octaves = 8
         let scale = 0.06
         let persistance = 2
@@ -83,7 +79,7 @@ export default class Plane {
         this.geometry.verticesNeedUpdate = true;
         this.tris = this.mesh.geometry.faces.length
         this.verts = this.mesh.geometry.vertices.length
-        this.timeToDisplace = Date.now() - timerStart
+        return Date.now() - timerStart
     }
 
     color() {

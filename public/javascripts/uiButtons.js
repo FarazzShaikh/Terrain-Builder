@@ -1,17 +1,57 @@
 export default class ui {
-    refreshButton = document.querySelector("header .img-container .seed-txt .head img")
-    seedInput = document.querySelector("header .img-container .seed-txt .val input")
+    constructor() {
+        this.div_info = this.$('.info')
 
-    trisLabel = document.querySelector("footer ul .tris div")
-    vertsLabel = document.querySelector("footer ul .verts div")
-    timeLabel = document.querySelector("footer ul .time div")
+        this.info = {
+            verts: this.$('.info .item ul li .verts h1'),
+            tris: this.$('.info .item ul li .tris h1'),
+            geometryTime: this.$('.info .item ul li .geometry-time h1'),
 
-    switches = {
-        style: document.querySelector(".switches ul .style .switch-container .switch input"),
-        grey: document.querySelector(".switches ul .grey .switch-container .switch input"),
-        wire: document.querySelector(".switches ul .wire .switch-container .switch input"),
-        slider: document.querySelector(".switches ul .slider input"),
+            iterations: this.$('.info .item ul li .iterations h1'),
+            droplets: this.$('.info .item ul li .droplets h1'),
+            erosionTime: this.$('.info .item ul li .erosion-time h1'),
+
+            size: this.$('.info .item ul li .size h1'),
+            normalized: this.$('.info .item ul li .normalized h1'),
+            mapTime: this.$('.info .item ul li .map-time h1'),
+        }
+    }
+    $(sel) {
+        return document.querySelector(sel)
+    }
+    $all(sel) {
+        return document.querySelector(sel)
     }
 
-    downloadButtom = document.querySelector(".myCanvas .main .info img")
+    setInfoDivPos(x, y) {
+        let offset = 20
+        x += offset
+        y += offset
+        this.div_info.style.left = `${x}px`
+        this.div_info.style.top = `${y}px`
+    }
+
+    setInfoDivContent(options) {
+        this.info.verts.innerHTML = options.verts
+        this.info.tris.innerHTML = options.tris
+        this.info.geometryTime.innerHTML = options.geometryTime
+
+        this.info.iterations.innerHTML = options.iterations
+        this.info.droplets.innerHTML = options.droplets
+        this.info.erosionTime.innerHTML = options.erosionTime
+
+        this.info.size.innerHTML = options.size
+        this.info.normalized.innerHTML = options.normalized
+        this.info.mapTime.innerHTML = options.mapTime
+    }
+
+    show_info() {
+        this.div_info.style.opacity = '100%'
+        this.div_info.style.pointerEvents = 'all'
+    }
+
+    hide_info() {
+        this.div_info.style.opacity = '0'
+        this.div_info.style.pointerEvents = 'none'
+    }
 }

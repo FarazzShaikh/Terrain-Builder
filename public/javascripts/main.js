@@ -2,12 +2,14 @@ import * as THREE from '../lib/three.js';
 import { OrbitControls } from '../lib/OrbitControls.js'
 import Plane from './Plane.js'
 import UI from './uiButtons.js'
+import Options from './options.js';
 
+let ui = new UI()
 let scene, camera, renderer, planeMesh, controls, plane
 
 let stylized = false
 let greyscale = true
-let subdivs = 256
+let subdivs = 128
 let wireframe = false
 
 sessionStorage.setItem('isStylized', stylized)
@@ -15,6 +17,11 @@ sessionStorage.setItem('isGreyscale', greyscale)
 sessionStorage.setItem('subdivs', subdivs)
 sessionStorage.setItem('isWireframe', wireframe)
 
+let time = {
+    displace: 0,
+    erode: 0,
+    map: 0
+}
 
 function initScene() {
     scene = new THREE.Scene();
@@ -61,10 +68,10 @@ function initLight() {
 function initGeometry(preserveSeed, seed) {
     plane = new Plane(stylized, greyscale, wireframe, subdivs)
     planeMesh = plane.mesh
-    plane.displace(preserveSeed, seed);
-    plane.modifier.erode()
+    time.displace = plane.displace(preserveSeed, seed);
+    time.erode = plane.modifier.erode()
     plane.color()
-    plane.generateMap()
+    // plane.generateMap()
     scene.add(planeMesh);
 
 }
@@ -118,173 +125,31 @@ initGeometry(false, 0)
 render();
 window.addEventListener('resize', onWindowResize, false);
 
-//=========================================== UI stuff ===========================================
+var keys = {};
+window.onkeyup = function(e) { keys[e.keyCode] = false; }
+window.onkeydown = function(e) { keys[e.keyCode] = true; }
 
-let ui = new UI()
-
-document.body.addEventListener("mousemove", (mouse) => {
-    let mouseX = mouse.pageX - (window.innerWidth / 2)
-    let mouseY = mouse.pageY - (window.innerHeight / 2)
-
-    document.querySelector('.myCanvas').style.transition = document.querySelector('footer').style.transition = document.querySelector('.switches').style.transition = document.querySelector('header .seed-txt').style.transition = 'opacity 500ms'
-
-
-    if (mouseX < -(0.2 * window.innerWidth) || mouseX > (0.2 * window.innerWidth) || mouseY < -(0.2 * window.innerHeight) || mouseY > (0.2 * window.innerHeight)) {
-
-        document.querySelector('.myCanvas').style.opacity = '100%'
-
-        document.querySelector('footer').style.opacity = '100%'
-
-        document.querySelector('.switches').style.opacity = '100%'
-
-        document.querySelector('header .seed-txt').style.opacity = '100%'
+window.onmousemove = (e) => {
+    if(keys[18]) {
+        ui.show_info()
+        e = e || window.event;	
+        let mousePos = { x: e.clientX, y: e.clientY };
+        ui.setInfoDivPos(mousePos.x, mousePos.y)
     } else {
-
-
-        document.querySelector('.myCanvas').style.opacity = '10%'
-
-        document.querySelector('footer').style.opacity = '10%'
-
-        document.querySelector('.switches').style.opacity = '10%'
-
-        document.querySelector('header .seed-txt').style.opacity = '10%'
+        ui.hide_info()
     }
-
-});
-
-ui.downloadButtom.addEventListener('click', () => {
-    let canvas = document.querySelector('.myCanvas canvas')
-    let link = document.getElementById('link');
-    let name = document.querySelector('.myCanvas .main .info input').value
-    name = (name === undefined || name === null || name === "") ? "heightMap.png" : (name + ".png")
-    link.setAttribute('download', name);
-    link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
-    link.click();
-})
-
-ui.switches.slider.addEventListener("change", () => {
-    let val;
-    switch (document.querySelector(".switches ul .slider input").value) {
-        case '0':
-            val = '8';
-            break;
-        case '0.25':
-            val = '16';
-            break;
-        case '0.5':
-            val = '32';
-            break;
-        case '0.75':
-            val = '64';
-            break;
-        case '1':
-            val = '256';
-            break;
-        case '1.25':
-            val = '512';
-              break;
-    }
-
-    const object = scene.getObjectByProperty('name', 'main')
-    object.geometry.dispose();
-    object.material.dispose();
-    scene.remove(object);
-    let seed = plane.seed
-    plane = null;
-    subdivs = Number(val)
-    initGeometry(true, seed);
-    setDataLabels()
-})
-
-ui.switches.slider.addEventListener("input", () => {
-    let val;
-    switch (ui.switches.slider.value) {
-        case '0':
-            val = '8';
-            break;
-        case '0.25':
-            val = '16';
-            break;
-        case '0.5':
-            val = '32';
-            break;
-        case '0.75':
-            val = '64';
-            break;
-        case '1':
-            val = '256';
-            break;
-        case '1.25':
-          val = '512';
-          break;
-    }
-    document.querySelector('.switches ul .slider .switch-txt').innerHTML = val
-})
-
-
-function setDataLabels() {
-    ui.trisLabel.innerHTML = kFormatter(plane.tris)
-    ui.vertsLabel.innerHTML = kFormatter(plane.verts)
-    ui.timeLabel.innerHTML = (plane.timeToDisplace + plane.modifier.timeToErode) + 'ms'
+	
 }
 
-function setSwitchesFromCookie() {
-
-    ui.switches.style.checked = stylized
-    ui.switches.grey.checked = greyscale
-    ui.switches.wire.checked = wireframe
-}
-
-ui.refreshButton.addEventListener('click', () => {
-    let userSeed = ui.seedInput.value
-    sessionStorage.setItem('seed', userSeed)
-
-
-
-    plane.displace()
-    plane.modifier.erode()
-    plane.color()
-    setDataLabels()
-})
-
-ui.switches.style.addEventListener('change', () => {
-    plane.stylized = ui.switches.style.checked
-    stylized = ui.switches.style.checked
-    let seed = plane.seed
-    plane.displace(true, seed)
-    plane.modifier.erode()
-
-})
-
-ui.switches.grey.addEventListener('change', () => {
-    plane.greyscale = ui.switches.grey.checked
-    greyscale = ui.switches.grey.checked
-    plane.color()
-})
-
-ui.switches.wire.addEventListener('change', () => {
-    plane.material.wireframe = ui.switches.wire.checked
-    wireframe = ui.switches.wire.checked
-})
-
-setDataLabels()
-setSwitchesFromCookie()
-
-function kFormatter(num) {
-    return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(num) * Math.abs(num)
-}
-
-function stringToBoolean(string) {
-    switch (string.toLowerCase().trim()) {
-        case "true":
-        case "yes":
-        case "1":
-            return true;
-        case "false":
-        case "no":
-        case "0":
-        case null:
-            return false;
-            return Boolean(string);
-    }
-}
+let option = new Options(
+    planeMesh.geometry.vertices.length,
+    planeMesh.geometry.faces.length,
+    time.displace,
+    plane.modifier.steps,
+    Math.floor(plane.modifier.rainAmount * planeMesh.geometry.vertices.length),
+    time.erode,
+    subdivs,
+    false,
+    0
+)
+ui.setInfoDivContent(option)
