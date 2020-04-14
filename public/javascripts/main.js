@@ -9,7 +9,7 @@ let scene, camera, renderer, planeMesh, controls, plane
 
 let stylized = false
 let greyscale = true
-let subdivs = 128
+let subdivs = 512
 let wireframe = false
 
 sessionStorage.setItem('isStylized', stylized)
