@@ -6,10 +6,10 @@ Demo : 	https://threejs-procedural-terrain.herokuapp.com/
 ![Demo](https://github.com/FarazzShaikh/Threejs-procedural-terrain/blob/master/public/images/Screenshot.png)
 
 ### Controls:
- - Left Mouse + drag : *Orbit
- - Right Mouse + drag : *Zoom
- - Middle Mouse + drag : *Pan
- - Alt + Move Mouse : *Info
+ - Left Mouse + drag : Orbit
+ - Right Mouse + drag : Zoom
+ - Middle Mouse + drag : Pan
+ - Alt + Move Mouse : Info
 
 ### To Run (locally):
 
@@ -25,7 +25,7 @@ npm install
 ```
 npm start
 ```
-*Served on http://localhost:3000
+Served on http://localhost:3000
 
 ### Libraries Used:
  - Three.js   : https://threejs.org/
