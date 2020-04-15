@@ -2,6 +2,7 @@
 @import url('./header-styles.css');
 @import url('./socials-styles.css');
 @import url('./info.css');
+@import url('./configure.css');
 :root {
     --main-color: #FBD385;
     --main-color-dark: #ccac6d;

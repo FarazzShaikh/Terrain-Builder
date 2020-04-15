@@ -1,4 +1,4 @@
-export default class Options {
+export default class Info {
     constructor(verts, tris, geometryTime, iterations, droplets, erosionTime, size, normalized, mapTime) {
         this.verts = this.kFormatter(verts)
         this.tris = this.kFormatter(tris)
@@ -14,10 +14,10 @@ export default class Options {
     }
 
     kFormatter(num) {
-        return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(2)) + 'k' : Math.sign(num)*Math.abs(num)
+        return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(2)) + 'k' : Math.sign(num) * Math.abs(num)
     }
 
     sFormatter(num) {
-        return (num/1000).toFixed(2) + 's'
+        return (num / 1000).toFixed(2) + 's'
     }
 }

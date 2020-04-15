@@ -2,14 +2,14 @@ import * as THREE from '../lib/three.js';
 import { OrbitControls } from '../lib/OrbitControls.js'
 import Plane from './Plane.js'
 import UI from './uiButtons.js'
-import Options from './options.js';
+import Info from './info.js';
 
 let ui = new UI()
 let scene, camera, renderer, planeMesh, controls, plane
 
 let stylized = false
 let greyscale = true
-let subdivs = 512
+let subdivs = 128
 let wireframe = false
 
 sessionStorage.setItem('isStylized', stylized)
@@ -22,6 +22,14 @@ let time = {
     erode: 0,
     map: 0
 }
+
+let mouse = {
+    x: 0,
+    y: 0
+}
+let isConfigVisible = false
+let isInfoVisible = false
+
 
 function initScene() {
     scene = new THREE.Scene();
@@ -71,7 +79,7 @@ function initGeometry(preserveSeed, seed) {
     time.displace = plane.displace(preserveSeed, seed);
     time.erode = plane.modifier.erode()
     plane.color()
-    // plane.generateMap()
+        // plane.generateMap()
     scene.add(planeMesh);
 
 }
@@ -125,23 +133,32 @@ initGeometry(false, 0)
 render();
 window.addEventListener('resize', onWindowResize, false);
 
-var keys = {};
-window.onkeyup = function(e) { keys[e.keyCode] = false; }
-window.onkeydown = function(e) { keys[e.keyCode] = true; }
+
 
 window.onmousemove = (e) => {
-    if(keys[18]) {
-        ui.show_info()
-        e = e || window.event;	
-        let mousePos = { x: e.clientX, y: e.clientY };
-        ui.setInfoDivPos(mousePos.x, mousePos.y)
-    } else {
-        ui.hide_info()
-    }
-	
+    e = e || window.event;
+    mouse.x = e.clientX
+    mouse.y = e.clientY
 }
 
-let option = new Options(
+
+
+document.body.onkeydown = (key) => {
+    console.log(key)
+    if (key.ctrlKey) {
+        toggle_config()
+    } else if (key.shiftKey) {
+        toggle_info()
+    }
+
+}
+
+
+
+
+
+
+let info = new Info(
     planeMesh.geometry.vertices.length,
     planeMesh.geometry.faces.length,
     time.displace,
@@ -152,4 +169,32 @@ let option = new Options(
     false,
     0
 )
-ui.setInfoDivContent(option)
+ui.setInfoDivContent(info)
+
+var toggle_info = function() {
+    var on = false;
+    return function() {
+        if (!on) {
+            on = true;
+            ui.show_info()
+            ui.setInfoDivPos(mouse.x, mouse.y)
+            return;
+        }
+        ui.hide_info()
+        on = false;
+    }
+}();
+
+var toggle_config = function() {
+    var on = false;
+    return function() {
+        if (!on) {
+            on = true;
+            ui.show_config()
+            ui.setConfigDivPos(mouse.x, mouse.y)
+            return;
+        }
+        ui.hide_config()
+        on = false;
+    }
+}();

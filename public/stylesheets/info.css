@@ -10,16 +10,14 @@
     backdrop-filter: blur(30px);
     opacity: 0;
     transition: opacity 300ms ease-in-out;
-
     display: grid;
     grid-auto-rows: 100px;
     grid-template-columns: repeat(1, 1fr);
-
-    -webkit-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
-
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
     padding: 10px;
+    pointer-events: none;
 }
 
 .info .item {
@@ -27,7 +25,6 @@
     font-size: 30px;
     filter: invert(100);
     margin-bottom: 10px;
-
     background-color: #bdbdbd80;
     border-radius: 10px;
     backdrop-filter: blur(2px);
@@ -51,7 +48,6 @@
 .info .item ul li {
     text-align: left;
 }
-
 
 .info .item ul li h2 {
     font-size: 13px;
