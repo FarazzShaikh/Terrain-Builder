@@ -23,12 +23,6 @@ let time = {
     map: 0
 }
 
-let mouse = {
-    x: 0,
-    y: 0
-}
-let isConfigVisible = false
-let isInfoVisible = false
 
 
 function initScene() {
@@ -133,30 +127,59 @@ initGeometry(false, 0)
 render();
 window.addEventListener('resize', onWindowResize, false);
 
-
+let ctrlPressed = false
+let configOpen = false
+let mouse = {
+    x: 0,
+    y: 0
+}
 
 window.onmousemove = (e) => {
     e = e || window.event;
     mouse.x = e.clientX
     mouse.y = e.clientY
-}
 
-
-
-document.body.onkeydown = (key) => {
-    console.log(key)
-    if (key.ctrlKey) {
-        toggle_config()
-    } else if (key.shiftKey) {
-        toggle_info()
+    if(ctrlPressed === true) {
+        ui.show_info()
+        ui.setInfoDivPos(e.clientX, e.clientY)
+    } else {
+        ui.setInfoDivPos(e.clientX, e.clientY)
+        ui.hide_info()
     }
-
 }
 
+document.addEventListener('keydown', (key) => {
+    if (key.key === 'Control') {
+        ctrlPressed = true
+        
+    }
+});
 
+document.addEventListener('keyup', (key) => {
+    if (key.key === 'Control') {
+        ctrlPressed = false
+    }  
+});
 
-
-
+if (document.addEventListener) {
+document.addEventListener('contextmenu', function(e) {
+    if(configOpen) {
+        ui.hide_config()
+        configOpen = false
+    } else {
+        ui.setConfigDivPos(mouse.x, mouse.y)
+        ui.show_config()
+        configOpen = true
+    }
+    
+    e.preventDefault();
+}, false);
+} else {
+document.attachEvent('oncontextmenu', function() {
+    alert("You've tried to open context menu");
+    window.event.returnValue = false;
+});
+}
 
 let info = new Info(
     planeMesh.geometry.vertices.length,
@@ -170,31 +193,3 @@ let info = new Info(
     0
 )
 ui.setInfoDivContent(info)
-
-var toggle_info = function() {
-    var on = false;
-    return function() {
-        if (!on) {
-            on = true;
-            ui.show_info()
-            ui.setInfoDivPos(mouse.x, mouse.y)
-            return;
-        }
-        ui.hide_info()
-        on = false;
-    }
-}();
-
-var toggle_config = function() {
-    var on = false;
-    return function() {
-        if (!on) {
-            on = true;
-            ui.show_config()
-            ui.setConfigDivPos(mouse.x, mouse.y)
-            return;
-        }
-        ui.hide_config()
-        on = false;
-    }
-}();
