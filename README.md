@@ -10,6 +10,7 @@ Demo : 	https://threejs-procedural-terrain.herokuapp.com/
  - Right Mouse + drag : Zoom
  - Middle Mouse + drag : Pan
  - Alt + Move Mouse : Info
+ - Right Mouse Click : Configuraton
 
 ### To Run (locally):
 
