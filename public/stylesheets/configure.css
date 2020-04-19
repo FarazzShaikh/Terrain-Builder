@@ -28,6 +28,7 @@
     font-size: 13px;
     font-weight: lighter;
     margin-top: 5px;
+    transition: all 300ms ease-in-out;
 }
 
 .configure h3 {
@@ -77,6 +78,8 @@
     padding: 5px;
     color: white;
     font-size: 15px;
+
+    transition: all 300ms ease-in-out;
 }
 
 .configure ul li span .input input:focus,
@@ -127,6 +130,7 @@
     background-color: #686868;
     padding: 10px;
     cursor: pointer;
+    transition: all 300ms ease-in-out;
 }
 
 .configure ul li section .buttons button h1 {

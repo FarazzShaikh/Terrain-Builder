@@ -1,5 +1,11 @@
 export default class ui {
     constructor() {
+
+        let defaults = {
+            shading: 'smooth',
+            color: 'clay'
+        }
+
         this.div_info = this.$('.info')
         this.div_info.removeAttribute("tabIndex")
 
@@ -30,12 +36,25 @@ export default class ui {
 
                 color_heatmap: this.$all('.configure ul .color section .buttons button')[0],
                 color_clay: this.$all('.configure ul .color section .buttons button')[1],
-            }
+            },
+
+            buttons_reset: this.$('.configure ul li section .buttons .img'),
+                
         }
+
+        let buttonArr = this.setDefaultsConfig(this.config, defaults)
+        this.setEventListeners_Reset(this.config.buttons_reset, this.config, defaults, 'buttons')
+        for (let i = 0; i < 2; i+=2) {
+            this.setEventListeners_Config([buttonArr[0], buttonArr[1]])
+            this.setEventListeners_Config([buttonArr[2], buttonArr[3]])
+        }
+        
     }
+
     $(sel) {
         return document.querySelector(sel)
     }
+
     $all(sel) {
         return document.querySelectorAll(sel)
     }
@@ -89,7 +108,6 @@ export default class ui {
         }, 600);
     }
 
-
     setInfoDivContent(options) {
         this.info.verts.innerHTML = options.verts
         this.info.tris.innerHTML = options.tris
@@ -102,5 +120,77 @@ export default class ui {
         this.info.size.innerHTML = options.size
         this.info.normalized.innerHTML = options.normalized
         this.info.mapTime.innerHTML = options.mapTime
+    }
+
+    setDefaultsConfig(config, defaults) {
+        let buttonArr = []
+        for (let key in config.buttons) {
+            if (config.buttons.hasOwnProperty(key)) {
+                const button = config.buttons[key]
+                let nkey = key.split('_')[1]
+                if(nkey === defaults.color || nkey === defaults.shading) {
+                    this.select_Button(button)
+                    button.isSelected = true
+                } else {
+                    this.deselect_Button(button)
+                    button.isSelected = false
+                }
+                buttonArr.push(button)
+                button.value = nkey
+                button.type = key.split('_')[0]
+            }
+        }
+        return buttonArr
+    }
+
+    select_Button(button) {
+        button.style.backgroundColor = 'white'
+        button.children[0].style.color = '#686868'
+        button.style.boxShadow = '0px 0px 20px 0px rgba(0, 0, 0, 0.75)'
+        button.style.transform = 'scale(1.1, 1.1)'
+    }
+
+    deselect_Button(button) {
+        button.style.backgroundColor = '#686868'
+        button.children[0].style.color = 'white'
+        button.style.boxShadow = ''
+        button.style.transform = ''
+    }
+
+    setEventListeners_Config(buttons) {
+        buttons.forEach((b, i) => {
+            b.i = i
+            b.addEventListener('click', () => {
+                if(!b.isSelected) {
+                    let otherIndex = (b.i === 0) ? 1 : 0
+                    this.deselect_Button(buttons[otherIndex])
+                    this.select_Button(b)
+                    b.isSelected = true
+                    buttons[otherIndex].isSelected = false
+                } else {
+                    let otherIndex = (b.i === 0) ? 1 : 0
+                    this.select_Button(buttons[otherIndex])
+                    this.deselect_Button(b)
+                    b.isSelected = false
+                    buttons[otherIndex].isSelected = true
+                }
+            })  
+        })
+    }
+
+    setEventListeners_Reset(div, config, defaults, type) {
+        if(type === 'buttons') {
+            div.addEventListener('click', () => {
+                console.log('click')
+                this.setDefaultsConfig(config, defaults)
+            })
+        } else {
+            div.addEventListener('click', () => {
+                console.log('inputs')
+                
+            })
+        }
+        
+    
     }
 }

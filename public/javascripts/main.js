@@ -73,7 +73,7 @@ function initGeometry(preserveSeed, seed) {
     time.displace = plane.displace(preserveSeed, seed);
     time.erode = plane.modifier.erode()
     plane.color()
-        // plane.generateMap()
+    // plane.generateMap()
     scene.add(planeMesh);
 
 }
@@ -139,7 +139,7 @@ window.onmousemove = (e) => {
     mouse.x = e.clientX
     mouse.y = e.clientY
 
-    if(ctrlPressed === true) {
+    if (ctrlPressed === true) {
         ui.show_info()
         ui.setInfoDivPos(e.clientX, e.clientY)
     } else {
@@ -151,34 +151,34 @@ window.onmousemove = (e) => {
 document.addEventListener('keydown', (key) => {
     if (key.key === 'Control') {
         ctrlPressed = true
-        
+
     }
 });
 
 document.addEventListener('keyup', (key) => {
     if (key.key === 'Control') {
         ctrlPressed = false
-    }  
+    }
 });
 
 if (document.addEventListener) {
-document.addEventListener('contextmenu', function(e) {
-    if(configOpen) {
-        ui.hide_config()
-        configOpen = false
-    } else {
-        ui.setConfigDivPos(mouse.x, mouse.y)
-        ui.show_config()
-        configOpen = true
-    }
-    
-    e.preventDefault();
-}, false);
+    document.addEventListener('contextmenu', function (e) {
+        if (configOpen) {
+            ui.hide_config()
+            configOpen = false
+        } else {
+            ui.setConfigDivPos(mouse.x, mouse.y)
+            ui.show_config()
+            configOpen = true
+        }
+
+        e.preventDefault();
+    }, false);
 } else {
-document.attachEvent('oncontextmenu', function() {
-    alert("You've tried to open context menu");
-    window.event.returnValue = false;
-});
+    document.attachEvent('oncontextmenu', function () {
+        alert("You've tried to open context menu");
+        window.event.returnValue = false;
+    });
 }
 
 let info = new Info(
