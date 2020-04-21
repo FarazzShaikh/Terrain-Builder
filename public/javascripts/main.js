@@ -3,17 +3,19 @@ import { OrbitControls } from '../lib/OrbitControls.js'
 import Plane from './Plane.js'
 import UI from './uiButtons.js'
 import Info from './info.js';
+import Defaults from './Defaults.js';
 
-let ui = new UI()
+
 let scene, camera, renderer, planeMesh, controls, plane
 
-let stylized = false
-let greyscale = true
-let subdivs = 128
+let defaults = new Defaults()
+sessionStorage.setItem('shading', defaults.shading)
+sessionStorage.setItem('color', defaults.color)
+sessionStorage.setItem('seed', defaults.seed)
+
+let subdivs = 512
 let wireframe = false
 
-sessionStorage.setItem('isStylized', stylized)
-sessionStorage.setItem('isGreyscale', greyscale)
 sessionStorage.setItem('subdivs', subdivs)
 sessionStorage.setItem('isWireframe', wireframe)
 
@@ -68,7 +70,7 @@ function initLight() {
 }
 
 function initGeometry(preserveSeed, seed) {
-    plane = new Plane(stylized, greyscale, wireframe, subdivs)
+    plane = new Plane(wireframe, subdivs)
     planeMesh = plane.mesh
     time.displace = plane.displace(preserveSeed, seed);
     time.erode = plane.modifier.erode()
@@ -126,6 +128,9 @@ initLight()
 initGeometry(false, 0)
 render();
 window.addEventListener('resize', onWindowResize, false);
+
+
+let ui = new UI(plane, defaults)
 
 let ctrlPressed = false
 let configOpen = false

@@ -4,11 +4,10 @@ import Erode from './Erode.js'
 
 export default class Plane {
 
-    constructor(stylized, greyscale, wireframe, subdivs) {
+    constructor(wireframe, subdivs) {
 
         this.max = 0;
-        this.stylized = stylized
-        this.greyscale = greyscale
+
         this.vertColorData = []
         this.wSeg = this.hSeg = subdivs
         this.geometry = new THREE.PlaneGeometry(20, 20, this.wSeg, this.hSeg);
@@ -35,6 +34,7 @@ export default class Plane {
     }
 
     displace(preserveSeed, seed) {
+        let mode = sessionStorage.getItem('shading')
         let timerStart = Date.now();
         this.resetNormals();
 
@@ -72,7 +72,7 @@ export default class Plane {
 
         }
 
-        if (!this.stylized) {
+        if (mode === 'real') {
             this.geometry.computeVertexNormals();
         }
 
@@ -83,11 +83,15 @@ export default class Plane {
     }
 
     color() {
+        let mode = sessionStorage.getItem('color')
+
         this.geometry.computeBoundingBox();
         let zMin = this.geometry.boundingBox.min.z;
         let zMax = this.geometry.boundingBox.max.z;
         let zRange = zMax - zMin;
         let color, point, face, numberOfSides, vertexIndex;
+        
+        
 
         // faces are indexed using characters
         let faceIndices = ['a', 'b', 'c', 'd'];
@@ -96,13 +100,14 @@ export default class Plane {
         for (let i = 0; i < this.geometry.vertices.length; i++) {
             point = this.geometry.vertices[i];
 
-            if (this.greyscale) {
+            if (mode === 'clay') {
                 color = new THREE.Color(0xffffff);
                 let calc = (0.7 * (point.z) / zRange)
                 color.setRGB(calc, calc, calc)
-            } else {
+            } else if(mode === 'heatmap') {
                 color = new THREE.Color(0x0000ff);
-                color.setHSL(0.1 * (zMax - point.z) / zRange, 1, 0.5);
+                let calc = 0.1 * (zMax - point.z) / zRange
+                color.setHSL(calc, 1, 0.5);
             }
             this.geometry.colors[i] = color; // use this array for convenience
 
@@ -186,6 +191,27 @@ export default class Plane {
 
     }
 
+    recalcNormals() {
+        let mode = sessionStorage.getItem('shading')
+        let seed = sessionStorage.getItem('seed')
+        
+        switch (mode) {
+            case 'real':
+                this.displace(true, seed)
+                this.modifier.erode()
+                break;
+        
+            case 'stylized':
+                this.resetNormals()
+                break;
+        
+            default:
+                return -1
+        }
+
+        
+    }
+
     resetNormals() {
         for (var i = 0; i < this.mesh.geometry.vertices.length; i++) {
             this.mesh.geometry.vertices[i].z = 0;
@@ -193,9 +219,7 @@ export default class Plane {
         this.geometry.computeVertexNormals();
     }
 
-    recalcNormals() {
-        this.geometry.computeVertexNormals();
-    }
+    
 
 
 }

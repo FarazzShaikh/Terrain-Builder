@@ -1,10 +1,8 @@
 export default class ui {
-    constructor() {
+    constructor(plane, defaults) {
+        this.plane = plane
 
-        let defaults = {
-            shading: 'smooth',
-            color: 'clay'
-        }
+        
 
         this.div_info = this.$('.info')
         this.div_info.removeAttribute("tabIndex")
@@ -31,8 +29,8 @@ export default class ui {
             input_resolution: this.$('.configure ul .resolution span .input input'),
 
             buttons: {
-                shading_smooth: this.$all('.configure ul .shading section .buttons button')[0],
-                shading_flat: this.$all('.configure ul .shading section .buttons button')[1],
+                shading_real: this.$all('.configure ul .shading section .buttons button')[0],
+                shading_stylized: this.$all('.configure ul .shading section .buttons button')[1],
 
                 color_heatmap: this.$all('.configure ul .color section .buttons button')[0],
                 color_clay: this.$all('.configure ul .color section .buttons button')[1],
@@ -137,7 +135,7 @@ export default class ui {
                 }
                 buttonArr.push(button)
                 button.value = nkey
-                button.type = key.split('_')[0]
+                button.key = key.split('_')[0]
             }
         }
         return buttonArr
@@ -167,13 +165,17 @@ export default class ui {
                     this.select_Button(b)
                     b.isSelected = true
                     buttons[otherIndex].isSelected = false
+
                 } else {
                     let otherIndex = (b.i === 0) ? 1 : 0
                     this.select_Button(buttons[otherIndex])
                     this.deselect_Button(b)
                     b.isSelected = false
                     buttons[otherIndex].isSelected = true
+  
                 }
+
+                this.buttonEventHandler(buttons)
             })  
         })
     }
@@ -182,7 +184,8 @@ export default class ui {
         if(type === 'buttons') {
             div.addEventListener('click', () => {
                 console.log('click')
-                this.setDefaultsConfig(config, defaults)
+                let buttons = this.setDefaultsConfig(config, defaults)
+                this.buttonEventHandler(buttons)
             })
         } else {
             div.addEventListener('click', () => {
@@ -193,4 +196,31 @@ export default class ui {
         
     
     }
+
+    buttonEventHandler(buttons) {
+        buttons.forEach(b => {
+            if(b.isSelected) {
+                sessionStorage.setItem(b.key, b.value)
+
+                switch (b.key) {
+                    case 'color':
+                        this.plane.color()
+                        break;
+
+                    case 'shading':
+                        if(this.plane.recalcNormals() === -1) {
+                            console.log('invalid shading data')
+                        }
+                        
+                        break;
+                    
+                    default:
+                        break;
+                }
+            }
+            
+        });
+    }
+
+
 }
