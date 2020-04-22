@@ -1,8 +1,8 @@
 export default class ui {
-    constructor(plane, defaults) {
+    constructor(plane, defaults, refreshTerrain) {
         this.plane = plane
+        this.refreshTerrain = refreshTerrain
 
-        
 
         this.div_info = this.$('.info')
         this.div_info.removeAttribute("tabIndex")
@@ -37,16 +37,19 @@ export default class ui {
             },
 
             buttons_reset: this.$('.configure ul li section .buttons .img'),
-                
+            input_resolution_reset: this.$('.configure ul .resolution span .input .img'),
+            input_seed_shuffle: this.$('.configure ul .seed span .input .img')
+
         }
 
         let buttonArr = this.setDefaultsConfig(this.config, defaults)
         this.setEventListeners_Reset(this.config.buttons_reset, this.config, defaults, 'buttons')
-        for (let i = 0; i < 2; i+=2) {
+        this.setEventListeners_Inputs([this.config.input_seed, this.config.input_resolution], defaults)
+        for (let i = 0; i < 2; i += 2) {
             this.setEventListeners_Config([buttonArr[0], buttonArr[1]])
             this.setEventListeners_Config([buttonArr[2], buttonArr[3]])
         }
-        
+
     }
 
     $(sel) {
@@ -126,7 +129,7 @@ export default class ui {
             if (config.buttons.hasOwnProperty(key)) {
                 const button = config.buttons[key]
                 let nkey = key.split('_')[1]
-                if(nkey === defaults.color || nkey === defaults.shading) {
+                if (nkey === defaults.color || nkey === defaults.shading) {
                     this.select_Button(button)
                     button.isSelected = true
                 } else {
@@ -134,10 +137,26 @@ export default class ui {
                     button.isSelected = false
                 }
                 buttonArr.push(button)
-                button.value = nkey
-                button.key = key.split('_')[0]
+                button.TYPE = nkey
+                button.KEY = key.split('_')[0]
+
             }
         }
+
+        for (let key in config) {
+            if (config.hasOwnProperty(key)) {
+                if (key.split('_')[0] === 'input') {
+                    const button = config[key]
+
+                    button.TYPE = key.split('_')[1]
+                    button.KEY = key.split('_')[0]
+                }
+
+            }
+        }
+
+        config.input_seed.placeholder = defaults.seed
+        config.input_resolution.placeholder = defaults.resolution
         return buttonArr
     }
 
@@ -159,7 +178,7 @@ export default class ui {
         buttons.forEach((b, i) => {
             b.i = i
             b.addEventListener('click', () => {
-                if(!b.isSelected) {
+                if (!b.isSelected) {
                     let otherIndex = (b.i === 0) ? 1 : 0
                     this.deselect_Button(buttons[otherIndex])
                     this.select_Button(b)
@@ -172,16 +191,16 @@ export default class ui {
                     this.deselect_Button(b)
                     b.isSelected = false
                     buttons[otherIndex].isSelected = true
-  
+
                 }
 
                 this.buttonEventHandler(buttons)
-            })  
+            })
         })
     }
 
     setEventListeners_Reset(div, config, defaults, type) {
-        if(type === 'buttons') {
+        if (type === 'buttons') {
             div.addEventListener('click', () => {
                 console.log('click')
                 let buttons = this.setDefaultsConfig(config, defaults)
@@ -190,37 +209,63 @@ export default class ui {
         } else {
             div.addEventListener('click', () => {
                 console.log('inputs')
-                
+
             })
         }
-        
-    
+
+
     }
 
     buttonEventHandler(buttons) {
         buttons.forEach(b => {
-            if(b.isSelected) {
-                sessionStorage.setItem(b.key, b.value)
+            if (b.isSelected) {
+                sessionStorage.setItem(b.KEY, b.TYPE)
 
-                switch (b.key) {
+                switch (b.KEY) {
                     case 'color':
                         this.plane.color()
                         break;
 
                     case 'shading':
-                        if(this.plane.recalcNormals() === -1) {
+                        if (this.plane.recalcNormals() === -1) {
                             console.log('invalid shading data')
                         }
-                        
+
                         break;
-                    
+
                     default:
                         break;
                 }
             }
-            
+
         });
     }
 
+    setEventListeners_Inputs(inputs, defaults) {
+        inputs.forEach(input => {
+            input.addEventListener('change', () => {
+                if (!isNaN(input.value)) {
+                    sessionStorage.setItem(input.TYPE, input.value)
+                    this.plane = this.refreshTerrain()
+                } else {
+                    alert('Resolution And Seed needs to be a number')
+                    input.value = ''
+                }
+
+            })
+        });
+
+        this.config.input_resolution_reset.addEventListener('click', () => {
+            sessionStorage.setItem('resolution', defaults.resolution)
+            this.plane = this.refreshTerrain()
+            inputs[1].value = ''
+        })
+
+        this.config.input_seed_shuffle.addEventListener('click', () => {
+            sessionStorage.setItem('seed', Math.random())
+            this.plane = this.refreshTerrain()
+            inputs[0].value = sessionStorage.getItem('seed')
+        })
+    }
 
 }

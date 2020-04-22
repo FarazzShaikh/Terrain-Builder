@@ -1,0 +1,53 @@
+.instructions {
+    width: 100vw;
+    height: 100vh;
+    z-index: 20;
+    backdrop-filter: brightness(30%) blur(10px);
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+    transition: all 300ms ease-in-out;
+}
+
+.instructions .img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    transition: all 300ms ease-in-out;
+}
+
+.instructions .img img {
+    width: 250px;
+}
+
+.instructions .controls {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+.instructions h1 {
+    color: white;
+    font-size: 30px;
+    margin: 5px 5px;
+}
+
+.instructions h2 {
+    color: white;
+    font-size: 26px;
+    font-weight: lighter;
+    margin-top: 5px;
+    transition: all 300ms ease-in-out;
+}
+
+.instructions h3 {
+    color: rgb(146, 146, 146);
+    font-size: 20px;
+    font-weight: lighter;
+    margin: 0;
+    letter-spacing: 5px;
+}

@@ -12,11 +12,10 @@ let defaults = new Defaults()
 sessionStorage.setItem('shading', defaults.shading)
 sessionStorage.setItem('color', defaults.color)
 sessionStorage.setItem('seed', defaults.seed)
+sessionStorage.setItem('resolution', defaults.resolution)
 
-let subdivs = 512
+
 let wireframe = false
-
-sessionStorage.setItem('subdivs', subdivs)
 sessionStorage.setItem('isWireframe', wireframe)
 
 let time = {
@@ -24,8 +23,16 @@ let time = {
     erode: 0,
     map: 0
 }
+let ui = new UI(plane, defaults, refreshTerrain)
 
+let ctrlPressed = false
+let configOpen = false
+let mouse = {
+    x: 0,
+    y: 0
+}
 
+let subdivs = Number(sessionStorage.getItem('resolution'))
 
 function initScene() {
     scene = new THREE.Scene();
@@ -70,12 +77,13 @@ function initLight() {
 }
 
 function initGeometry(preserveSeed, seed) {
-    plane = new Plane(wireframe, subdivs)
+    let res = Number(sessionStorage.getItem('resolution'))
+    plane = new Plane(wireframe, res)
     planeMesh = plane.mesh
     time.displace = plane.displace(preserveSeed, seed);
     time.erode = plane.modifier.erode()
     plane.color()
-    // plane.generateMap()
+        // plane.generateMap()
     scene.add(planeMesh);
 
 }
@@ -107,6 +115,7 @@ function onWindowResize() {
 function costomizeRenderer() {
     let ele = renderer.domElement
     ele.className = "mainRenderer"
+    ele.style.cursor = 'grab'
 }
 
 // let a = 0;
@@ -126,18 +135,13 @@ initScene()
 costomizeRenderer()
 initLight()
 initGeometry(false, 0)
-render();
+render()
+setConfigPane()
+setInfoPane()
+
 window.addEventListener('resize', onWindowResize, false);
 
 
-let ui = new UI(plane, defaults)
-
-let ctrlPressed = false
-let configOpen = false
-let mouse = {
-    x: 0,
-    y: 0
-}
 
 window.onmousemove = (e) => {
     e = e || window.event;
@@ -166,35 +170,55 @@ document.addEventListener('keyup', (key) => {
     }
 });
 
-if (document.addEventListener) {
-    document.addEventListener('contextmenu', function (e) {
-        if (configOpen) {
-            ui.hide_config()
-            configOpen = false
-        } else {
-            ui.setConfigDivPos(mouse.x, mouse.y)
-            ui.show_config()
-            configOpen = true
-        }
 
-        e.preventDefault();
-    }, false);
-} else {
-    document.attachEvent('oncontextmenu', function () {
-        alert("You've tried to open context menu");
-        window.event.returnValue = false;
-    });
+
+function setConfigPane(params) {
+    if (document.addEventListener) {
+        document.addEventListener('contextmenu', function(e) {
+            if (configOpen) {
+                ui.hide_config()
+                configOpen = false
+            } else {
+                ui.setConfigDivPos(mouse.x, mouse.y)
+                ui.show_config()
+                configOpen = true
+            }
+
+            e.preventDefault();
+        }, false);
+    } else {
+        document.attachEvent('oncontextmenu', function() {
+            alert("You've tried to open context menu");
+            window.event.returnValue = false;
+        });
+    }
 }
 
-let info = new Info(
-    planeMesh.geometry.vertices.length,
-    planeMesh.geometry.faces.length,
-    time.displace,
-    plane.modifier.steps,
-    Math.floor(plane.modifier.rainAmount * planeMesh.geometry.vertices.length),
-    time.erode,
-    subdivs,
-    false,
-    0
-)
-ui.setInfoDivContent(info)
+function setInfoPane() {
+    let info = new Info(
+        planeMesh.geometry.vertices.length,
+        planeMesh.geometry.faces.length,
+        time.displace,
+        plane.modifier.steps,
+        Math.floor(plane.modifier.rainAmount * planeMesh.geometry.vertices.length),
+        time.erode,
+        subdivs,
+        false,
+        0
+    )
+    ui.setInfoDivContent(info)
+}
+
+function refreshTerrain() {
+    let planeToDispose = scene.getObjectByProperty('name', 'main')
+    planeToDispose.geometry.dispose();
+    planeToDispose.material.dispose();
+    scene.remove(planeToDispose);
+
+    let seed = sessionStorage.getItem('seed')
+    initGeometry(true, seed)
+
+    setInfoPane()
+
+    return plane
+}
