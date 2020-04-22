@@ -3,6 +3,6 @@ export default class Defaults {
         this.shading = 'real'
         this.color = 'clay'
         this.seed = Math.random()
-        this.resolution = 128
+        this.resolution = 512
     }
 }
