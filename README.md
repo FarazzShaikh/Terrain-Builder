@@ -1,5 +1,5 @@
-## Three.js Procedural Terrain
-Three.js Procedural Terrain created using various npm modules.
+## 🏔  Terrain Builder.
+Three.js Procedural Terrain Right in The Browswer.
 
 Demo : 	https://threejs-procedural-terrain.herokuapp.com/
 
