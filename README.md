@@ -1,7 +1,7 @@
 ## 🏔  Terrain Builder.
 Three.js Procedural Terrain Right in The Browswer.
 
-Demo : 	https://threejs-procedural-terrain.herokuapp.com/
+Demo : 	https://terrain-builder.herokuapp.com/
 
 ![Demo](https://github.com/FarazzShaikh/Threejs-procedural-terrain/blob/master/public/images/Screenshot.png)
 
