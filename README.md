@@ -1,5 +1,5 @@
 ## 🏔  Terrain Builder.
-Three.js Procedural Terrain Right in The Browswer.
+Three.js Procedural Terrain Right in The Browser.
 
 Demo : 	https://terrain-builder.herokuapp.com/
 
