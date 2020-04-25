@@ -10,7 +10,7 @@ Demo : 	https://terrain-builder.herokuapp.com/
  - Right Mouse + drag : Zoom
  - Middle Mouse + drag : Pan
  - Alt + Move Mouse : Info
- - Right Mouse Click : Configuraton
+ - Right Mouse Click : Settings (Incomplete)
 
 ### To Run (locally):
 

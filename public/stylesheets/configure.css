@@ -1,142 +1,79 @@
-.configure {
+.settings {
+    width: 50px;
+    height: 50px;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 300px;
-    height: 330px;
-    background-color: #24242462;
-    z-index: 10;
-    border-radius: 10px;
-    backdrop-filter: blur(30px);
-    opacity: 0;
-    transition: opacity 300ms ease-in-out;
-    -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
-    padding: 10px;
     pointer-events: none;
 }
 
-.configure h1 {
-    color: white;
-    font-size: 15px;
-    margin: 5px 5px;
-}
-
-.configure h2 {
-    color: white;
-    font-size: 13px;
-    font-weight: lighter;
-    margin-top: 5px;
-    transition: all 300ms ease-in-out;
-}
-
-.configure h3 {
-    color: white;
-    font-size: 10px;
-    font-weight: lighter;
-    margin: 0;
-}
-
-.configure ul {
-    margin: 10px;
-    padding: 0;
-    padding-left: 10px;
-    list-style: none;
-}
-
-.configure ul li {
-    text-align: left;
-    margin-top: 10px;
-}
-
-.configure ul li span,
-.configure ul li section {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    position: relative;
-    height: 40px;
-}
-
-.configure ul li span .input {
-    width: 100%;
+.settings ul {
     height: 100%;
-    border-radius: 10px;
-    background-color: #686868;
+    width: 100%;
+    margin: 0;
+    position: relative;
+}
+
+.settings ul li {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate((-50%, -50%));
+    transition: all 300ms ease-in-out;
+
+    opacity: 0;
+    display: inline;
+    pointer-events: none;
+    cursor: pointer;
+
+    background-color: #24242462;
+    border-radius: 5px;
+    backdrop-filter: blur(30px);
+    z-index: 11;
+    
+    padding: 5px;
+
+}
+
+.settings ul li:hover {
+    padding: 7px;
+    background-color: white;
     -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
 }
 
-.configure ul li span .input input {
-    width: 85%;
-    height: 75%;
-    border-radius: 10px;
-    border: none;
-    background-color: transparent;
-    padding: 5px;
-    color: white;
-    font-size: 15px;
-    transition: all 300ms ease-in-out;
+.settings ul li:hover>.button img {
+    filter: invert(0%);
 }
 
-.configure ul li span .input input:focus,
-.configure ul li section .buttons button:focus {
-    border: none;
-    outline: none;
+.settings ul li:hover>.button h1 {
+    color: black;
 }
 
-.configure ul li span img,
-.configure ul li section img {
-    height: 30px;
-    filter: invert(100);
-    margin-right: 10px;
-}
-
-.configure ul li span .input .img,
-.configure ul li section .buttons .img {
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 11;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-.configure ul li span .input .img img,
-.configure ul li section .buttons .img img {
-    height: 15px;
-    margin-right: 0px;
-}
-
-.configure ul li section .buttons {
+.settings ul li .button {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.configure ul li section .buttons button {
-    height: 100%;
-    width: auto;
-    border-radius: 10px;
-    border: none;
-    margin-right: 5px;
-    background-color: #686868;
-    padding: 10px;
-    cursor: pointer;
+.settings ul li .button img{
+    width: 20px;
+    filter: invert(100%);
     transition: all 300ms ease-in-out;
 }
 
-.configure ul li section .buttons button h1 {
+.settings ul li .button h1{
     margin: 0;
-}
+    padding: 5px 0;
+    font-size: 15px;
+    color: white;
+    transition: all 300ms ease-in-out;
+    pointer-events: none;
 
-.configure ul li span .input input::placeholder {
-    color: #a7a7a7;
-    opacity: 1;
 }

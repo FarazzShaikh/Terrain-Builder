@@ -1,224 +1,97 @@
-import * as THREE from '../lib/three.js';
-import { OrbitControls } from '../lib/OrbitControls.js'
-import Plane from './Plane.js'
-import UI from './uiButtons.js'
-import Info from './info.js';
-import Defaults from './Defaults.js';
+import RENDERER from "./components/renderer/renderer.js";
+import TERRAIN from "./components/renderer/objects/Terrain.js";
+import DISPLACE from "./components/renderer/modifiers/Displace.js";
+import ERODE from "./components/renderer/modifiers/Erode.js";
+import UI from "./components/ui/UI.js";
+import INFO from "./components/ui/objects/info.js";
+import COLOR from "./components/renderer/modifiers/Color.js";
+import PIMENU from "./components/ui/objects/PiMenu.js";
+
+function main() {
+    let timerStart = 0                  // For Timing Functions
+    let erosionInfo, geometryInfo       // Data for UI
+    // Scene Setup
+    let renderer = new RENDERER()       // Initialize Renderer Component
+    let terrain = new TERRAIN({         // Instantiate a Terrain Object
+        name: 'mainTerrain',            // Object name
+        resolution: 128                 // Terrain Resolution
+    })
+    let terrainMesh = terrain.getMesh() // Get mesh from Terrain Object
+    geometryInfo = terrain.getInfo()    // Get Information about geometry for UI
+    renderer.addObject(terrainMesh)     // Add Terrain to the Scene
+
+    // Displace Modifier
+    terrain.addModifier(DISPLACE, {     // Add Displace Modifier to Terrain
+        seed: Math.random(),            // Seed for Perlin Noise
+        scale: 0.06,                    // 'Zoom' Level
+        persistance: 2,                 // Amplitude fall factor
+        lacunarity: 2,                  // Frequency rise factor
+        octaves: 8                      // Number of layers of Perlin Noise
+    })
+
+    timerStart = Date.now();                                                        // Timing Displacement Start
+    terrain.modifiers.Displace.createHeightBuffer(terrainMesh)                      // Creates A Buffer with noise values
+    terrain.modifiers.Displace.getNormalizedHeightBuffer()                          // Normalizes and returns Buffer
+    terrain.modifiers.Displace.displaceMesh(terrainMesh, {                          // Actullay Displaces Mesh
+        zScalingFactor: 8,                                                          // How much the noise effects the height
+        heightField: undefined                                                      // Custom Noise Field (Optional)
+    })
+    terrain.modifiers.Displace.recalculateNormals(terrainMesh)                      // Recalculates Normals
+    let time_displace = Date.now() - timerStart                                     // Timing Displacement End
 
 
-let scene, camera, renderer, planeMesh, controls, plane
+    // Erode Modifier
+    terrain.addModifier(ERODE, {        // Add Erode Modifier to Terrain
+        rainAmount: 0.001,              // % of Verticies that recieve rain
+        rainIntensity: 0.5,             // 'Wetness' of the rain / amount of water in each droplet
+        lifetime: 0.5,                  // Lifetime of each droplet
+        sedimentDeposition: 3,          // How much sediment is deposited by flowing water
+        waterErosion: 8,                // How much soil is taken out by flowing water
+        steps: 300,                     // Number of steps in the simulation
+        res_verts: terrain.res_verts    // Total number of verticies in Terrain mesh
+    })
 
-let defaults = new Defaults()
-sessionStorage.setItem('shading', defaults.shading)
-sessionStorage.setItem('color', defaults.color)
-sessionStorage.setItem('seed', defaults.seed)
-sessionStorage.setItem('resolution', defaults.resolution)
+    timerStart = Date.now();                                                        // Timing Erosion Start
+    terrain.modifiers.Erode.init_Erosion(terrainMesh)                               // Initialize erosion modifier
+    terrain.modifiers.Erode.calculateRain(terrainMesh)                              // Give rain to random verts
+    terrain.modifiers.Erode.simWater(terrainMesh, 0)                                // Actual Hydraulic Erosion simulation
+    erosionInfo = terrain.modifiers.Erode.getInfo()                                 // Get Information about geometry for UI
+    let time_erode = Date.now() - timerStart                                        // Timing Erosion End
 
+    terrain.addModifier(COLOR, {                                                    // Add COlor Modifier
+        mode: 'clay'                                                                // Color Mode
+    })
+    terrain.modifiers.Color.color(terrainMesh)                                      // Color Terrain
 
-let wireframe = false
-sessionStorage.setItem('isWireframe', wireframe)
+    let ui = new UI()                               // Instantiate New UI Component
+    ui.addObject(INFO, {                            // Add Info Object to UI
+        verts: geometryInfo.verts,                  // Number of Verts in the Mesh
+        tris: geometryInfo.tris,                    // Number of Tris in the Mesh
+        geometryTime: time_displace,                // Time Taken to Displace terrain
 
-let time = {
-    displace: 0,
-    erode: 0,
-    map: 0
-}
-let ui = new UI(plane, defaults, refreshTerrain)
+        iterations: erosionInfo.iterations,         // Number of Iterations in Erosion simulation
+        droplets: erosionInfo.droplets,             // Number of Droplets Simulated
+        erosionTime: time_erode,                    // TIme taken to perform Erosion Simulation
 
-let ctrlPressed = false
-let configOpen = false
-let mouse = {
-    x: 0,
-    y: 0
-}
-
-let subdivs = Number(sessionStorage.getItem('resolution'))
-
-function initScene() {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(
-        75, window.innerWidth / window.innerHeight, 0.1, 1000
-    );
-
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement)
-    camera.position.set(15, 15, 15)
-
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true
-    controls.dampingFactor = 0.25
-    controls.enableZoom = false
-    controls.enablePan = true
-    controls.enableZoom = true
-
-    controls.minPolarAngle = 0;
-    controls.maxPolarAngle = Math.PI / 2;
-
-    // let gridSize = 30;
-    // let gridDivisions = 100;
-    // let gridHelper = new THREE.GridHelper(gridSize, gridDivisions, true);
-    // scene.add(gridHelper);
-
-    let axesHelper = new THREE.AxesHelper(10);
-    scene.add(axesHelper);
-}
-
-function initLight() {
-    const light = new THREE.PointLight(0x404040, 3)
-    light.position.set(3, 10, 3)
-    light.rotation.set(1, 1, 1)
-    light.castShadow = true;
-    light.shadow.radius = 30;
-    scene.add(light)
-
-    const ambLight = new THREE.AmbientLight(0x404040, 0.9)
-    scene.add(ambLight)
-}
-
-function initGeometry(preserveSeed, seed) {
-    let res = Number(sessionStorage.getItem('resolution'))
-    plane = new Plane(wireframe, res)
-    planeMesh = plane.mesh
-    time.displace = plane.displace(preserveSeed, seed);
-    time.erode = plane.modifier.erode()
-    plane.color()
-        // plane.generateMap()
-    scene.add(planeMesh);
-
-}
-
-
-
-function render() {
-    window.requestAnimationFrame(render);
-
-    if (planeMesh) {
-        planeMesh.rotation.z += 0.005;
-
-    }
-
-    controls.update()
-    renderer.render(scene, camera);
+        size: 0,                                    // Size of generated map in pixels
+        normalized: true,                           // If height data is Normalized between 0 and 1
+        mapTime: 0,                                 // Time taken to generate Map
+    })
+    ui.objects.Info.setContent()                    // Set data
+    ui.objects.Info.setBehaviour({                  // Add behaviour to UI Object
+        followMouse: true,                          // If UI object follows Mouse
+        hideOnClick: true,                          // If UI object hides on click
+        autoClose: true
+    })
+    
+    ui.addObject(PIMENU, {
+        // Options
+    })
+    ui.objects.PieMenu.setBehaviour({
+        followMouse: true,
+        hideOnClick: true,
+        autoClose: true
+    })
 }
 
-function onWindowResize() {
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-}
-
-
-function costomizeRenderer() {
-    let ele = renderer.domElement
-    ele.className = "mainRenderer"
-    ele.style.cursor = 'grab'
-}
-
-// let a = 0;
-// setInterval(() => {
-
-
-//     if (a < 500) {
-//         plane.modifier.simWater(a)
-//         plane.color()
-//         a++
-//     }
-
-// }, 100);
-
-
-initScene()
-costomizeRenderer()
-initLight()
-initGeometry(false, 0)
-render()
-setConfigPane()
-setInfoPane()
-
-window.addEventListener('resize', onWindowResize, false);
-
-
-
-window.onmousemove = (e) => {
-    e = e || window.event;
-    mouse.x = e.clientX
-    mouse.y = e.clientY
-
-    if (ctrlPressed === true) {
-        ui.show_info()
-        ui.setInfoDivPos(e.clientX, e.clientY)
-    } else {
-        ui.setInfoDivPos(e.clientX, e.clientY)
-        ui.hide_info()
-    }
-}
-
-document.addEventListener('keydown', (key) => {
-    if (key.key === 'Control') {
-        ctrlPressed = true
-
-    }
-});
-
-document.addEventListener('keyup', (key) => {
-    if (key.key === 'Control') {
-        ctrlPressed = false
-    }
-});
-
-
-
-function setConfigPane(params) {
-    if (document.addEventListener) {
-        document.addEventListener('contextmenu', function(e) {
-            if (configOpen) {
-                ui.hide_config()
-                configOpen = false
-            } else {
-                ui.setConfigDivPos(mouse.x, mouse.y)
-                ui.show_config()
-                configOpen = true
-            }
-
-            e.preventDefault();
-        }, false);
-    } else {
-        document.attachEvent('oncontextmenu', function() {
-            alert("You've tried to open context menu");
-            window.event.returnValue = false;
-        });
-    }
-}
-
-function setInfoPane() {
-    let info = new Info(
-        planeMesh.geometry.vertices.length,
-        planeMesh.geometry.faces.length,
-        time.displace,
-        plane.modifier.steps,
-        Math.floor(plane.modifier.rainAmount * planeMesh.geometry.vertices.length),
-        time.erode,
-        subdivs,
-        false,
-        0
-    )
-    ui.setInfoDivContent(info)
-}
-
-function refreshTerrain() {
-    let planeToDispose = scene.getObjectByProperty('name', 'main')
-    planeToDispose.geometry.dispose();
-    planeToDispose.material.dispose();
-    scene.remove(planeToDispose);
-
-    let seed = sessionStorage.getItem('seed')
-    initGeometry(true, seed)
-
-    setInfoPane()
-
-    return plane
-}
+main()
