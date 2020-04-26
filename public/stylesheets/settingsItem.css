@@ -1,0 +1,85 @@
+@import url('./fileupload.css');
+.settingsItem {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    background-color: #24242462;
+    z-index: 10;
+    border-radius: 10px;
+    backdrop-filter: blur(30px);
+    transition: opacity 300ms ease-in-out;
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+    padding: 10px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.settingsItem .header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.settingsItem .header h1 {
+    color: white;
+    font-size: 15px;
+    margin: 10px;
+    transition: all 300ms ease-in-out;
+}
+
+.settingsItem .header img {
+    width: 20px;
+    filter: invert(100%);
+    cursor: pointer;
+    transition: all 300ms ease-in-out;
+}
+
+.settingsItem .header img:hover {
+    transform: scale(1.1, 1.1) rotate(90deg);
+}
+
+.settingsItem .content h1 {
+    font-size: 15px;
+    margin: 10px;
+    transition: all 300ms ease-in-out;
+    color: darkgrey;
+}
+
+.settingsItem h2 {
+    font-size: 13px;
+    font-weight: lighter;
+    margin: 0;
+}
+
+.settingsItem .content {
+    width: 100%;
+    font-size: 30px;
+    background-color: #bdbdbd80;
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+    transition: opacity 300ms ease-in-out;
+    padding: 7px 0px;
+}
+
+.settingsItem .content .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.settingsItem .content .item .buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.settingsItem .content .item .buttons img {
+    width: 20px;
+    filter: invert(100%);
+    opacity: 30%;
+    pointer-events: none;
+    cursor: pointer;
+    transition: opacity 300ms ease-in-out
+}

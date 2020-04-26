@@ -1,4 +1,4 @@
-export default class PIMENU{
+export default class PIMENU {
     constructor() {
         this.name = 'PieMenu'
         this.mouse = {
@@ -10,38 +10,46 @@ export default class PIMENU{
             div_main: document.querySelector('.settings')
         }
         this.idleTime = 0
+
+        this.children = {}
+    }
+
+    addChild(Child, options) {
+        let child = new Child(options)
+        this.children[child.name] = child
     }
 
     setBehaviour(options) {
-        if(options.autoClose) {
+        if (options.autoClose) {
             var idleInterval = setInterval(this.timerIncrement.bind(this), 1000);
         }
-        
+
         document.addEventListener('mousedown', e => {
-            if(e.button === 2) {
+            if (e.button === 2) {
                 this.on = this.toggle(this.show, this.hide, this.on)
-                if(!this.on) {
+                if (!this.on) {
                     this.idleTime = 0
                 }
-            } 
+            }
         })
 
-        if(options.followMouse) {
+        if (options.followMouse) {
             document.addEventListener('mousemove', e => {
                 this.mouse.x = e.clientX;
                 this.mouse.y = e.clientY;
                 this.idleTime = 0
-                if(!this.on) {
+                if (!this.on) {
                     this.setPostion(this.mouse.x, this.mouse.y)
                 }
-                
+
             })
         }
- 
-        window.addEventListener('contextmenu', function (e) { 
-            e.preventDefault(); 
+
+        window.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
         }, false);
-        
+
+        this.setButtonBeehavoiur()
     }
 
     // Private
@@ -59,28 +67,31 @@ export default class PIMENU{
     show() {
         let offest = 100
         let li_items = document.querySelectorAll('.settings ul li')
-        li_items.forEach((item, i) => {  
+        li_items.forEach((item, i) => {
             item.style.opacity = '100'
             item.style.pointerEvents = 'all'
             switch (i) {
-                case 0: {
-                    let currentPos = Number(li_items[0].style.top.split('p')[0])
-                    item.style.top = (currentPos + offest) + 'px'
-                    break;
-                }
-                    
-                case 1: {
-                    let currentPos = Number(li_items[1].style.top.split('p')[0])
-                    item.style.top = (currentPos - offest) + 'px'
-                    break;
-                }
-            
-                case 2: {
-                    let currentPos = Number(li_items[2].style.left.split('p')[0])
-                    item.style.left = (currentPos + offest) + 'px'
-                    break;
-                }
-                    
+                case 0:
+                    {
+                        let currentPos = Number(li_items[0].style.top.split('p')[0])
+                        item.style.top = (currentPos + offest) + 'px'
+                        break;
+                    }
+
+                case 1:
+                    {
+                        let currentPos = Number(li_items[1].style.top.split('p')[0])
+                        item.style.top = (currentPos - offest) + 'px'
+                        break;
+                    }
+
+                case 2:
+                    {
+                        let currentPos = Number(li_items[2].style.left.split('p')[0])
+                        item.style.left = (currentPos + offest) + 'px'
+                        break;
+                    }
+
                 default:
                     break;
             }
@@ -90,28 +101,31 @@ export default class PIMENU{
     hide() {
         let offest = 100
         let li_items = document.querySelectorAll('.settings ul li')
-        li_items.forEach((item, i) => {  
+        li_items.forEach((item, i) => {
             item.style.opacity = '0'
             item.style.pointerEvents = 'none'
             switch (i) {
-                case 0: {
-                    let currentPos = Number(li_items[0].style.top.split('p')[0])
-                    item.style.top = (currentPos - offest) + 'px'
-                    break;
-                }
-                    
-                case 1: {
-                    let currentPos = Number(li_items[1].style.top.split('p')[0])
-                    item.style.top = (currentPos + offest) + 'px'
-                    break;
-                }
-            
-                case 2: {
-                    let currentPos = Number(li_items[2].style.left.split('p')[0])
-                    item.style.left = (currentPos - offest) + 'px'
-                    break;
-                }
-                    
+                case 0:
+                    {
+                        let currentPos = Number(li_items[0].style.top.split('p')[0])
+                        item.style.top = (currentPos - offest) + 'px'
+                        break;
+                    }
+
+                case 1:
+                    {
+                        let currentPos = Number(li_items[1].style.top.split('p')[0])
+                        item.style.top = (currentPos + offest) + 'px'
+                        break;
+                    }
+
+                case 2:
+                    {
+                        let currentPos = Number(li_items[2].style.left.split('p')[0])
+                        item.style.left = (currentPos - offest) + 'px'
+                        break;
+                    }
+
                 default:
                     break;
             }
@@ -119,7 +133,7 @@ export default class PIMENU{
     }
 
     toggle(on, off, condition) {
-        if(condition) {
+        if (condition) {
             off()
             condition = false
         } else {
@@ -130,14 +144,29 @@ export default class PIMENU{
     }
 
     timerIncrement() {
-        if(this.on) {
+        if (this.on) {
             this.idleTime = this.idleTime + 1;
-            if (this.idleTime > 5) { 
+            if (this.idleTime > 5) {
                 this.on = this.toggle(this.show, this.hide, this.on)
                 this.idleTime = 0
             }
         }
-        
+
     }
 
+    setButtonBeehavoiur() {
+        let li_items = document.querySelectorAll('.settings ul li')
+
+        li_items.forEach((item) => {
+            let name = item.className
+            name = name.replace(/^\w/, c => c.toUpperCase());
+
+            item.addEventListener('click', () => {
+                this.on = this.toggle(this.show, this.hide, this.on)
+                this.children[name].toggle()
+
+
+            })
+        })
+    }
 }

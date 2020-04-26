@@ -7,9 +7,9 @@ Demo : 	https://terrain-builder.herokuapp.com/
 
 ### Controls:
  - Left Mouse + drag : Orbit
- - Right Mouse + drag : Zoom
- - Middle Mouse + drag : Pan
- - Alt + Move Mouse : Info
+ - Right Mouse + drag : Pan
+ - Middle Mouse + drag : Zoom
+ - Ctrl : Info
  - Right Mouse Click : Settings (Incomplete)
 
 ### To Run (locally):

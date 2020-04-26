@@ -4,6 +4,8 @@
 @import url('./info.css');
 @import url('./configure.css');
 @import url('./instructions.css');
+@import url('./settingsItem.css');
+@import url('./switch.css');
 :root {
     --main-color: #FBD385;
     --main-color-dark: #ccac6d;

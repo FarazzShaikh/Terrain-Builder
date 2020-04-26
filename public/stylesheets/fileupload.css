@@ -1,0 +1,28 @@
+.settingsItem .content .fileUpload {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.settingsItem .content .btn {
+    border: none;
+    color: gray;
+    background-color: darkgray;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: lighter;
+    margin: 5px 0;
+    transition: all 300ms ease-in-out;
+    height: 0px;
+    pointer-events: none;
+    cursor: pointer;
+}
+
+.settingsItem .content input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}

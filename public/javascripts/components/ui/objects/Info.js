@@ -69,40 +69,40 @@ export default class INFO {
 
     setBehaviour(options) {
         // this.toggle()()
-        document.addEventListener('keydown',(e) => {
+        document.addEventListener('keydown', (e) => {
             var key = e.keyCode || e.which;
-            if(key === 17) {
+            if (key === 17) {
                 this.idleTime = 0
                 this.toggle()
             }
         }, false);
 
 
-        if(options.followMouse) {
+        if (options.followMouse) {
             document.addEventListener('mousemove', e => {
                 this.mouse.x = e.clientX;
                 this.mouse.y = e.clientY;
                 this.idleTime = 0
-                if(this.on) {
+                if (this.on) {
                     this.setPostion(this.mouse.x, this.mouse.y)
                 }
-                
+
             })
         }
-        
 
-        if(options.hideOnClick) {
+
+        if (options.hideOnClick) {
             document.addEventListener('click', e => {
-                if(this.on) {
+                if (this.on) {
                     this.toggle()
-                } 
+                }
             })
         }
 
-        if(options.autoClose) {
+        if (options.autoClose) {
             var idleInterval = setInterval(this.timerIncrement.bind(this), 1000);
         }
-        
+
     }
 
     // Private
@@ -115,7 +115,7 @@ export default class INFO {
     }
 
     toggle() {
-        if(this.on) {
+        if (this.on) {
             this.hide()
             this.on = false
         } else {
@@ -151,15 +151,15 @@ export default class INFO {
     }
 
     timerIncrement() {
-        if(this.on) {
+        if (this.on) {
             this.idleTime = this.idleTime + 1;
-            if (this.idleTime > 5) { 
+            if (this.idleTime > 5) {
                 this.on = false
                 this.hide()
                 this.idleTime = 0
             }
         }
-        
+
     }
 
 }
