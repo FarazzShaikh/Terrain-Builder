@@ -12,4 +12,11 @@ export default class GRID {
     getMesh() {
         return this.gridHelper
     }
+
+    getInfo() {
+        return {
+            verts: 0,
+            tris: 0
+        }
+    }
 }

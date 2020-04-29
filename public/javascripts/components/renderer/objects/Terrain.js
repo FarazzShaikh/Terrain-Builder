@@ -2,6 +2,7 @@ import * as THREE from '../../../../lib/three.js';
 
 export default class TERRAIN {
     constructor(options) {
+        this.name = options.name
         this.res_verts = options.resolution
         this.res_faces = options.resolution - 1
 
@@ -37,11 +38,26 @@ export default class TERRAIN {
         this.modifiers[name] = instance 
     }
 
+    removeModifier(modifier) {
+        for (const key in this.modifiers) {
+            if (this.modifiers.hasOwnProperty(key)) {
+                const modifier = this.modifiers[key];
+                
+                if(key === modifier) {
+                    modifier = undefined
+                }
+            }
+        }
+    }
+
     getInfo() {
         return {
             verts: this.noOf_verts,
             tris: this.noOf_faces
         }
     }
+
+   
+
 
 }

@@ -1,12 +1,13 @@
 import * as THREE from '../../../lib/three.js';
 import { OrbitControls } from '../../../lib/OrbitControls.js'
-import DEFAULTS from '../../Defaults.js';
 
 export default class RENDERER {
     constructor(options) {
         this.scene, this.camera, this.renderer, this.planeMesh, this.controls
 
-        this.defaults = options.defaults
+        this.globals = options.globals
+
+        this.objects = {}
 
         this.initScene()
         this.costomizeRenderer()
@@ -63,18 +64,21 @@ export default class RENDERER {
     render = () => {
         window.requestAnimationFrame(this.render);
 
-        if (this.defaults.doesSpin) {
-            const terrain = this.scene.getObjectByProperty('name', 'mainTerrain')
+        if (this.globals.doesSpin) {
+            const terrain = this.scene.getObjectByProperty('name', 'Terrain')
             if (terrain) {
                 terrain.rotation.z += 0.01
 
-                if (this.defaults.flags.resetRotation) {
+                if (this.globals.flags.resetRotation) {
                     terrain.rotation.z = 0
-                    this.defaults.flags.resetRotation = false
-                    this.defaults.doesSpin = false
+                    this.globals.flags.resetRotation = false
+                    this.globals.doesSpin = false
                 }
             }
+ 
         }
+
+       
 
         this.controls.update()
         this.renderer.render(this.scene, this.camera);
@@ -87,16 +91,34 @@ export default class RENDERER {
         ele.style.cursor = 'grab'
     }
 
-    addObject(object) {
-        this.scene.add(object)
+    addObject(Obj, options) {
+        let obj = new Obj(options)
+        let name = obj.name
+        this.objects[name] = obj
+        this.scene.add(obj.getMesh())
+        return {
+            info: obj.getInfo(),
+            mesh: obj.getMesh()
+        }
     }
 
-    removeObject(object) {
-        const toDispose = scene.getObjectByProperty('name', object.name);
+    removeObject(name) {
+        for (const key in this.objects) {
+            if (this.objects.hasOwnProperty(key)) {
+                const object = this.objects[key];
+                if(key === name) {
+                    const toDispose = this.scene.getObjectByProperty('name', object.name);
+                    this.objects[object.name] = undefined
+                    toDispose.geometry.dispose();
+                    toDispose.material.dispose();
+                    this.scene.remove(toDispose);
+                    return
+                }
+            }
+        }
+       
 
-        toDispose.geometry.dispose();
-        toDispose.material.dispose();
-        this.scene.remove(toDispose);
+
     }
 
 }

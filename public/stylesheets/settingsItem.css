@@ -5,7 +5,7 @@
     left: 0;
     width: 300px;
     height: 300px;
-    background-color: #24242462;
+    background-color: #242424b2;
     z-index: 10;
     border-radius: 10px;
     backdrop-filter: blur(30px);
@@ -16,70 +16,121 @@
     padding: 10px;
     opacity: 0;
     pointer-events: none;
+    overflow: auto;
+    padding: 10px;
+}
+
+.settingsItem img {
+    width: 20px;
+    filter: invert(100%);
+    transition: all 300ms ease-in-out;
+    cursor: pointer;
+}
+
+.settingsItem h1{
+    color: white;
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    transition: all 300ms ease-in-out;
+}
+
+.settingsItem h2{
+    color: darkgray;
+    font-size: 21px;
+    margin: 0;
+    padding: 0;
+    transition: all 300ms ease-in-out;
+}
+
+.settingsItem h3{
+    color: darkgray;
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+    transition: all 300ms ease-in-out;
+}
+
+.settingsItem h4{
+    color: white;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    transition: all 300ms ease-in-out;
 }
 
 .settingsItem .header {
     display: flex;
     justify-content: space-between;
-}
-
-.settingsItem .header h1 {
-    color: white;
-    font-size: 15px;
-    margin: 10px;
-    transition: all 300ms ease-in-out;
-}
-
-.settingsItem .header img {
-    width: 20px;
-    filter: invert(100%);
-    cursor: pointer;
-    transition: all 300ms ease-in-out;
-}
-
-.settingsItem .header img:hover {
-    transform: scale(1.1, 1.1) rotate(90deg);
-}
-
-.settingsItem .content h1 {
-    font-size: 15px;
-    margin: 10px;
-    transition: all 300ms ease-in-out;
-    color: darkgrey;
-}
-
-.settingsItem h2 {
-    font-size: 13px;
-    font-weight: lighter;
-    margin: 0;
+    align-self: center;
 }
 
 .settingsItem .content {
-    width: 100%;
-    font-size: 30px;
-    background-color: #bdbdbd80;
-    border-radius: 10px;
-    backdrop-filter: blur(2px);
-    transition: opacity 300ms ease-in-out;
-    padding: 7px 0px;
+    margin: 0px 10px;
 }
 
 .settingsItem .content .item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-self: center;
+
+    margin-top: 10px;
 }
 
 .settingsItem .content .item .buttons {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-self: center;
 }
 
-.settingsItem .content .item .buttons img {
-    width: 20px;
-    filter: invert(100%);
-    opacity: 30%;
-    pointer-events: none;
-    cursor: pointer;
-    transition: opacity 300ms ease-in-out
+.rangeInputs {
+    margin: 0px 10px;
+
 }
+
+.rangeInputs .top {
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+}
+
+.rangeInputs .top .input h3 {
+    margin-top: 10px;
+}
+
+.rangeInputs .top .input input[type=range] {
+    margin: 5px 0px;
+    border: none;
+    outline: none;
+}
+.rangeInputs .top .input .label {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.rangeInputs .top .input .label input[type=text] {
+    color: white;
+    font-size: 12px;
+    margin: 0;
+    transition: all 300ms ease-in-out;
+    background-color: transparent;
+    width: 30%;
+    border: none;
+    padding: 2px;
+    text-align: right;
+    border-radius: 5px;
+}
+
+.rangeInputs .top .input .label input[type=text]:focus {
+    border: 1px solid;
+
+    border-color: var(--main-color);
+    outline: none;
+}
+
+.rangeInputs .top .input .label input[type=text]::placeholder {
+    color: darkgray;
+    font-size: 12px;
+    margin: 0;
+    padding: 2px;
+} 

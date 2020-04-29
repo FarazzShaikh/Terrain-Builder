@@ -1,7 +1,8 @@
+
 export default class GENERAL {
     constructor(options) {
         this.name = 'General'
-        this.defaults = options.defaults
+        this.globals = options.globals
         this.on = false
         this.mouse = {
             x: 0,
@@ -18,8 +19,8 @@ export default class GENERAL {
             },
 
             h1_switchLables: {
-                spin: document.querySelector('.settingsItem-general .content .spin h1'),
-                customHeightMap: document.querySelector('.settingsItem-general .content .customHeightMap h1'),
+                spin: document.querySelector('.settingsItem-general .content .spin h3'),
+                customHeightMap: document.querySelector('.settingsItem-general .content .customHeightMap h3'),
             },
 
             img_resetButtons: {
@@ -30,6 +31,14 @@ export default class GENERAL {
             fileUpload: {
                 button_button: document.querySelector('.settingsItem-general .content .fileUpload .btn'),
                 input_input: document.querySelector('.settingsItem-general .content .fileUpload input'),
+            },
+
+            input_sliders: {
+                resolution: document.querySelector('.rangeInputs .top .resolution input[type=range]'),
+            },
+
+            input_sliderLabels: {
+                resolution: document.querySelector('.rangeInputs .top .resolution .label input'),
             }
 
         }
@@ -57,7 +66,7 @@ export default class GENERAL {
                     }
 
                     if (sw.name === 'spin') {
-                        this.defaults.doesSpin = sw.checked
+                        this.globals.doesSpin = sw.checked
                     }
                 })
             }
@@ -79,6 +88,68 @@ export default class GENERAL {
                 this.toggle()
             }
         })
+
+        for (const key in this.elements.input_sliders) {
+            if (this.elements.input_sliders.hasOwnProperty(key)) {
+                const input = this.elements.input_sliders[key];
+                input.name = input.parentElement.classList[1]
+
+                switch (input.name) {
+                    case 'resolution':
+                        input.value = this.globals.defRes
+                        break;
+                
+                    default:
+                        break;
+                }
+
+                input.addEventListener('change', () => {
+                    const max = this.globals.maxRes
+                    const min = this.globals.minRes
+                    this.globals[input.name] = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
+                    this.globals.flags['reset_' + input.name] = true
+
+                })
+
+                input.addEventListener('input', () => {
+                    const max = this.globals.maxRes
+                    const min = this.globals.minRes
+                    let placeholder = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
+                    console.log(placeholder)
+                    this.elements.input_sliderLabels.resolution.placeholder = placeholder
+
+                })
+            }
+        }
+
+        for (const key in this.elements.input_sliderLabels) {
+            if (this.elements.input_sliderLabels.hasOwnProperty(key)) {
+                const label = this.elements.input_sliderLabels[key];
+                label.name = label.parentElement.parentElement.classList[1]
+                
+                label.addEventListener('change', () => {
+                    let value 
+                    if(!isNaN(label.value)) {
+                        if(label.value > this.globals.maxRes) {
+                            value = this.globals.maxRes
+                            label.value = value
+                        } else if(label.value < this.globals.minRes || label.value == 0) {
+                            value = this.globals.minRes
+                            label.value = value
+                        } 
+                        
+
+                        this.globals[label.name] = Number(value)
+                        this.globals.flags['reset_' + label.name] = true
+                    } else {
+                        alert('Input must be a number between ' + this.globals.minRes + ' and ' + this.globals.maxRes)
+                        value = undefined
+                        
+                    }
+
+                })
+            }
+        }
 
     }
 
@@ -149,6 +220,7 @@ export default class GENERAL {
         button.style.padding = '8px 20px'
         button.style.height = '20%'
         button.style.pointerEvents = 'all'
+        button.style.color = 'grey'
     }
 
     disableFileUpload() {
@@ -156,6 +228,7 @@ export default class GENERAL {
         button.style.padding = ''
         button.style.height = '0px'
         button.style.pointerEvents = 'none'
+        button.style.color = 'transparent'
     }
 
     setBehaviour_ResetButton() {
@@ -167,8 +240,8 @@ export default class GENERAL {
                 switch (name) {
                     case 'spin':
                         button.addEventListener('click', () => {
-                            if (!this.defaults.flags.resetRotation) {
-                                this.defaults.flags.resetRotation = true
+                            if (!this.globals.flags.resetRotation) {
+                                this.globals.flags.resetRotation = true
                                 setTimeout(() => {
                                     this.elements.input_switches.spin.click()
                                 }, 100);
@@ -247,6 +320,7 @@ export default class GENERAL {
             this.on = true
         }
     }
+
 
 
 }

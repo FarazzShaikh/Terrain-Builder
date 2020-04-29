@@ -6,6 +6,7 @@
 @import url('./instructions.css');
 @import url('./settingsItem.css');
 @import url('./switch.css');
+@import url('./loading.css');
 :root {
     --main-color: #FBD385;
     --main-color-dark: #ccac6d;

@@ -7,33 +7,121 @@ import INFO from "./components/ui/objects/info.js";
 import COLOR from "./components/renderer/modifiers/Color.js";
 import PIMENU from "./components/ui/objects/PiMenu.js";
 import GENERAL from "./components/ui/objects/PiMenuItems/General.js";
-import DEFAULTS from "./Defaults.js";
 import GRID from "./components/renderer/objects/Grid.js";
+import GLOBALS from "./Globals.js";
+import LOADING from "./components/ui/objects/LoadingScreens.js";
+
+let timerStart = 0 // For Timing Functions
+let erosionInfo, geometryInfo // Data for UI
+let globals = new GLOBALS()
+
 
 function main() {
-    let timerStart = 0 // For Timing Functions
-    let erosionInfo, geometryInfo // Data for UI
-    let defaults = new DEFAULTS()
+    
         // Scene Setup
     let renderer = new RENDERER({
-            defaults: defaults
-        }) // Initialize Renderer Component
-    let terrain = new TERRAIN({ // Instantiate a Terrain Object
-        name: 'mainTerrain', // Object name
-        resolution: 512 // Terrain Resolution
-    })
-    let terrainMesh = terrain.getMesh() // Get mesh from Terrain Object
-    geometryInfo = terrain.getInfo() // Get Information about geometry for UI
-    renderer.addObject(terrainMesh) // Add Terrain to the Scene
+            globals: globals
+    }) // Initialize Renderer Component
+    
 
-
-    let grid = new GRID({
+    let gridObject = renderer.addObject(GRID, {
         size: 30,
         divisions: 20
-    })
-    let gridObject = grid.getMesh()
-    renderer.addObject(gridObject)
+    }).mesh
 
+    let time = initTerrain(renderer)
+    let time_erode = time.time_erode
+    let time_displace = time.time_displace
+    
+    let ui = new UI() // Instantiate New UI Component
+    ui.addObject(INFO, { // Add Info Object to UI
+        verts: geometryInfo.verts, // Number of Verts in the Mesh
+        tris: geometryInfo.tris, // Number of Tris in the Mesh
+        geometryTime: time_displace, // Time Taken to Displace terrain
+
+        iterations: erosionInfo.iterations, // Number of Iterations in Erosion simulation
+        droplets: erosionInfo.droplets, // Number of Droplets Simulated
+        erosionTime: time_erode, // TIme taken to perform Erosion Simulation
+
+        size: 0, // Size of generated map in pixels
+        normalized: true, // If height data is Normalized between 0 and 1
+        mapTime: 0, // Time taken to generate Map
+    })
+    ui.objects.Info.setContent() // Set data
+    ui.objects.Info.setBehaviour({ // Add behaviour to UI Object
+        followMouse: true, // If UI object follows Mouse
+        hideOnClick: true, // If UI object hides on click
+        autoClose: true
+    })
+
+    ui.addObject(PIMENU, {
+        // Options
+    })
+    ui.objects.PieMenu.setBehaviour({
+        followMouse: true,
+        hideOnClick: true,
+        autoClose: true
+    })
+
+
+    ui.objects.PieMenu.addChild(GENERAL, {
+        globals: globals
+    })
+    ui.objects.PieMenu.children.General.setBehaviour({
+        // Options
+    })
+
+    ui.addObject(LOADING, {
+        
+    })
+    ui.objects.Loading.hide()
+
+    setInterval(() => {
+        if (globals.flags.reset_resolution) {
+            ui.objects.Loading.show()
+            
+            setTimeout(() => {
+
+                renderer.removeObject('Terrain')
+
+                time = initTerrain(renderer, ui.objects.Loading)
+            
+                ui.objects.Info.resetContent({
+                    verts: geometryInfo.verts, // Number of Verts in the Mesh
+                    tris: geometryInfo.tris, // Number of Tris in the Mesh
+                    geometryTime: time.time_displace, // Time Taken to Displace terrain
+            
+                    iterations: erosionInfo.iterations, // Number of Iterations in Erosion simulation
+                    droplets: erosionInfo.droplets, // Number of Droplets Simulated
+                    erosionTime: time.time_erode, // TIme taken to perform Erosion Simulation
+            
+                    size: 0, // Size of generated map in pixels
+                    normalized: true, // If height data is Normalized between 0 and 1
+                    mapTime: 0, // Time taken to generate Map
+                })
+                ui.objects.Info.setContent()
+                globals.flags.reset_resolution = false
+                setTimeout(() => {
+                    ui.objects.Loading.hide()
+
+                }, 50);
+                
+            }, 50);
+            
+        }
+    }, 100);
+}
+
+function initTerrain(renderer, loader) {
+
+    geometryInfo = renderer.addObject(TERRAIN, {
+        name: 'Terrain', // Object name
+        resolution: globals.resolution || 128 // Terrain Resolution
+    })
+    let terrainMesh = geometryInfo.mesh // Get mesh from Terrain Object
+    geometryInfo = geometryInfo.info // Get Information about geometry for UI
+
+    let terrain = renderer.objects.Terrain
     // Displace Modifier
     terrain.addModifier(DISPLACE, { // Add Displace Modifier to Terrain
         seed: Math.random(), // Seed for Perlin Noise
@@ -77,43 +165,14 @@ function main() {
     })
     terrain.modifiers.Color.color(terrainMesh) // Color Terrain
 
-    let ui = new UI() // Instantiate New UI Component
-    ui.addObject(INFO, { // Add Info Object to UI
-        verts: geometryInfo.verts, // Number of Verts in the Mesh
-        tris: geometryInfo.tris, // Number of Tris in the Mesh
-        geometryTime: time_displace, // Time Taken to Displace terrain
+    return {
+        time_erode: time_erode,
+        time_displace: time_displace,
 
-        iterations: erosionInfo.iterations, // Number of Iterations in Erosion simulation
-        droplets: erosionInfo.droplets, // Number of Droplets Simulated
-        erosionTime: time_erode, // TIme taken to perform Erosion Simulation
+    }
 
-        size: 0, // Size of generated map in pixels
-        normalized: true, // If height data is Normalized between 0 and 1
-        mapTime: 0, // Time taken to generate Map
-    })
-    ui.objects.Info.setContent() // Set data
-    ui.objects.Info.setBehaviour({ // Add behaviour to UI Object
-        followMouse: true, // If UI object follows Mouse
-        hideOnClick: true, // If UI object hides on click
-        autoClose: true
-    })
-
-    ui.addObject(PIMENU, {
-        // Options
-    })
-    ui.objects.PieMenu.setBehaviour({
-        followMouse: true,
-        hideOnClick: true,
-        autoClose: true
-    })
-
-
-    ui.objects.PieMenu.addChild(GENERAL, {
-        defaults: defaults
-    })
-    ui.objects.PieMenu.children.General.setBehaviour({
-        // Options
-    })
 }
+
+
 
 main()

@@ -3,11 +3,12 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    
 }
 
 .settingsItem .content .btn {
     border: none;
-    color: gray;
+    color: transparent;
     background-color: darkgray;
     border-radius: 8px;
     font-size: 20px;
