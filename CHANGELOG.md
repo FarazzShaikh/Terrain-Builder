@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [1.1.2] - 2020-04-30
+### Added
+- Added Resolution Range Input.
+- Added More Comprihensive Settigns.
+
+
+
 ## [1.1.1] - 2020-04-26
 ### Added
 - Major Code Refactor.
