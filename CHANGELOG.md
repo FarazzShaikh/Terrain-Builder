@@ -6,11 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-
 ## [1.1.2] - 2020-04-30
 ### Added
 - Added Resolution Range Input.
-- Added More Comprihensive Settigns.
+- Added Height Scale Range Input.
+- Added Grid Scale and Division Control.
+- Completed New Settings Pane.
 
 
 

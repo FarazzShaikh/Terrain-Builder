@@ -35,10 +35,16 @@ export default class GENERAL {
 
             input_sliders: {
                 resolution: document.querySelector('.rangeInputs .top .resolution input[type=range]'),
+                scale: document.querySelector('.rangeInputs .top .scale input[type=range]'),
+                gridSize: document.querySelector('.rangeInputs .top .gridSize input[type=range]'),
+                gridDivs: document.querySelector('.rangeInputs .top .gridDivs input[type=range]'),
             },
 
             input_sliderLabels: {
                 resolution: document.querySelector('.rangeInputs .top .resolution .label input'),
+                scale: document.querySelector('.rangeInputs .top .scale .label input'),
+                gridSize: document.querySelector('.rangeInputs .top .gridSize .label input'),
+                gridDivs: document.querySelector('.rangeInputs .top .gridDivs .label input'),
             }
 
         }
@@ -98,25 +104,104 @@ export default class GENERAL {
                     case 'resolution':
                         input.value = this.globals.defRes
                         break;
-                
+                    
+                    case 'scale':
+                        input.value = this.globals.defScale
+                        break;
+                    
+                    case 'gridSize': 
+                        input.value = this.globals.defGridSize
+                        break;
+
+                    case 'gridDivs':
+                        input.value = this.globals.defGridDivs
                     default:
                         break;
                 }
-
+                
                 input.addEventListener('change', () => {
-                    const max = this.globals.maxRes
-                    const min = this.globals.minRes
-                    this.globals[input.name] = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
-                    this.globals.flags['reset_' + input.name] = true
+                    switch (input.name) {
+                        case 'resolution': {
+                            const max = this.globals.maxRes
+                            const min = this.globals.minRes
+                            this.globals[input.name] = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
+                            this.globals.flags['reset_' + input.name] = true
+                            break;
+                        }
+                            
+                        case 'scale': {
+                            const max = this.globals.maxScale
+                            const min = this.globals.minScale
+                            this.globals[input.name] = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
+                            this.globals.flags['reset_' + input.name] = true
+                            break;
+                        }
+
+                        case 'gridSize': {
+                            const max = this.globals.maxGridSize
+                            const min = this.globals.minGridSize
+                            this.globals[input.name] = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
+                            this.globals.flags['reset_' + input.name] = true
+                            break;
+                        }
+
+                        case 'gridDivs': {
+                            const max = this.globals.maxGridDivs
+                            const min = this.globals.minGridDivs
+                            this.globals[input.name] = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
+                            this.globals.flags['reset_' + input.name] = true
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                    
 
                 })
 
                 input.addEventListener('input', () => {
-                    const max = this.globals.maxRes
-                    const min = this.globals.minRes
-                    let placeholder = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
-                    console.log(placeholder)
-                    this.elements.input_sliderLabels.resolution.placeholder = placeholder
+                    switch (input.name) {
+                        case 'resolution': {
+                            this.elements.input_sliderLabels.resolution.value = ''
+                            const max = this.globals.maxRes
+                            const min = this.globals.minRes
+                            let placeholder = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
+                            this.elements.input_sliderLabels.resolution.placeholder = placeholder
+                            break;
+                        }
+                            
+                        case 'scale': {
+                            this.elements.input_sliderLabels.scale.value = ''
+                            const max = this.globals.maxScale
+                            const min = this.globals.minScale
+                            let placeholder = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
+                            this.elements.input_sliderLabels.scale.placeholder = placeholder
+                            break;
+                        }
+
+                        case 'gridSize': {
+                            this.elements.input_sliderLabels.gridSize.value = ''
+                            const max = this.globals.maxGridSize
+                            const min = this.globals.minGridSize
+                            let placeholder = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
+                            this.elements.input_sliderLabels.gridSize.placeholder = placeholder
+                            break;
+                        }
+
+                        case 'gridDivs': {
+                            this.elements.input_sliderLabels.gridDivs.value = ''
+                            const max = this.globals.maxGridDivs
+                            const min = this.globals.minGridDivs
+                            let placeholder = (Math.trunc(input.value * max) === 0) ? min : Math.trunc(input.value * max)
+                            this.elements.input_sliderLabels.gridDivs.placeholder = placeholder
+                            break;
+                        }
+
+                        default:
+                            break;
+                    }
+
+                    
 
                 })
             }
@@ -128,24 +213,98 @@ export default class GENERAL {
                 label.name = label.parentElement.parentElement.classList[1]
                 
                 label.addEventListener('change', () => {
-                    let value 
-                    if(!isNaN(label.value)) {
-                        if(label.value > this.globals.maxRes) {
-                            value = this.globals.maxRes
-                            label.value = value
-                        } else if(label.value < this.globals.minRes || label.value == 0) {
-                            value = this.globals.minRes
-                            label.value = value
-                        } 
-                        
+                    switch (label.name) {
+                        case 'resolution': {
+                            let value 
+                            const max = this.globals.maxRes
+                            const min = this.globals.minRes
+                            let validated = this.validateInput(label.value, value, min, max)
+                            if(validated.status) {
+                                label.value = validated.label
+                                this.globals[label.name] = Number(validated.value)
+                                this.globals.flags['reset_' + label.name] = true
 
-                        this.globals[label.name] = Number(value)
-                        this.globals.flags['reset_' + label.name] = true
-                    } else {
-                        alert('Input must be a number between ' + this.globals.minRes + ' and ' + this.globals.maxRes)
-                        value = undefined
-                        
+                                let normalizedValue = this.normalize(Number(validated.value), min, max)
+                                this.elements.input_sliders[label.name].value = normalizedValue
+                            } else {
+                                alert('Scale must be a number between ' + min+ ' and ' + max)
+                                value = undefined
+                                
+                            }
+                            break;
+                        }
+                         
+                        case 'scale': {
+                            let value 
+                            const max = this.globals.maxScale
+                            const min = this.globals.minScale
+                            let validated = this.validateInput(label.value, value, min, max)
+                            if(validated.status) {
+                                label.value = validated.label
+                                this.globals[label.name] = Number(validated.value)
+                                this.globals.flags['reset_' + label.name] = true
+
+                                let normalizedValue = this.normalize(Number(validated.value), min, max)
+                                this.elements.input_sliders[label.name].value = normalizedValue
+                            } else {
+                                alert('Scale must be a number between ' + min+ ' and ' + max)
+                                value = undefined
+                                
+                            }
+
+                            
+                            break;
+                        }
+                           
+                        case 'gridSize': {
+                            let value 
+                            const max = this.globals.maxGridSize
+                            const min = this.globals.minGridSize
+                            let validated = this.validateInput(label.value, value, min, max)
+                            if(validated.status) {
+                                label.value = validated.label
+                                this.globals[label.name] = Number(validated.value)
+                                this.globals.flags['reset_' + label.name] = true
+
+                                let normalizedValue = this.normalize(Number(validated.value), min, max)
+                                this.elements.input_sliders[label.name].value = normalizedValue
+                            } else {
+                                alert('Grid Size must be a number between ' + min + ' and ' + max)
+                                value = undefined
+                                
+                            }
+
+                            
+                            break;
+                        }
+
+                        case 'gridDivs': {
+                            let value 
+                            const max = this.globals.maxGridDivs
+                            const min = this.globals.minGridDivs
+                            let validated = this.validateInput(label.value, value, min, max)
+                            if(validated.status) {
+                                label.value = validated.label
+                                this.globals[label.name] = Number(validated.value)
+                                this.globals.flags['reset_' + label.name] = true
+
+                                let normalizedValue = this.normalize(Number(validated.value), min, max)
+                                this.elements.input_sliders[label.name].value = normalizedValue
+                            } else {
+                                alert('Grid Divisions must be a number between ' + min + ' and ' + max)
+                                value = undefined
+                                
+                            }
+
+                            
+                            break;
+                        }
+                    
+                        default:
+                            break;
                     }
+
+                    
 
                 })
             }
@@ -321,6 +480,37 @@ export default class GENERAL {
         }
     }
 
+    normalize(value, min, max) {
+        return (value - min) / (max - min);
+    }
+
+    validateInput(label, value, min, max) {
+        if(!isNaN(label)) {
+            if(label > max) {
+                value = max
+                label = value
+            } else if(label < min || label == 0) {
+                value = min
+                label = value
+            }  else {
+                value = label
+            }
+            
+
+            return {
+                status: true,
+                label: label,
+                value: value
+            }
+        } else {
+            return {
+                status: false,
+                label: undefined,
+                value: undefined
+            }
+            
+        }
+    }
 
 
 }

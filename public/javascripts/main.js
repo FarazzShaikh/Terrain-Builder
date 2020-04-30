@@ -24,14 +24,13 @@ function main() {
     }) // Initialize Renderer Component
     
 
-    let gridObject = renderer.addObject(GRID, {
-        size: 30,
-        divisions: 20
-    }).mesh
-
+   
+    let grid = initGrid(renderer)
     let time = initTerrain(renderer)
     let time_erode = time.time_erode
     let time_displace = time.time_displace
+    let terrain = time.terrain
+    let heightData_notScaled = time.heightData_notScaled
     
     let ui = new UI() // Instantiate New UI Component
     ui.addObject(INFO, { // Add Info Object to UI
@@ -76,8 +75,9 @@ function main() {
     })
     ui.objects.Loading.hide()
 
+    let i = 30
     setInterval(() => {
-        if (globals.flags.reset_resolution) {
+        if (globals.flags.reset_resolution || globals.flags.reset_scale) {
             ui.objects.Loading.show()
             
             setTimeout(() => {
@@ -101,6 +101,7 @@ function main() {
                 })
                 ui.objects.Info.setContent()
                 globals.flags.reset_resolution = false
+                globals.flags.reset_scale = false
                 setTimeout(() => {
                     ui.objects.Loading.hide()
 
@@ -109,10 +110,23 @@ function main() {
             }, 50);
             
         }
-    }, 100);
+
+        if(globals.flags.reset_gridSize || globals.flags.reset_gridDivs) {
+            renderer.removeObject('Grid')
+            renderer.addObject(GRID, {
+                name: 'Grid',
+                size: globals.gridSize || 30,
+                divisions: globals.gridDivs || 20
+            })
+
+            globals.flags.reset_gridDivs = false
+            globals.flags.reset_gridSize = false
+        }
+       
+    }, 500);
 }
 
-function initTerrain(renderer, loader) {
+function initTerrain(renderer) {
 
     geometryInfo = renderer.addObject(TERRAIN, {
         name: 'Terrain', // Object name
@@ -134,8 +148,8 @@ function initTerrain(renderer, loader) {
     timerStart = Date.now(); // Timing Displacement Start
     terrain.modifiers.Displace.createHeightBuffer(terrainMesh) // Creates A Buffer with noise values
     terrain.modifiers.Displace.getNormalizedHeightBuffer() // Normalizes and returns Buffer
-    terrain.modifiers.Displace.displaceMesh(terrainMesh, { // Actullay Displaces Mesh
-        zScalingFactor: 8, // How much the noise effects the height
+    let heightData_notScaled = terrain.modifiers.Displace.displaceMesh(terrainMesh, { // Actullay Displaces Mesh
+        zScalingFactor: globals.scale || 8, // How much the noise effects the height
         heightField: undefined // Custom Noise Field (Optional)
     })
     terrain.modifiers.Displace.recalculateNormals(terrainMesh) // Recalculates Normals
@@ -168,11 +182,23 @@ function initTerrain(renderer, loader) {
     return {
         time_erode: time_erode,
         time_displace: time_displace,
+        terrain: terrain,
+        heightData_notScaled: heightData_notScaled
 
     }
 
 }
 
+function initGrid(renderer) {
+    let gridObject = renderer.addObject(GRID, {
+        name: 'Grid',
+        size: globals.gridSize || 30,
+        divisions: globals.gridDivs || 20
+    })
+
+    return gridObject
+
+}
 
 
 main()

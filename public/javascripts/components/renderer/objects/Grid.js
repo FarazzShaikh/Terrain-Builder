@@ -7,6 +7,7 @@ export default class GRID {
         var divisions = options.divisions
 
         this.gridHelper = new THREE.GridHelper(size, divisions);
+        this.gridHelper.name = options.name
     }
 
     getMesh() {

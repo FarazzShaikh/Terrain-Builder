@@ -106,9 +106,15 @@ export default class RENDERER {
         for (const key in this.objects) {
             if (this.objects.hasOwnProperty(key)) {
                 const object = this.objects[key];
+
+                
+
                 if(key === name) {
                     const toDispose = this.scene.getObjectByProperty('name', object.name);
                     this.objects[object.name] = undefined
+                    if(toDispose) {
+
+                    }
                     toDispose.geometry.dispose();
                     toDispose.material.dispose();
                     this.scene.remove(toDispose);

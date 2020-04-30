@@ -55,6 +55,7 @@ export default class DISPLACE {
             vertex.z = heightData[i] * options.zScalingFactor
         }
         mesh.geometry.verticesNeedUpdate = true;
+        return heightData
     }
 
     recalculateNormals(mesh) {
