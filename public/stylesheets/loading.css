@@ -1,0 +1,29 @@
+.loading {
+    width: 100vw;
+    height: 100vh;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: all 300ms ease-in-out;
+
+    background-color: rgba(0, 0, 0, 0.39);
+    backdrop-filter: blur(20px) brightness(10%);
+}
+
+.loading h1 {
+    color: white;
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    transition: all 300ms ease-in-out;
+}
+
+.loading .content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

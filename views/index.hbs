@@ -1,11 +1,11 @@
 <script defer type="module" src="../javascripts/main.js"></script>
-<script defer type="module" src="../javascripts/instructions.js"></script>
+{{!-- <script defer type="module" src="../javascripts/instructions.js"></script> --}}
 
 <header>
 
     <div class="img-container">
         <img class="logo" src="../images/Component 2 – 1.svg" alt="">
-       
+
 
         <img class="three" src="../images/image (3).png" alt="">
     </div>
@@ -13,14 +13,16 @@
 </header>
 
 <div class="socials">
-    <img src="../images/github (1).svg" alt="" onclick="window.open('https://github.com/FarazzShaikh?tab=repositories', '_blank');" target="_blank">
-    <img src="../images/instagram.svg" alt="" onclick="window.open('https://www.instagram.com/faar.az/', '_blank');" target="_blank">
+    <img src="../images/github (1).svg" alt=""
+        onclick="window.open('https://github.com/FarazzShaikh?tab=repositories', '_blank');" target="_blank">
+    <img src="../images/instagram.svg" alt="" onclick="window.open('https://www.instagram.com/faar.az/', '_blank');"
+        target="_blank">
 </div>
 
 <div class="info">
-    <div class="item">  
+    <div class="item">
         <h1>Geometry</h1>
-        
+
         <ul>
             <li>
                 <span class="verts">
@@ -44,9 +46,9 @@
                 <h2>Time</h2>
             </li>
         </ul>
-        
+
     </div>
-   <div class="item">  
+    <div class="item">
         <h1>Erosion</h1>
         <ul>
             <li>
@@ -72,9 +74,9 @@
             </li>
         </ul>
     </div>
-    <div class="item"> 
+    <div class="item">
         <h1>Map</h1>
-         <ul>
+        <ul>
             <li>
                 <span class="size">
                     <img src="../images/info/size.svg" alt="">
@@ -103,79 +105,222 @@
 
 </div>
 
-<div class="configure">
-    <h1>Configuration</h1>
+
+<div class="settings">
     <ul>
-        <li class="seed">
-            <span>
-                <img src="../images/configure/coffee-breaks.svg" alt="">
-                <div class="input">
-                    <input type="text">
-                    <div class="img">
-                        <img src="../images/configure/random.svg" alt="">
-                        <h3>Shuffle</h3>
-                    </div>
-                </div>
-            </span>
-            <h2>Seed</h2>
+        <li class="map">
+            <div class="button">
+                <img src="../images/info/size.svg" alt="">
+                <h1>Map</h1>
+            </div>
+
         </li>
-        <li class="resolution">
-            <span>
+        <li class="terrain">
+            <div class="button">
+                <img src="../images/info/droplets.svg" alt="">
+                <h1>Terrain</h1>
+            </div>
+
+        </li>
+        <li class="world">
+            <div class="button">
                 <img src="../images/configure/dodecahedron.svg" alt="">
-                <div class="input">
-                    <input type="text">
-                    <div class="img">
-                        <img src="../images/configure/reset.svg" alt="">
-                        <h3>Reset</h3>
-                    </div>
-                </div>
-            </span>
-            <h2>Resolution</h2>
-        </li>
+                <h1>World</h1>
+            </div>
 
-        <li class="shading">
-            <section>
-                <img src="../images/configure/shade.svg" alt="">
-                <div class="buttons">
-                    <button><h1>Real</h1></button>
-                    <button><h1>Stylized</h1></button>
-                    <div class="img">
-                        <img src="../images/configure/reset.svg" alt="">
-                        <h3>Reset</h3>
-                    </div>
-                </div>
-            </section>
-            <h2>Shading</h2>
         </li>
-
-        <li class="color">
-            <section>
-                <img src="../images/configure/color.svg" alt="">
-                <div class="buttons">
-                    <button><h1>Heatmap</h1></button>
-                    <button><h1>Clay</h1></button>
-                </div>
-            </section>
-            <h2>Color</h2>
-        </li>
-
-    </ul>        
         
+    </ul>
 </div>
 
-<div class="instructions">
-    <div class="img">
-        <img src="../images/Component 2 – 1.svg" alt="">
-        <h3>Click To Begin</h3>
+
+<div class="settingsItem settingsItem-terrain">
+    <div class="header">
+        <h1>Terrain.</h1>
+        <img src="../images/close.svg" alt="">
     </div>
-    
-    <div class="controls">
-        <h1>Controls</h1>
-        <h2>Left Mouse + drag   :    Orbit </h2>
-        <h2>Right Mouse + drag  :    Zoom</h2>
-        <h2>Middle Mouse + drag :    Pan</h2>
-        <h2>Alt + Move Mouse    :   Info</h2>
-        <h2>Right Mouse Click   :   Configuraton</h2>
+
+    <div class="content">
+        <div class="item enable">
+            <h3>Erosion</h3>
+            <div class="buttons">
+                <img src="../images/configure/reset.svg" alt="" title="Reset Mesh Rotation.">
+                <label class="switch" title="Toggle Mesh Spin.">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <div class="item erodeSeed">
+            <h3>Custom Seed</h3>
+            <div class="buttons">
+                <img src="../images/configure/reset.svg" alt="">
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <div class="customSeed">
+            <input type="text" name="myfile" />
+            <button class="btn">Regenerate</button>
+        </div>
     </div>
-    
+
+    <div class="rangeInputs">
+        <div class="top">
+            <div class="input resolution">
+                <h2>Resolution</h2>
+                <input type="range" name="" min='0' max='1' step='0.25' default='0' class='rangeSlider'
+                    title="Number Of Verts along one side of the mesh.">
+                <div class="label">
+                    <input type="text" placeholder="128">
+                </div>
+            </div>
+
+            <div class="input scale">
+                <h2>Height Scale</h2>
+                <input type="range" name="" min='0' max='1' step='0.1' class='rangeSlider'
+                    title="Height of Final Terrain.">
+                <div class="label">
+                    <input type="text" placeholder="8">
+                </div>
+
+            </div>
+        </div>
+        <div class="top">
+            <div class="input noiseScale">
+                <h2>Noise Scale</h2>
+                <input type="range" name="" min='0' max='1' step='0.1' default='0' class='rangeSlider'
+                    title="Number Of Verts along one side of the mesh.">
+                <div class="label">
+                    <input type="text" placeholder="6">
+                </div>
+            </div>
+
+            <div class="input persistance">
+                <h2>Persistance</h2>
+                <input type="range" name="" min='0' max='1' step='0.1' class='rangeSlider'
+                    title="Height of Final Terrain.">
+                <div class="label">
+                    <input type="text" placeholder="2">
+                </div>
+
+            </div>
+        </div>
+
+        <div class="top">
+            <div class="input lacunarity">
+                <h2>Lacunarity</h2>
+                <input type="range" name="" min='0' max='1' step='0.1' default='0' class='rangeSlider'
+                    title="Number Of Verts along one side of the mesh.">
+                <div class="label">
+                    <input type="text" placeholder="2">
+                </div>
+            </div>
+
+            <div class="input octaves">
+                <h2>Octaves</h2>
+                <input type="range" name="" min='0' max='1' step='0.1' class='rangeSlider'
+                    title="Height of Final Terrain.">
+                <div class="label">
+                    <input type="text" placeholder="8">
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<div class="settingsItem settingsItem-world">
+    <div class="header">
+        <h1>World.</h1>
+        <img src="../images/close.svg" alt="">
+    </div>
+
+    <div class="content">
+        <div class="item spin">
+            <h3>Spin</h3>
+            <div class="buttons">
+                <img src="../images/configure/reset.svg" alt="" title="Reset Mesh Rotation.">
+                <label class="switch" title="Toggle Mesh Spin.">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <div class="item customHeightMap">
+            <h3>Choose Preset</h3>
+            <div class="buttons">
+                <img src="../images/configure/reset.svg" alt="">
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <div class="item fileUpload">
+            <input type="file" name="myfile" />
+            <button class="btn">Coming Soon!</button>
+
+        </div>
+    </div>
+
+    <div class="rangeInputs">
+        
+           
+
+        <div class="top">
+            <div class="input gridSize">
+                <h2>Grid Scale</h2>
+                <input type="range" name="" min='0' max='1' step='0.1' class='rangeSlider' title="Scale Of the Grid.">
+                <div class="label">
+                    <input type="text" placeholder="30">
+                </div>
+            </div>
+
+            <div class="input gridDivs">
+                <h2>Grid Divisions</h2>
+                <input type="range" name="" min='0' max='1' step='0.1' class='rangeSlider'
+                    title="Amount of Divisions in the Grid.">
+                <div class="label">
+                    <input type="text" placeholder="20">
+                </div>
+
+            </div>
+        </div>
+
+        <div class="top">
+            <div class="input axisScale">
+                <h2>Axis Scale</h2>
+                <input type="range" name="" min='0' max='1' step='0.1' default='0' class='rangeSlider'
+                    title="Number Of Verts along one side of the mesh.">
+                <div class="label">
+                    <input type="text" placeholder="10">
+                </div>
+            </div>
+
+            <div class="input yOff">
+                <h2>Y Offset :</h2>
+                <input type="range" name="" min='0' max='1' step='0.01' class='rangeSlider'
+                    title="Height of Final Terrain.">
+                <div class="label">
+                    <input type="text" placeholder="8">
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="loading">
+    <div class="content">
+        <h1>Loading</h1>
+    </div>
+
 </div>
