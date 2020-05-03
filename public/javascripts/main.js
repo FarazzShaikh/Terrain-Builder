@@ -3,7 +3,7 @@ import TERRAIN from "./components/renderer/objects/Terrain.js";
 import DISPLACE from "./components/renderer/modifiers/Displace.js";
 import ERODE from "./components/renderer/modifiers/Erode.js";
 import UI from "./components/ui/UI.js";
-import INFO from "./components/ui/objects/info.js";
+import INFO from "./components/ui/objects/Info.js";
 import COLOR from "./components/renderer/modifiers/Color.js";
 import PIMENU from "./components/ui/objects/PiMenu.js";
 import WORLD from "./components/ui/objects/PiMenuItems/World.js";
