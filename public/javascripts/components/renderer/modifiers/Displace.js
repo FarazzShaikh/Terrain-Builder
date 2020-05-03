@@ -21,7 +21,6 @@ export default class DISPLACE {
             let total = 0;
             let frequency = 1;
             let amplitude = 1;
-
             let x = mesh.geometry.vertices[i].x
             let y = mesh.geometry.vertices[i].y
 
@@ -42,7 +41,7 @@ export default class DISPLACE {
     getNormalizedHeightBuffer() {
         for (let i = 0; i < this.buffer_rawNoise.length; i++) {
             this.buffer_normalized.push(this.normalize(this.buffer_rawNoise[i], this.max_heightValue, this.min_heightValue))
-            
+
         }
         return this.buffer_normalized
     }
@@ -62,8 +61,8 @@ export default class DISPLACE {
         mesh.geometry.computeVertexNormals();
     }
 
-    normalize(val, max, min) { 
-        return (val - min) / (max - min); 
+    normalize(val, max, min) {
+        return (val - min) / (max - min);
     }
 
 

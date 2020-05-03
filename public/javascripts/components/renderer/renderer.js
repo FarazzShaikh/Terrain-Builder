@@ -45,8 +45,7 @@ export default class RENDERER {
         this.controls.minPolarAngle = 0;
         this.controls.maxPolarAngle = Math.PI / 2;
 
-        let axesHelper = new THREE.AxesHelper(10);
-        this.scene.add(axesHelper);
+
     }
 
     initLight() {
@@ -75,10 +74,10 @@ export default class RENDERER {
                     this.globals.doesSpin = false
                 }
             }
- 
+
         }
 
-       
+
 
         this.controls.update()
         this.renderer.render(this.scene, this.camera);
@@ -103,26 +102,18 @@ export default class RENDERER {
     }
 
     removeObject(name) {
-        for (const key in this.objects) {
-            if (this.objects.hasOwnProperty(key)) {
-                const object = this.objects[key];
+        const toDispose = this.scene.getObjectByProperty('name', name);
+        if (toDispose) {
 
-                
+            this.objects[toDispose.name] = undefined
 
-                if(key === name) {
-                    const toDispose = this.scene.getObjectByProperty('name', object.name);
-                    this.objects[object.name] = undefined
-                    if(toDispose) {
-
-                    }
-                    toDispose.geometry.dispose();
-                    toDispose.material.dispose();
-                    this.scene.remove(toDispose);
-                    return
-                }
-            }
+            toDispose.geometry.dispose();
+            toDispose.material.dispose();
+            this.scene.remove(toDispose);
+            return
         }
-       
+
+
 
 
     }

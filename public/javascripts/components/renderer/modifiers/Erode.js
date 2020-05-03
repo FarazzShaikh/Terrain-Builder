@@ -1,10 +1,10 @@
 export default class ERODE {
     constructor(options) {
         this.name = 'Erode'
-
-        this.rainAmount = options.rainAmount                          // % of total verts / 100
-        this.rainIntensity = options.rainIntensity                   // Water inside each droplet
-        this.lifetime = options.lifetime                            // % of time after which the drop evaporates
+        this.seed = options.seed
+        this.rainAmount = options.rainAmount // % of total verts / 100
+        this.rainIntensity = options.rainIntensity // Water inside each droplet
+        this.lifetime = options.lifetime // % of time after which the drop evaporates
         this.sedimentDeposition = options.sedimentDeposition
         this.waterErosion = options.waterErosion
         this.steps = options.steps
@@ -38,7 +38,7 @@ export default class ERODE {
 
         let deltaSteps = this.steps - cStep
         for (let l = 0; l < deltaSteps; l++) {
-                
+
             console.log('simulation iteration')
             for (let j = 0; j < mesh.geometry.vertices.length; j++) {
                 let cPoint = mesh.geometry.vertices[j]
@@ -161,7 +161,7 @@ export default class ERODE {
 
                     }
 
-                    
+
 
 
                 }
@@ -170,6 +170,13 @@ export default class ERODE {
         }
         mesh.geometry.verticesNeedUpdate = true;
         mesh.geometry.computeVertexNormals();
+
+        let erode_heightBuffer = []
+        for (let j = 0; j < mesh.geometry.vertices.length; j++) {
+            erode_heightBuffer.push(mesh.geometry.vertices[j].z)
+        }
+
+        return erode_heightBuffer
     }
 
     // Private
@@ -224,5 +231,22 @@ export default class ERODE {
             iterations: this.steps,
             droplets: Math.floor((this.res_verts * this.res_verts) * this.rainAmount)
         }
+    }
+
+    removeErosion(mesh, heightField, heightScale) {
+        for (let j = 0; j < mesh.geometry.vertices.length; j++) {
+            mesh.geometry.vertices[j].z = heightField[j] * heightScale
+        }
+        mesh.geometry.verticesNeedUpdate = true;
+        mesh.geometry.computeVertexNormals();
+    }
+
+    setErosionBUffer(mesh, buffer) {
+        for (let j = 0; j < mesh.geometry.vertices.length; j++) {
+            mesh.geometry.vertices[j].z = buffer[j]
+        }
+        mesh.geometry.verticesNeedUpdate = true;
+        mesh.geometry.computeVertexNormals();
+        return buffer
     }
 }

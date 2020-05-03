@@ -1,17 +1,16 @@
 import * as THREE from '../../../../lib/three.js';
 
-export default class GRID {
+export default class AXIS {
     constructor(options) {
         this.name = options.name
         var size = options.size
-        var divisions = options.divisions
 
-        this.gridHelper = new THREE.GridHelper(size, divisions);
-        this.gridHelper.name = options.name
+        this.axesHelper = new THREE.AxesHelper(size);
+        this.axesHelper.name = options.name
     }
 
     getMesh() {
-        return this.gridHelper
+        return this.axesHelper
     }
 
     getInfo() {

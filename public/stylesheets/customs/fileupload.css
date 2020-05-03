@@ -3,13 +3,12 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    
 }
 
-.settingsItem .content .btn {
+.settingsItem .content .fileUpload .btn {
     border: none;
     color: transparent;
-    background-color: darkgray;
+    background-color: var(--main-secondary);
     border-radius: 8px;
     font-size: 20px;
     font-weight: lighter;
@@ -20,7 +19,7 @@
     cursor: pointer;
 }
 
-.settingsItem .content input[type=file] {
+.settingsItem .content .fileUpload input[type=file] {
     font-size: 100px;
     position: absolute;
     left: 0;

@@ -7,7 +7,7 @@ export default class COLOR {
     }
 
     color(mesh) {
-        
+
         mesh.geometry.computeBoundingBox();
         let zMin = mesh.geometry.boundingBox.min.z;
         let zMax = mesh.geometry.boundingBox.max.z;
@@ -24,11 +24,11 @@ export default class COLOR {
                 color = new THREE.Color(0xffffff);
                 // let calc = (0.7 * (point.z) / zRange)
                 // color.setRGB(calc, calc, calc)
-            } else if(this.mode === 'heatmap') {
+            } else if (this.mode === 'heatmap') {
                 color = new THREE.Color(0x0000ff);
                 let calc = 0.1 * (zMax - point.z) / zRange
                 color.setHSL(calc, 1, 0.5);
-            } 
+            }
             mesh.geometry.colors[i] = color; // use this array for convenience
         }
 

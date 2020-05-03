@@ -1,11 +1,12 @@
-@import url('./fileupload.css');
+@import url('./customs/fileupload.css');
+@import url('./customs/slider.css');
 .settingsItem {
     position: absolute;
     top: 0;
     left: 0;
     width: 300px;
     height: 300px;
-    background-color: #242424b2;
+    background-color: #242424;
     z-index: 10;
     border-radius: 10px;
     backdrop-filter: blur(30px);
@@ -20,43 +21,73 @@
     padding: 10px;
 }
 
+
+/* .settingsItem-erosion {
+    opacity: 1;
+    pointer-events: all;
+} */
+
+.settingsItem::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #242424;
+}
+
+.settingsItem::-webkit-scrollbar {
+    width: 5px;
+    background-color: #F5F5F5;
+}
+
+.settingsItem::-webkit-scrollbar-thumb {
+    /* border-radius: 10px; */
+    background-color: var(--main-secondary);
+}
+
 .settingsItem img {
     width: 20px;
-    filter: invert(100%);
+    filter: invert(100%) invert(40%) sepia(16%) saturate(0%) hue-rotate(169deg) brightness(89%) contrast(96%);
     transition: all 300ms ease-in-out;
     cursor: pointer;
 }
 
-.settingsItem h1{
+.settingsItem h1 {
     color: white;
     font-size: 30px;
+    font-weight: 400;
     margin: 0;
     padding: 0;
     transition: all 300ms ease-in-out;
+    pointer-events: none;
 }
 
-.settingsItem h2{
-    color: darkgray;
-    font-size: 21px;
-    margin: 0;
-    padding: 0;
-    transition: all 300ms ease-in-out;
-}
-
-.settingsItem h3{
-    color: darkgray;
+.settingsItem h2 {
+    color: white;
     font-size: 15px;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    transition: all 300ms ease-in-out;
+    pointer-events: none;
+}
+
+.settingsItem h3 {
+    color: var(--main-secondary);
+    font-size: 15px;
+    font-weight: 700;
     margin: 0;
     padding: 0;
     transition: all 300ms ease-in-out;
+    pointer-events: none;
 }
 
-.settingsItem h4{
+.settingsItem h4 {
     color: white;
     font-size: 12px;
     margin: 0;
     padding: 0;
     transition: all 300ms ease-in-out;
+    pointer-events: none;
 }
 
 .settingsItem .header {
@@ -73,7 +104,6 @@
     display: flex;
     justify-content: space-between;
     align-self: center;
-
     margin-top: 10px;
 }
 
@@ -85,7 +115,6 @@
 
 .rangeInputs {
     margin: 0px 10px;
-
 }
 
 .rangeInputs .top {
@@ -94,15 +123,13 @@
     align-self: center;
 }
 
-.rangeInputs .top .input h3 {
-    margin-top: 10px;
-}
 
-.rangeInputs .top .input input[type=range] {
+/* .rangeInputs .top .input input[type=range] {
     margin: 5px 0px;
     border: none;
     outline: none;
-}
+} */
+
 .rangeInputs .top .input .label {
     display: flex;
     justify-content: flex-end;
@@ -123,7 +150,6 @@
 
 .rangeInputs .top .input .label input[type=text]:focus {
     border: 1px solid;
-
     border-color: var(--main-color);
     outline: none;
 }
@@ -133,4 +159,56 @@
     font-size: 12px;
     margin: 0;
     padding: 2px;
-} 
+}
+
+.settingsItem .content .customSeed {
+    display: flex;
+    align-items: center;
+    margin: 10px 0px;
+    height: 0px;
+    position: relative;
+    transition: all 300ms ease-in-out;
+    /* box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75); */
+}
+
+.settingsItem .content .customSeed .btn {
+    position: absolute;
+    min-height: 10px;
+    top: 0;
+    right: 0;
+    border-radius: 10px;
+    background-color: var(--main-secondary);
+    border: 0px;
+    height: 100%;
+    width: 30%;
+    cursor: pointer;
+    color: transparent;
+    transition: all 300ms ease-in-out;
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.75);
+}
+
+.settingsItem .content .customSeed input[type=text] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: var(--main-secondary);
+    border: 0px;
+    height: 100%;
+    width: 70%;
+    padding: 5px;
+    color: white;
+    transition: all 300ms ease-in-out;
+    box-shadow: inset 0px 0px 0px 0px rgba(0, 0, 0, 0.75);
+}
+
+.settingsItem .content .customSeed .btn:focus {
+    outline: none;
+    border: none;
+}
+
+.settingsItem .content .customSeed input[type=text]:focus {
+    outline: none;
+    border: none;
+}

@@ -35,16 +35,16 @@ export default class TERRAIN {
     addModifier(modifier, options) {
         let instance = new modifier(options)
         let name = String(instance.name)
-        this.modifiers[name] = instance 
+        this.modifiers[name] = instance
     }
 
-    removeModifier(modifier) {
+    removeModifier(mod) {
         for (const key in this.modifiers) {
             if (this.modifiers.hasOwnProperty(key)) {
                 const modifier = this.modifiers[key];
-                
-                if(key === modifier) {
-                    modifier = undefined
+
+                if (key === mod) {
+                    mod = undefined
                 }
             }
         }
@@ -57,7 +57,7 @@ export default class TERRAIN {
         }
     }
 
-   
+
 
 
 }
