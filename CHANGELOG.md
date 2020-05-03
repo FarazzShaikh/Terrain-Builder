@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - 🎛️ Knobs! More Knobs! Fine Tune Your Terrain With Added Controls to the Settings Panes. 
 - 🧽 Its Sleak! Remove Misc. Objects (Grids, Axis Helpers) from the World.
 - ✨ Its Pretty! Revamped UI.
+- 🛀 Its Neat! Core JavaScript Code Completely Rebuilt Into a Simpler System.
 
 ### Upcoming
 - 📝 Preset Import and Export.
