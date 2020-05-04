@@ -36,16 +36,16 @@ export default class WORLD {
 
                 gridSize: document.querySelector('.settingsItem-world .rangeInputs .top .gridSize input[type=range]'),
                 gridDivs: document.querySelector('.settingsItem-world .rangeInputs .top .gridDivs input[type=range]'),
-                xOff: document.querySelector('.settingsItem-world .rangeInputs .top .axisScale input[type=range]'),
-                yOff: document.querySelector('.settingsItem-world .rangeInputs .top .yOff input[type=range]'),
+                axisScale: document.querySelector('.settingsItem-world .rangeInputs .top .axisScale input[type=range]'),
+
             },
 
             input_sliderLabels: {
 
                 gridSize: document.querySelector('.settingsItem-world .rangeInputs .top .gridSize .label input'),
                 gridDivs: document.querySelector('.settingsItem-world .rangeInputs .top .gridDivs .label input'),
-                xOff: document.querySelector('.settingsItem-world .rangeInputs .top .axisScale .label input'),
-                yOff: document.querySelector('.settingsItem-world .rangeInputs .top .yOff .label input'),
+                axisScale: document.querySelector('.settingsItem-world .rangeInputs .top .axisScale .label input'),
+
             }
 
         }
@@ -233,7 +233,7 @@ export default class WORLD {
             if (this.elements.input_sliders.hasOwnProperty(key)) {
                 const input = this.elements.input_sliders[key];
                 input.name = input.parentElement.classList[1]
-                console.log('def_' + input.name)
+
                 input.value = this.globals['def_' + input.name]
 
 

@@ -230,7 +230,6 @@ export default class TERRAIN {
             if (this.elements.input_sliders.hasOwnProperty(key)) {
                 const input = this.elements.input_sliders[key];
                 input.name = input.parentElement.classList[1]
-                console.log('def_' + input.name)
                 input.value = this.globals['def_' + input.name]
 
 

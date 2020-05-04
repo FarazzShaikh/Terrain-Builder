@@ -1,7 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+
 ## [Released]
+
+## [1.2.1] - 2020-04-30
+### Fixed
+- 💬 Wrong Tool Tips Apperaing for Range Sliders Fixed.
+- 🗑️ Extra leftover slider for yOffest Removed.
+- ✍️ Debug Statements Removed.
+
+
+
 
 ## [1.2] - 2020-04-30
 ### Added
@@ -14,6 +24,7 @@ All notable changes to this project will be documented in this file.
 ### Upcoming
 - 📝 Preset Import and Export.
 - 🗺️ Height Map Import and Export.
+
 
 
 ## [1.1.2] - 2020-04-30

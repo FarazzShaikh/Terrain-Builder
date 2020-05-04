@@ -145,7 +145,7 @@
             <h3>Erosion</h3>
             <div class="buttons">
                 <img src="../images/configure/reset.svg" alt="" title="Reset Mesh Rotation.">
-                <label class="switch" title="Toggle Mesh Spin.">
+                <label class="switch" title="Toggle Erosion.">
                     <input type="checkbox">
                     <span class="slider round"></span>
                 </label>
@@ -155,7 +155,7 @@
             <h3>Custom Seed</h3>
             <div class="buttons">
                 <img src="../images/configure/reset.svg" alt="">
-                <label class="switch">
+                <label class="switch" title="Toggle The Use of a Custom Seed.">
                     <input type="checkbox">
                     <span class="slider round"></span>
                 </label>
@@ -192,7 +192,7 @@
             <div class="input noiseScale">
                 <h2>Noise Scale</h2>
                 <input type="range" name="" min='0' max='1' step='0.1' default='0' class='rangeSlider'
-                    title="Number Of Verts along one side of the mesh.">
+                    title="Number that determines at what distance to view the noisemap.">
                 <div class="label">
                     <input type="text" placeholder="6">
                 </div>
@@ -201,7 +201,7 @@
             <div class="input persistance">
                 <h2>Persistance</h2>
                 <input type="range" name="" min='0' max='1' step='0.1' class='rangeSlider'
-                    title="Height of Final Terrain.">
+                    title="Number that determines how much each octave contributes to the overall shape.">
                 <div class="label">
                     <input type="text" placeholder="2">
                 </div>
@@ -213,7 +213,7 @@
             <div class="input lacunarity">
                 <h2>Lacunarity</h2>
                 <input type="range" name="" min='0' max='1' step='0.1' default='0' class='rangeSlider'
-                    title="Number Of Verts along one side of the mesh.">
+                    title="Number that determines how much detail is added or removed at each octave">
                 <div class="label">
                     <input type="text" placeholder="2">
                 </div>
@@ -222,7 +222,7 @@
             <div class="input octaves">
                 <h2>Octaves</h2>
                 <input type="range" name="" min='0' max='1' step='0.1' class='rangeSlider'
-                    title="Height of Final Terrain.">
+                    title="The number of levels of detail you want you perlin noise to have.">
                 <div class="label">
                     <input type="text" placeholder="8">
                 </div>
@@ -303,15 +303,7 @@
                 </div>
             </div>
 
-            <div class="input yOff">
-                <h2>Y Offset :</h2>
-                <input type="range" name="" min='0' max='1' step='0.01' class='rangeSlider'
-                    title="Height of Final Terrain.">
-                <div class="label">
-                    <input type="text" placeholder="8">
-                </div>
-
-            </div>
+            
         </div>
 
     </div>

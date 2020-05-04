@@ -2,6 +2,7 @@
 Three.js Procedural Terrain Right in The Browser.
 
 Demo : 	https://terrain-builder.herokuapp.com/
+WARNING: FEW FEATURES MAY NOT WORK ON MOBILE
 
 ![Demo](https://github.com/FarazzShaikh/Threejs-procedural-terrain/blob/master/public/images/Screenshot.png)
 
@@ -10,7 +11,7 @@ Demo : 	https://terrain-builder.herokuapp.com/
  - Right Mouse + drag : Pan
  - Middle Mouse + drag : Zoom
  - Ctrl : Info
- - Right Mouse Click : Settings (Incomplete)
+ - Right Mouse Click : Settings
 
 ### To Run (locally):
 

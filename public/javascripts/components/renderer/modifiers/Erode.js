@@ -39,7 +39,7 @@ export default class ERODE {
         let deltaSteps = this.steps - cStep
         for (let l = 0; l < deltaSteps; l++) {
 
-            console.log('simulation iteration')
+
             for (let j = 0; j < mesh.geometry.vertices.length; j++) {
                 let cPoint = mesh.geometry.vertices[j]
                 let greaterFlag = false
