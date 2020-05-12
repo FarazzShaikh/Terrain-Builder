@@ -2,11 +2,18 @@
 All notable changes to this project will be documented in this file.
 
 
-## [Released]
+## [unfinished]
+
+## [1.2.2] - 2020-05-12
+### Chenges
+- ✍️ React Rewrite Started.
+
+
+
 
 ## [1.2.1] - 2020-04-30
 ### Fixed
-- 💬 Wrong Tool Tips Apperaing for Range Sliders Fixed.
+- 💬 Wrong Tool Tips Apperasing for Range Sliders Fixed.
 - 🗑️ Extra leftover slider for yOffest Removed.
 - ✍️ Debug Statements Removed.
 
