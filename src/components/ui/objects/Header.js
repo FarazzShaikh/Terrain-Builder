@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 
+
 export class HEADER extends Component {
     render() {
         const ImgStyled = styled.img`
