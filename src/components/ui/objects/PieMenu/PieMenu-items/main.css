@@ -1,0 +1,10 @@
+.switch-glow {
+    box-shadow: 0px 0px 20px 0px #b88335;
+    transition: all 200ms;
+}
+
+.label-glow {
+    color: #ffb74d;
+    text-shadow: 0px 0px 10px #b88335;
+    transition: all 200ms;
+}

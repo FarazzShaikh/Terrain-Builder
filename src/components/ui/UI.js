@@ -3,12 +3,13 @@ import styled from 'styled-components';
 
 import { HEADER } from "./objects/Header";
 import { FOOTER } from "./objects/Footer";
-import { PIEMENU } from "./objects/PieMenu";
+import { PIEMENU } from "./objects/PieMenu/PieMenu"
+
+import { TERRAIN_ITEM } from "./objects/PieMenu/PieMenu-items/terrain-item";
 
 
 
 export class UI extends Component {
-
     constructor() {
         super()
         this.state = {
@@ -68,6 +69,16 @@ export class UI extends Component {
 
                 font-family: 'Open Sans';
             `,
+
+            PieMenu_Items: styled.div`
+                width: 95vw;
+
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                font-family: 'Montserrat', sans-serif;
+            `,
         }
 
         return (
@@ -79,8 +90,20 @@ export class UI extends Component {
                     <FOOTER />
                 </Containers.Footer>
                 <Containers.PieMenu>
-                    <PIEMENU checkClickedItem={this.checkClickedItem.bind(this)} />
+                    <PIEMENU 
+                        checkClickedItem={this.checkClickedItem.bind(this)}
+                        listItems={
+                            [
+                                { className: 'terrain' },
+                                { className: 'world' },
+                                { className: 'map' },
+                            ]
+                        }
+                    />
                 </Containers.PieMenu>
+                <Containers.PieMenu_Items>
+                    <TERRAIN_ITEM />
+                </Containers.PieMenu_Items>
             </>
 
         )
