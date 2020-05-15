@@ -18,6 +18,7 @@ let globals = new GLOBALS()
 export class MAIN {
     constructor() {
         main()
+        this.GLOBALS = globals
     }
 
 }
@@ -32,9 +33,31 @@ function main() {
 
     initGrid(renderer)
     initAxis(renderer)
+    let currentTerrainData = initTerrain(renderer)
 
-    initTerrain(renderer)
+    setInterval(() => {
+        
+        if(globals.flags.reset_Displace) {
+            console.log('start')
+            renderer.removeObject('Terrain')
+            currentTerrainData = initTerrain(renderer)
 
+            globals.flags.reset_Displace = false
+            console.log('done')
+        }
+
+        if(globals.flags.reset_Erode) {
+            if(!globals.Erosion) {
+                currentTerrainData.terrain.modifiers.Erode.removeErosion(currentTerrainData.terrain.getMesh(), currentTerrainData.heightData_notScaled, globals.scale || 8)
+                currentTerrainData.terrain.modifiers.Erode = undefined
+            } else {
+                initErosion(currentTerrainData.terrain, currentTerrainData.erode_heightBuffer)
+            }
+
+            globals.flags.reset_Erode = false
+        }
+
+    }, 100);
 
 }
 
@@ -42,39 +65,40 @@ function initTerrain(renderer) {
 
     geometryInfo = renderer.addObject(TERRAIN, {
         name: 'Terrain', // Object name
-        resolution: globals.resolution || 128 // Terrain Resolution
+        resolution: globals.Resolution || 128 // Terrain Resolution
     })
     let terrainMesh = geometryInfo.mesh // Get mesh from Terrain Object
     geometryInfo = geometryInfo.info // Get Information about geometry for UI
 
     let terrain = renderer.objects.Terrain
-    let seed = globals.flags.customSeed_enable ? globals.seed : Math.random()
+    let seed = globals.CustomSeed || Math.random()
 
     terrain.addModifier(DISPLACE, {
         seed: seed,
-        scale: globals.noiseScale / 100 || 0.06,
-        persistance: globals.persistance || 2,
-        lacunarity: globals.lacunarity || 2,
-        octaves: globals.octaves || 8
+        scale: globals.Scale || 0.06,
+        persistance: globals.Persistance || 2,
+        lacunarity: globals.Lacunarity || 2,
+        octaves: globals.Octaves || 8
     })
 
     timerStart = Date.now(); // Timing Displacement Start
-    terrain.modifiers.Displace.createHeightBuffer(terrainMesh, globals.xOff) // Creates A Buffer with noise values
+    terrain.modifiers.Displace.createHeightBuffer(terrainMesh) // Creates A Buffer with noise values
     terrain.modifiers.Displace.getNormalizedHeightBuffer() // Normalizes and returns Buffer
     let heightData_notScaled = terrain.modifiers.Displace.displaceMesh(terrainMesh, { // Actullay Displaces Mesh
-        zScalingFactor: globals.scale || 8, // How much the noise effects the height
+        zScalingFactor:  8, // How much the noise effects the height
         heightField: undefined // Custom Noise Field (Optional)
     })
     terrain.modifiers.Displace.recalculateNormals(terrainMesh) // Recalculates Normals
     let time_displace = Date.now() - timerStart // Timing Displacement End
 
-
     let time_erode, erode_heightBuffer
-    if (globals.flags.erosion_enable) {
+    if(globals.Erosion) {
         let erosionData = initErosion(terrain)
         time_erode = Date.now() - erosionData.time // Timing Erosion End
         erode_heightBuffer = erosionData.erode_heightBuffer
     }
+    
+    
 
 
     terrain.addModifier(COLOR, { // Add COlor Modifier
@@ -96,8 +120,8 @@ function initTerrain(renderer) {
 function initGrid(renderer) {
     let gridObject = renderer.addObject(GRID, {
         name: 'Grid',
-        size: globals.gridSize || 30,
-        divisions: globals.gridDivs || 20
+        size: 30,
+        divisions:20
     })
 
     return gridObject
@@ -108,12 +132,12 @@ function initErosion(terrain, buffer) {
     let terrainMesh = terrain.getMesh() // Get mesh from Terrain Object
         // Erode Modifier
     terrain.addModifier(ERODE, { // Add Erode Modifier to Terrain
-        rainAmount: globals.rainAmount * 0.001 || 0.001, // % of Verticies that recieve rain
+        rainAmount: 0.001, // % of Verticies that recieve rain
         rainIntensity: 0.5, // 'Wetness' of the rain / amount of water in each droplet
         lifetime: 0.5, // Lifetime of each droplet
         sedimentDeposition: 3, // How much sediment is deposited by flowing water
         waterErosion: 8, // How much soil is taken out by flowing water
-        steps: globals.rainSteps || 300, // Number of steps in the simulation
+        steps: 300, // Number of steps in the simulation
         res_verts: terrain.res_verts // Total number of verticies in Terrain mesh
     })
 
@@ -137,7 +161,7 @@ function initErosion(terrain, buffer) {
 function initAxis(renderer) {
     let axisObject = renderer.addObject(AXIS, {
         name: 'Axis',
-        size: globals.axisScale || 10,
+        size:10,
     })
 
     return axisObject

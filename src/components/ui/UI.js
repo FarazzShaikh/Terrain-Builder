@@ -102,7 +102,7 @@ export class UI extends Component {
                     />
                 </Containers.PieMenu>
                 <Containers.PieMenu_Items>
-                    <TERRAIN_ITEM />
+                    <TERRAIN_ITEM globals={this.props.globals} />
                 </Containers.PieMenu_Items>
             </>
 

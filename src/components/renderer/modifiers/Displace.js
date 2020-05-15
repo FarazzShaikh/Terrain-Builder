@@ -65,5 +65,11 @@ export class DISPLACE {
         return (val - min) / (max - min);
     }
 
+    reset(mesh) {
+        this.createHeightBuffer(mesh)
+        this.getNormalizedHeightBuffer()
+        this.displaceMesh(mesh)
+    }
+
 
 }
