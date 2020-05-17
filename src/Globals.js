@@ -5,14 +5,19 @@ export default class GLOBALS {
         // Terrain   
 
         this.Erosion = true
+        this.CustomSeed = Math.random()
 
-        this.CustomSeed = undefined
+        this.Resolution = 128
+        this.Scale = 0.06
+        this.Height = 8
+        this.Persistance = 2
+        this.Lacunarity = 2
+        this.Octaves = 8
 
-        this.Resolution = undefined
-        this.Scale = undefined
-        this.Persistance = undefined
-        this.Lacunarity = undefined
-        this.Octaves = undefined
+        this.Steps = 300
+        this.Rain_Amount = 0.001
+        this.Sediment_Deposited = 3
+        this.Sediment_Eroded = 8
 
         this.flags = {
             reset_Displace: false,
@@ -20,6 +25,8 @@ export default class GLOBALS {
         }
 
         this.customHeightMap = undefined
+
+        this.none = undefined
     }
 }
 

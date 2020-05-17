@@ -1,15 +1,21 @@
 import React, { Component } from "react";
+import styled from 'styled-components';
 import {
     MapTwoTone,
     FilterHdrTwoTone,
     PublicTwoTone,
+    BeachAccess
 } from '@material-ui/icons';
 import './PieMenu.css'
 import { Fade } from "@material-ui/core";
 
+import { TERRAIN_ITEM } from "./PieMenu-items/terrain/terrain-item"
+import { EROSION_ITEM } from "./PieMenu-items/erosion/erosion.item";
+
 const Icons = {
     map: () => (<MapTwoTone className='img' style={{ filter: 'invert(100%)' }} />),
     terrain: () => (<FilterHdrTwoTone className='img' style={{ filter: 'invert(100%)' }} />),
+    erosion: () => (<BeachAccess className='img' style={{ filter: 'invert(100%)' }} />),
     world: () => (<PublicTwoTone className='img' style={{ filter: 'invert(100%)' }} />),
 }
 
@@ -23,6 +29,23 @@ export class PIEMENU extends Component {
                 y: 100
             },
             enabled: false,
+
+            clicked: '',
+
+            enabled_terrain: false,
+            enabled_map: false,
+            enabled_erosion: false
+            
+        }
+
+        this.cardPos_terrain = {
+            x: 0,
+            y: 0
+        }
+
+        this.cardPos_erosion = {
+            x: 0,
+            y: 0
         }
 
         this.mouse = {
@@ -40,12 +63,13 @@ export class PIEMENU extends Component {
                 this.mouse.x = e.clientX;
                 this.mouse.y = e.clientY;
                 this.idleTime = 0
-                this.setPostion(this.mouse.x, this.mouse.y)
+                
             }
         })
 
         document.addEventListener('mousedown', e => {
             if (e.button === 2) {
+                this.setPostion(this.mouse.x, this.mouse.y)
                 this.setState({
                     enabled: this.toggle(this.show.bind(this), this.hide.bind(this), this.state.enabled)
                 })
@@ -72,9 +96,23 @@ export class PIEMENU extends Component {
                                 key={item.className}
                                 className={item.className}
                                 onClick={() => {
-                                    this.props.checkClickedItem(item.className)
+                                    if(!this.state.enabled_terrain) {
+                                        this.cardPos_terrain.x = this.mouse.x
+                                        this.cardPos_terrain.y = this.mouse.y
+
+                                    }
+
+                                    if(!this.state.enabled_erosion) {
+                                        this.cardPos_erosion.x = this.mouse.x
+                                        this.cardPos_erosion.y = this.mouse.y
+                                    }
+                                    
+                                    
                                     this.setState({
-                                        enabled: this.toggle(this.show.bind(this), this.hide.bind(this), this.state.enabled)
+                                        enabled: this.toggle(this.show.bind(this), this.hide.bind(this), this.state.enabled),
+                                        clicked: item.className,
+                                        [`enabled_${item.className}`]: this.state[`enabled_${item.className}`] ? false : true
+                                        
                                     })
                                 }}
                             >
@@ -89,28 +127,82 @@ export class PIEMENU extends Component {
                 }
             </>
         )
+    }
 
+    card_onClose = (name) => {
+        this.setState({
+            [`enabled_${name}`]: false
+        })
+    }
+
+    renderClickedItem = () => {
+        return (
+            <>
+                <EROSION_ITEM 
+                    _onClose={() => {
+                        this.card_onClose('erosion')
+                    }}
+                    globals={this.props.globals}
+                    visible={this.state.enabled_erosion}
+                    x={this.cardPos_erosion.x}
+                    y={this.cardPos_erosion.y}
+                />
+
+                <TERRAIN_ITEM 
+                    _onClose={() => {
+                        this.card_onClose('terrain')
+                    }}
+                    globals={this.props.globals}
+                    visible={this.state.enabled_terrain}
+                    x={this.cardPos_terrain.x}
+                    y={this.cardPos_terrain.y}
+                />
+            </>
+            
+        )
         
-
     }
 
     render() {
+        const Containers = {
+            PieMenu_Items: styled.div`
+                width: 95vw;
+
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                font-family: 'Montserrat', sans-serif;
+            `,
+        }
+
         return (
-            <Fade
-                in={this.state.enabled}
-            >
-                <div
-                    className="settings"
-                    style={{
-                        left: this.state.position.x + 'px',
-                        top: this.state.position.y + 'px'
-                    }
-                    }>
-                    <ul>
-                        {this.render_listItems(this.props.listItems)}
-                    </ul>
-                </div>
-            </Fade>
+            <>
+                <Fade
+                    in={this.state.enabled}
+                >
+                    <div
+                        className="settings"
+                        style={{
+                            left: this.state.position.x + 'px',
+                            top: this.state.position.y + 'px'
+                        }
+                        }>
+                        <ul>
+                            {this.render_listItems(this.props.listItems)}
+                        </ul>
+                    </div>
+                </Fade>
+
+                <Containers.PieMenu_Items>
+                        {this.renderClickedItem()}
+                </Containers.PieMenu_Items>
+
+
+            </>
+            
+
+
 
         )
     }

@@ -1,55 +1,75 @@
 import React, { Component } from "react";
-import Css from 'styled-components';
-import Card from '@material-ui/core/Card';
-import Switch from '@material-ui/core/Switch';
-import CardContent from '@material-ui/core/CardContent';
+import { 
+    Card,
+    Switch,
+    CardContent,
+    TextField, 
+    Slider, 
+    IconButton, 
+    Fade ,
+    Divider,
+    Tooltip
+} from '@material-ui/core';
 
-import { TextField, Slider, IconButton, InputAdornment, Fade  } from '@material-ui/core';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { Shuffle, KeyboardArrowRight, FastfoodOutlined } from '@material-ui/icons';
+import { 
+    Shuffle,
+    KeyboardArrowRight,
+    Close,
+    Help
+} from '@material-ui/icons';
 
 
 import "./main.css";
 
-const COLOR_SHADOW = '#b88335'
-const COLOR_PRIMARY = '#ffb74d'
-
 
 export class TERRAIN_ITEM extends Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
+        this.GLOBALS = this.props.globals
 
         this.state = {
-            Erosion: true,
+            Erosion: this.GLOBALS.Erosion,
 
             Custom: false,
             customSeed: undefined,
             custom_inputIsFull: false,
 
             defaults: {
-                Resolution: 256,
-                Scale: 0.06,
-                Persistance: 2,
-                Lacunarity: 2,
-                Octaves: 8
+                Resolution: this.GLOBALS.Resolution,
+                Scale: this.GLOBALS.Scale,
+                Height: this.GLOBALS.Height,
+                Persistance: this.GLOBALS.Persistance,
+                Lacunarity: this.GLOBALS.Lacunarity,
+                Octaves: this.GLOBALS.Octaves
             },
 
-            visible: true
+
+            mousePos: {
+                x: 0,
+                y: 0
+            },
+
         }
        
     }
 
-    componentDidMount = () => {
-        this.GLOBALS = this.props.globals
+    toolTIps = {
+        Resolution: 'Number Of Verts along one side of the mesh.',
+        Height: 'Height of Final Terrain',
+        Scale: 'Number that determines at what distance to view the noisemap.',
+        Persistance: 'Number that determines how much each octave contributes to the overall shape.',
+        Lacunarity: 'Number that determines how much detail is added or removed at each octave.',
+        Octaves: 'Number of levels of detail you want you perlin noise to have.'
     }
 
     rangeOnChange = (e, value, name, type) => {
         let key = name.split(' ').length > 1 ? name.split(' ')[0] + name.split(' ')[1] : name.split(' ')[0]
+        
 
         this.GLOBALS[key] = value
         this.GLOBALS.flags[`reset_${type}`] = true 
-        console.log(key)
+
     }
 
     onSwitchChange = (e) => {
@@ -93,10 +113,8 @@ export class TERRAIN_ITEM extends Component {
                     onClick={(e) => {
                         let key = name.split(' ').length > 1 ? name.split(' ')[0] + name.split(' ')[1] : name.split(' ')[0]
 
-                        if(key !== 'CustomSeed') {
-                            this.GLOBALS[key] = e.target.checked
-                            this.GLOBALS.flags[`reset_${type}`] = true
-                        }
+                        this.GLOBALS[key] = e.target.checked
+                        this.GLOBALS.flags[`reset_${type}`] = true
                         
                     }}
                 />
@@ -106,19 +124,25 @@ export class TERRAIN_ITEM extends Component {
     }
 
     input = ({name, type}) => {
+        
         return (
             <>
-                {this.switch({name: name, type: type})}
+                
                 <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
+                    alignItems: 'center',
                     width: '100%'
                 }}>
                     <TextField
-                        disabled={!this.state.Custom}
+                        focused
+                        color={this.state.custom_inputIsFull ? 'primary' : 'secondary'}
+                        //focused={this.state.custom_inputIsFull}
                         id="outlined-number"
                         type="text"
-                        placeholder={this.state.Custom ? '' : 'Disabled'}
+                        placeholder={`${this.GLOBALS.CustomSeed}`}
+                        label='Custom Seed'
+                        fullWidth
                         size='small'
                         margin="dense"
                         onChange={(e) => {
@@ -129,11 +153,13 @@ export class TERRAIN_ITEM extends Component {
                                 })
                             } else {
                                 this.setState({
-                                    custom_inputIsFull: false
+                                    custom_inputIsFull: false,
+                                    customSeed: e.target.value
                                 })
                             }
                             
                         }}
+                        
                     />
                     <IconButton
                         style={{
@@ -141,7 +167,7 @@ export class TERRAIN_ITEM extends Component {
                             marginLeft: 5,
                         }}
                         onClick={(e) => {
-                            if(this.state.custom_inputIsFull && this.state.Custom) {
+                            if(this.state.custom_inputIsFull) {
                                 let seed = this.state.customSeed
                                 let key = name.split(' ').length > 1 ? name.split(' ')[0] + name.split(' ')[1] : name.split(' ')[0]
                                 this.GLOBALS[key] = seed
@@ -154,9 +180,10 @@ export class TERRAIN_ITEM extends Component {
                             }
                             
                         }}
-                        disabled={!this.state.Custom}
+                        size='small'
+                        
                     >
-                    {this.state.custom_inputIsFull && this.state.Custom ? <KeyboardArrowRight /> : <Shuffle />}
+                    {this.state.custom_inputIsFull ? <KeyboardArrowRight /> : <Shuffle />}
                     </IconButton>
                 </div>
                 
@@ -175,18 +202,34 @@ export class TERRAIN_ITEM extends Component {
                 marginTop: 20
             }}>
 
-                <h4 
-                    style={{ 
-                        margin: 0, 
-                        padding: 0, 
-                        color:'white', 
-                        fontWeight: '200', 
-                        width: '100%', 
-                        textAlign: 'left',
-                        textShadow: '0px 0px 10px #000000',
-                    }}
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: '100%'
+                }}>
+                    <h4 
+                        style={{ 
+                            margin: 0, 
+                            padding: 0, 
+                            color:'white', 
+                            fontWeight: '200', 
+                            width: '100%', 
+                            textAlign: 'left',
+                            textShadow: '0px 0px 10px #000000',
+                        }}
+                        
+                    >{name}</h4>
+
+                    <Tooltip title={this.toolTIps[name]}>
+                        <IconButton size='small'>
+                            <Help />
+                        </IconButton>
+                    </Tooltip>
                     
-                >{name}</h4>
+                    
+                </div>
+                
                 <Slider
                     defaultValue={this.state.defaults[name]}
                     valueLabelDisplay={label}
@@ -204,73 +247,9 @@ export class TERRAIN_ITEM extends Component {
         )
     }
 
-    renderExpantionCard = () => {
-        const resolution_marks = [
-            {
-                value: 128,
-                label: '128',
-            },
-            {
-                value: 256,
-                label: '256',
-            },
-            {
-                value: 512,
-                label: '512',
-            },
-            {
-                value: 1024,
-                label: '1024',
-            },
-        ];
-
-        const generateMarks = (min, max, step, precision) => {
-            let centerL = ((min + max) - (step * 2)) / 2
-            let centerR = ((min + max) + (step * 2)) / 2
-            let marks = [
-                {
-                    value: min,
-                    label: String(min),
-                },
-                {
-                    value: centerL.toFixed(precision),
-                    label: String(centerL.toFixed(precision)),
-                },
-                {
-                    value: centerR.toFixed(precision),
-                    label: String(centerR.toFixed(precision)),
-                },
-                {
-                    value: max,
-                    label: String(max),
-                },
-            ]
-            
-            return marks
-        }
-
-
-        return (
-            
-                <></>
-            
-        )
-        
-        
-    }
 
     render() {
 
-        const Container = {
-            MoreHorizIcon: Css.div`
-                display: flex;
-                justify-content: flex-end;
-                margin: 0;
-                margin-top: 20px;
-                margin-right: 5px;
-            `
-        }
-
         const resolution_marks = [
             {
                 value: 128,
@@ -317,29 +296,44 @@ export class TERRAIN_ITEM extends Component {
 
         return (
 
-            <Fade in={this.state.visible}>
+            <Fade in={this.props.visible}>
                 <Card
-
                     raised={true}
                     elevation={12}
                     style={{
-                        width: 300,
-                        height: 300,
+                        width: 400,
+                        height: 400,
                         backgroundColor: '#242424',
                         zIndex: 10,
-                        borderRadius:10,   
+                        borderRadius:5,   
 
                         position: 'absolute',
-                        top: 0,
-                        left: 0,
+                        top: this.props.y ,
+                        left: this.props.x ,
 
                         overflowY: 'scroll'                     
                     }}
                     classes={{root: 'custom-scrollbar'}}
 
                 >
+                    
                     <CardContent>
-                        <h3 style={{ margin: 0, padding: 0, color:'white'}}>Terrain.</h3>
+                        <div style={{
+                            display: 'flex',
+                            width: '100%',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                        }}>
+                            <h2 style={{ margin: 0, padding: 0, color:'white'}}>Terrain.</h2>
+                            <IconButton 
+                                onClick={this.props._onClose}
+                                size='small'
+                            >
+                                <Close />
+                            </IconButton>
+                            
+                        </div>
+                        
                         <div style={{
                             display: 'flex',
                             justifyContent: 'center',
@@ -354,6 +348,10 @@ export class TERRAIN_ITEM extends Component {
 
                         <div style={{margin: '10px 20px'}}>
                             {this.range({name: 'Resolution', type: 'Displace', min: 128, max: 1024, step: null, marks: resolution_marks, label: 'off'})}
+                            {this.range({name: 'Height', type: 'Displace', min: 1, max: 16, step: 1, marks: generateMarks(1, 16, 1, 0), label: 'auto'})}
+                            <Divider style={{
+                                marginTop: 20
+                            }} />
                             {this.range({name: 'Scale', type: 'Displace', min: 0.01, max: 0.1, step: 0.01, marks: generateMarks(0.01, 0.1, 0.01, 2), label: 'auto'})}
                             {this.range({name: 'Persistance', type: 'Displace', min: 1, max: 4, step: 0.1, marks: generateMarks(1, 4, 0.1, 0), label: 'auto'})}
                             {this.range({name: 'Lacunarity', type: 'Displace', min: 1, max: 4, step: 0.1, marks: generateMarks(1, 4, 0.1, 0), label: 'auto'})}

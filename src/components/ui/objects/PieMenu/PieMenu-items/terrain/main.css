@@ -1,0 +1,35 @@
+.switch-glow {
+    box-shadow: 0px 0px 20px 0px #b88335;
+    transition: all 200ms;
+}
+
+.label-glow {
+    color: #ffb74d;
+    text-shadow: 0px 0px 10px #b88335;
+    transition: all 200ms;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track
+{
+
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #4b4b4b;
+}
+
+.custom-scrollbar::-webkit-scrollbar
+{
+
+    width: 6px;
+
+    background-color: #121212;
+    cursor: all-scroll;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb
+{
+
+    -webkit-box-shadow:  0 0 10px 0px #ffb84d73;
+    box-shadow: 0 0 10px 0px #ffb84d73;
+	background-color: #ffb74d;
+}

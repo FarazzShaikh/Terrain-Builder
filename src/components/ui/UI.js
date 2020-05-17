@@ -5,22 +5,7 @@ import { HEADER } from "./objects/Header";
 import { FOOTER } from "./objects/Footer";
 import { PIEMENU } from "./objects/PieMenu/PieMenu"
 
-import { TERRAIN_ITEM } from "./objects/PieMenu/PieMenu-items/terrain-item";
-
-
-
 export class UI extends Component {
-    constructor() {
-        super()
-        this.state = {
-            clicked: ''
-        }
-    }
-
-    checkClickedItem = (item) => {
-        console.log(item)
-    }
-
     render() {
         const Containers = {
             Header: styled.div`
@@ -70,15 +55,7 @@ export class UI extends Component {
                 font-family: 'Open Sans';
             `,
 
-            PieMenu_Items: styled.div`
-                width: 95vw;
-
-                position: absolute;
-                top: 0;
-                left: 0;
-
-                font-family: 'Montserrat', sans-serif;
-            `,
+           
         }
 
         return (
@@ -91,19 +68,18 @@ export class UI extends Component {
                 </Containers.Footer>
                 <Containers.PieMenu>
                     <PIEMENU 
-                        checkClickedItem={this.checkClickedItem.bind(this)}
+                        globals = {this.props.globals}
                         listItems={
                             [
-                                { className: 'terrain' },
+                                { className: 'terrain' }, 
                                 { className: 'world' },
                                 { className: 'map' },
+                                { className: 'erosion' },
                             ]
                         }
                     />
                 </Containers.PieMenu>
-                <Containers.PieMenu_Items>
-                    <TERRAIN_ITEM globals={this.props.globals} />
-                </Containers.PieMenu_Items>
+                
             </>
 
         )

@@ -68,7 +68,6 @@ export class RENDERER {
     render = () => {
         window.requestAnimationFrame(this.render);
 
-
         this.controls.update()
         this.renderer.render(this.scene, this.camera);
     }

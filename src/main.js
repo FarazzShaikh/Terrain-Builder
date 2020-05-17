@@ -37,6 +37,7 @@ function main() {
 
     setInterval(() => {
         
+
         if(globals.flags.reset_Displace) {
             console.log('start')
             renderer.removeObject('Terrain')
@@ -47,13 +48,18 @@ function main() {
         }
 
         if(globals.flags.reset_Erode) {
-            if(!globals.Erosion) {
-                currentTerrainData.terrain.modifiers.Erode.removeErosion(currentTerrainData.terrain.getMesh(), currentTerrainData.heightData_notScaled, globals.scale || 8)
-                currentTerrainData.terrain.modifiers.Erode = undefined
+            if(globals.Erosion) {
+                if(currentTerrainData.terrain.modifiers.Erode) {
+                    currentTerrainData.terrain.modifiers.Erode.removeErosion(currentTerrainData.terrain.getMesh(), currentTerrainData.heightData_notScaled, globals.scale || 8)
+                    currentTerrainData.terrain.modifiers.Erode = undefined
+                }
+                initErosion(currentTerrainData.terrain)                
             } else {
-                initErosion(currentTerrainData.terrain, currentTerrainData.erode_heightBuffer)
+                if(currentTerrainData.terrain.modifiers.Erode) {
+                    currentTerrainData.terrain.modifiers.Erode.removeErosion(currentTerrainData.terrain.getMesh(), currentTerrainData.heightData_notScaled, globals.scale || 8)
+                    currentTerrainData.terrain.modifiers.Erode = undefined
+                }
             }
-
             globals.flags.reset_Erode = false
         }
 
@@ -71,7 +77,7 @@ function initTerrain(renderer) {
     geometryInfo = geometryInfo.info // Get Information about geometry for UI
 
     let terrain = renderer.objects.Terrain
-    let seed = globals.CustomSeed || Math.random()
+    let seed = globals.CustomSeed
 
     terrain.addModifier(DISPLACE, {
         seed: seed,
@@ -85,7 +91,7 @@ function initTerrain(renderer) {
     terrain.modifiers.Displace.createHeightBuffer(terrainMesh) // Creates A Buffer with noise values
     terrain.modifiers.Displace.getNormalizedHeightBuffer() // Normalizes and returns Buffer
     let heightData_notScaled = terrain.modifiers.Displace.displaceMesh(terrainMesh, { // Actullay Displaces Mesh
-        zScalingFactor:  8, // How much the noise effects the height
+        zScalingFactor: globals.Height || 8, // How much the noise effects the height
         heightField: undefined // Custom Noise Field (Optional)
     })
     terrain.modifiers.Displace.recalculateNormals(terrainMesh) // Recalculates Normals
@@ -132,12 +138,12 @@ function initErosion(terrain, buffer) {
     let terrainMesh = terrain.getMesh() // Get mesh from Terrain Object
         // Erode Modifier
     terrain.addModifier(ERODE, { // Add Erode Modifier to Terrain
-        rainAmount: 0.001, // % of Verticies that recieve rain
+        rainAmount: globals.Rain_Amount || 0.001, // % of Verticies that recieve rain
         rainIntensity: 0.5, // 'Wetness' of the rain / amount of water in each droplet
         lifetime: 0.5, // Lifetime of each droplet
-        sedimentDeposition: 3, // How much sediment is deposited by flowing water
-        waterErosion: 8, // How much soil is taken out by flowing water
-        steps: 300, // Number of steps in the simulation
+        sedimentDeposition: globals.Sediment_Deposited || 3, // How much sediment is deposited by flowing water
+        waterErosion: globals.Sediment_Eroded || 8, // How much soil is taken out by flowing water
+        steps: globals.Steps || 300, // Number of steps in the simulation
         res_verts: terrain.res_verts // Total number of verticies in Terrain mesh
     })
 

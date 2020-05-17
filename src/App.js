@@ -7,7 +7,8 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default class App extends Component{
 
-  componentWillMount() {
+  constructor(props) {
+    super(props)
     let main = new MAIN()
     this.GLOBALS = main.GLOBALS
     
@@ -30,7 +31,7 @@ export default class App extends Component{
         main: '#ffb74d',
       },
       secondary: {
-        main: '#ff8a65',
+        main: '#ffffff',
       },
       
     },

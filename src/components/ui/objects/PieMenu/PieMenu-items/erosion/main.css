@@ -11,7 +11,7 @@
 
 .custom-scrollbar::-webkit-scrollbar-track
 {
-    border-radius: 5px;
+
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	background-color: #4b4b4b;
@@ -19,16 +19,17 @@
 
 .custom-scrollbar::-webkit-scrollbar
 {
+
     width: 6px;
-    border-radius: 5px;
+
     background-color: #121212;
     cursor: all-scroll;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb
 {
-    border-radius: 5px;
-    -webkit-box-shadow:  0 0 10px #ffb74d;
-    box-shadow: 0 0 10px #ffb74d;
+
+    -webkit-box-shadow:  0 0 10px 0px #ffb84d73;
+    box-shadow: 0 0 10px 0px #ffb84d73;
 	background-color: #ffb74d;
 }
