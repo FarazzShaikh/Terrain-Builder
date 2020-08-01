@@ -1,0 +1,52 @@
+.ui-root {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 16px;
+    padding-top: 16px;
+}
+
+.ui-root .ui-container {
+    width: 320px;
+    background-color: #191919;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    transition: all 300ms ease-in-out;
+}
+
+.ui-header {
+    width: 100%;
+    padding-bottom: 8px;
+    border: 2px solid #292929;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.ui-title {
+    text-align: left;
+    font-size: 15px;
+    font-family: sans-serif;
+    font-weight: 200;
+    color: white;
+}
+
+.ui-subtitle {
+    text-align: left;
+    font-size: 10px;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: white;
+}
