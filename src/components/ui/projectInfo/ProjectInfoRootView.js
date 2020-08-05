@@ -5,7 +5,7 @@ import {
     faAngleDown as Icon_arrow,
 } from '@fortawesome/free-solid-svg-icons'
 import IconContainerViewController from './IconContainer/IconContainerViewController';
-import ResolutionInputViewController from './ResolutionInput/InputTextFieldsViewController';
+import ResolutionInputViewController from './InputTextFields/InputTextFieldsViewController';
 
 export default class ProjectInfoRootView extends Component {
     render() {

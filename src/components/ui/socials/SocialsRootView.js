@@ -14,6 +14,7 @@ import {
     Zoom, 
     withStyles
 } from '@material-ui/core';
+import BasicIcon from '../miscComponents/BasicIcon';
 
 const LightTooltip = withStyles((theme) => ({
     tooltip: {
@@ -29,46 +30,34 @@ export default class SocialsRootView extends Component {
         return (
             <div className={'socials-main'}>
                 <div className={'socials-container'}>
-                    <LightTooltip
-                        title="View Source."
-                        placement="top"
-                        TransitionComponent={Zoom}
-                    >
-                        <div>
-                            <FontAwesomeIcon icon={Icon_github} color={'white'} className={'ui-icon'} onMouseDown={() => this.props.onMouseDown('git')} />
-                        </div>
+                    <BasicIcon 
+                        tooltip_Placement={"top"}
+                        tooltip_Label={'View Source'}
+                        icon={Icon_github}
+                        onMouseDown={() => this.props.onMouseDown('git')}
 
-                    </LightTooltip>
-                    <LightTooltip
-                        title="Report a Bug."
-                        placement="top"
-                        TransitionComponent={Zoom}
-                    >
-                        <div>
-                            <FontAwesomeIcon icon={Icon_bug} color={'white'} className={'ui-icon'} onMouseDown={() => this.props.onMouseDown('bug')} />
-                        </div>
+                    />
+                    <BasicIcon 
+                        tooltip_Placement={"top"}
+                        tooltip_Label={'Report a Bug'}
+                        icon={Icon_bug}
+                        onMouseDown={() => this.props.onMouseDown('bug')}
 
-                    </LightTooltip>
-                    <LightTooltip
-                        title="Check out my 3D Artwork."
-                        placement="top"
-                        TransitionComponent={Zoom}
-                    >
-                        <div>
-                            <FontAwesomeIcon icon={Icon_artstation} color={'white'} className={'ui-icon'} onMouseDown={() => this.props.onMouseDown('art')} />
-                        </div>
+                    />
+                    <BasicIcon 
+                        tooltip_Placement={"top"}
+                        tooltip_Label={'Check out my Art'}
+                        icon={Icon_artstation}
+                        onMouseDown={() => this.props.onMouseDown('art')}
 
-                    </LightTooltip>
-                    <LightTooltip
-                        title="Follow me on Instagram!"
-                        placement="top"
-                        TransitionComponent={Zoom}
-                    >
-                        <div>
-                            <FontAwesomeIcon icon={Icon_instagram} color={'white'} className={'ui-icon'} onMouseDown={() => this.props.onMouseDown('insta')} />
-                        </div>
+                    />
+                    <BasicIcon 
+                        tooltip_Placement={"top"}
+                        tooltip_Label={'Follow Me On Instagram'}
+                        icon={Icon_instagram}
+                        onMouseDown={() => this.props.onMouseDown('insta')}
 
-                    </LightTooltip>
+                    />
                 </div>
 
                 <div className={'socials-coffee'} onMouseDown={() => this.props.onMouseDown('coffee')}>

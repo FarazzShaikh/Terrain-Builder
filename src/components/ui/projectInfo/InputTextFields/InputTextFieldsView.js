@@ -42,7 +42,7 @@ class InputTextFieldsView extends Component {
                         }}
                     />
                     <div className={'ResolutionInputView-button'} onMouseDown={() => this.props.onProjectNameChnage(this.state.nVal)}>
-                        Rename
+                        Rename - COMING SOON
                     </div>
                 </div>
 
@@ -64,7 +64,7 @@ class InputTextFieldsView extends Component {
                         }}
                     />
                     <div className={'ResolutionInputView-button'} onMouseDown={() => this.props.onResolutionChange(this.state.rVal)}>
-                        Change
+                        Change - COMING SOON
                     </div>
                 </div>
 

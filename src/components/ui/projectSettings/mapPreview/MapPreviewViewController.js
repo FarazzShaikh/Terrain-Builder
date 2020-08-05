@@ -18,7 +18,7 @@ class MapPreviewViewController extends Component {
     }
 
     initCanvas = (canvas) => {
-        if(canvas) {
+        if (canvas) {
             const gl = canvas.getContext('webgl')
             const uniforms = {
                 seed: 1,
@@ -31,7 +31,7 @@ class MapPreviewViewController extends Component {
                 yOff: this.props.GEN_yOff
             }
 
-        
+
             const regl = REGL(gl)
             const geoetry = makePlaneGeo(this.props.GLOBAL_terrainResolution)
             this.drawHeightMap = regl({
@@ -53,9 +53,20 @@ class MapPreviewViewController extends Component {
                 },
                 count: geoetry.length
             })
-    
+            this.capture = true
+            regl.frame(() => {
+                if (this.props.GLOBAL_doesCaptureMap) {
+                    var link = document.createElement('a');
+                    link.download = 'filename.png';
+                    link.href = canvas.toDataURL('image/png')
+                    link.click();
+
+                    this.props.set_GLOBAL_doesCaptureMap(false)
+                }
+            })
+
             this.drawHeightMap(uniforms)
-        }    
+        }
     }
 
     updateCanvas = () => {
@@ -85,21 +96,23 @@ class MapPreviewViewController extends Component {
 function mapStateToProps(state) {
     return {
         GLOBAL_terrainResolution: state.GLOBAL_terrainResolution,
+        GLOBAL_doesCaptureMap: state.GLOBAL_doesCaptureMap,
+
         GEN_scale: state.GEN_Scale,
         GEN_persistance: state.GEN_Persistance,
         GEN_lacunarity: state.GEN_Lacunarity,
         GEN_octaves: state.GEN_Octaves,
         GEN_redistribution: state.GEN_Redistribution,
         GEN_xOff: state.GEN_xOff,
-        GEN_yOff: state.GEN_yOff
+        GEN_yOff: state.GEN_yOff,
     }
 }
 
 
 function makePlaneGeo(res) {
     let verts = []
-    
-    const planeGeo = new THREE.PlaneBufferGeometry(2, 2, res, res)     
+
+    const planeGeo = new THREE.PlaneBufferGeometry(2, 2, res, res)
     for (let i = 0; i < planeGeo.index.count / 3; i++) {
 
         const faceA = planeGeo.index.array[(i * 3) + 0]
@@ -114,14 +127,20 @@ function makePlaneGeo(res) {
 
         const vertCx = planeGeo.attributes.position.array[(faceC * 3) + 0]
         const vertCy = planeGeo.attributes.position.array[(faceC * 3) + 1]
-        
-        verts.push([vertAx ,vertAy])
-        verts.push([vertBx ,vertBy])
-        verts.push([vertCx ,vertCy])
-        
+
+        verts.push([vertAx, vertAy])
+        verts.push([vertBx, vertBy])
+        verts.push([vertCx, vertCy])
+
     }
     return verts
 }
 
+function mapDispatchToProps(dispatch) {
+    return {
+        set_GLOBAL_doesCaptureMap: (data) => dispatch({type: 'set_GLOBAL_doesCaptureMap', data: data})
+    }
+}
 
-export default connect(mapStateToProps)(MapPreviewViewController)
+
+export default connect(mapStateToProps,mapDispatchToProps)(MapPreviewViewController)

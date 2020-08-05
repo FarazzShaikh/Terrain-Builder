@@ -13,6 +13,7 @@ const initialState = {
   GLOBAL_HeightBuffer: [],
   GLOBAL_terrainResolution: 32,
   GLOBAL_mDate: new Date().toLocaleString('en-US', dateOptions),
+  GLOBAL_doesCaptureMap: false,
 
   GEN_Scale: 1,
   GEN_Persistance: 0.5,
@@ -46,6 +47,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         GLOBAL_ProjectName: action.data,
+      }
+    }
+
+    case 'set_GLOBAL_doesCaptureMap' : {
+      return {
+        ...state,
+        GLOBAL_doesCaptureMap: action.data,
       }
     }
 

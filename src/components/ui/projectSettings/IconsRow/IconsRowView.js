@@ -1,22 +1,47 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { 
-  faDownload as Icons_download,
-  faSave as Icon_save,
-  faSdCard as Icon_load,
-  faSync as Icon_refresh
+import {
+    faDownload as Icons_download,
+    faSave as Icon_save,
+    faSdCard as Icon_load,
+    faSync as Icon_refresh
 } from '@fortawesome/free-solid-svg-icons'
+import BasicIcon from '../../miscComponents/BasicIcon';
 
 export default class IconsRowView extends Component {
     render() {
         return (
-            <div className={'ui-icon-contianter'}>
-                <div>
-                    <FontAwesomeIcon icon={Icon_load} color={'white'} className={'ui-icon'} />
-                    <FontAwesomeIcon icon={Icon_save} color={'white'} className={'ui-icon'} />
-                    <FontAwesomeIcon icon={Icons_download} color={'white'} className={'ui-icon'} />
+            <div className={'ui-icon-main'}>
+                <div className={'ui-icon-contianter'}>
+                    <BasicIcon
+                        tooltip_Placement={"top"}
+                        tooltip_Label={'Load Terrain - COMING SOON'}
+                        icon={Icon_load}
+                        onMouseDown={() => { }}
+                        disabled={true}
+                    />
+                    <BasicIcon
+                        tooltip_Placement={"top"}
+                        tooltip_Label={'Save Terrain - COMING SOON'}
+                        icon={Icon_save}
+                        onMouseDown={() => { }}
+                        disabled={true}
+                    />
+                    <BasicIcon
+                        tooltip_Placement={"top"}
+                        tooltip_Label={'Download'}
+                        icon={Icons_download}
+                        onMouseDown={() => this.props.onButtonPress('download')}
+
+                    />
                 </div>
-                <FontAwesomeIcon icon={Icon_refresh} color={'white'} className={'ui-icon'} />
+                <BasicIcon
+                    tooltip_Placement={"top"}
+                    tooltip_Label={'Refresh - COMING SOON'}
+                    icon={Icon_refresh}
+                    onMouseDown={() => {}}
+                    disabled={true}
+                />
             </div>
         );
     }
