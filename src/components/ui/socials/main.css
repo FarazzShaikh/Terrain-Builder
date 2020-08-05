@@ -1,0 +1,58 @@
+.socials-main {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    padding: 16px;
+
+}
+
+.socials-container {
+    display: flex;
+}
+
+.socials-text {
+    color: white;
+    font-family: sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    margin: 8px;
+}
+
+.socials-coffee {
+    display: flex;
+    align-items: center;
+
+    padding: 4px;
+    background-color: white;
+    
+    cursor: pointer;
+    transition: all 150ms ease-in-out;
+    border-radius: 5px;
+
+    -webkit-box-shadow: 0px 0px 16px 1px rgba(0,0,0,0);
+    -moz-box-shadow: 0px 0px 16px 1px rgba(0,0,0,0);
+    box-shadow: 0px 0px 16px 1px rgba(0,0,0,0);
+}
+
+.socials-coffee:hover {
+    background-color: rgb(190, 249, 146);
+    -webkit-box-shadow: 0px 0px 16px 1px rgb(190, 249, 146, 0.3);
+    -moz-box-shadow: 0px 0px 16px 1px rgb(190, 249, 146, 0.3);
+    box-shadow: 0px 0px 16px 1px rgb(190, 249, 146, 0.3);
+}
+
+.socials-coffee-text {
+    color: black;
+    font-family: sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 8px;
+    font-style: italic;
+}
+
+.ui-icon-coffee {
+    padding: 4px;
+    font-size: 21px;
+}
+

@@ -5,6 +5,7 @@ import {
     faAngleDown as Icon_arrow,
 } from '@fortawesome/free-solid-svg-icons'
 import IconContainerViewController from './IconContainer/IconContainerViewController';
+import ResolutionInputViewController from './ResolutionInput/InputTextFieldsViewController';
 
 export default class ProjectInfoRootView extends Component {
     render() {
@@ -21,8 +22,8 @@ export default class ProjectInfoRootView extends Component {
                         }}
                     >
                         <div>
-                            <div className={'ProjectInfo-name'}>Project Name.</div>
-                            <div className={'ProjectInfo-cdate'}>M: 02 July, 2001</div>
+                            <div className={'ProjectInfo-name'}>{this.props.nameValue}</div>
+                            <div className={'ProjectInfo-cdate'}>{`M: ${this.props.mDate}`}</div>
                         </div>
 
                         <FontAwesomeIcon
@@ -39,7 +40,18 @@ export default class ProjectInfoRootView extends Component {
                         in={this.props.collapseOpen} timeout="auto" unmountOnExit
                         classes={{ container: 'ProjectInfo-colapse' }}
                     >
-                        <IconContainerViewController />
+                        <ResolutionInputViewController 
+                            nameValue={this.props.nameValue}
+                            resolutionValue={this.props.resolutionValue}
+
+                            onResolutionChange={this.props.onResolutionChange}
+                            onProjectNameChnage={this.props.onProjectNameChnage}
+                        />
+                        <IconContainerViewController 
+                            resolutionValue={this.props.resolutionValue}
+
+                            timeDisplace={this.props.timeDisplace}
+                        />
                     </Collapse>
                 </div>
             </div>

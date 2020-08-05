@@ -8,36 +8,42 @@ import "./main.css";
 import IconContainerView from './IconContainerView';
 
 export default class IconContainerViewController extends Component {
-    constructor(props) {
-        super(props)
-        this.icons = [
-            [
-                {
-                    icon: Icon_verts,
-                    label: 'Verticies',
-                    value: '000',
-                },
-                {
-                    icon: Icon_resolution,
-                    label: 'Resolution',
-                    value: '000',
-                },
-                {
-                    icon: Icon_renderTime,
-                    label: 'Render',
-                    value: '000',
-                }
-            ],
-            
-        ]
-    }
-
     render() {
         return (
             <IconContainerView 
-                icons={this.icons}
+                icons={[
+                    [
+                        {
+                            icon: Icon_verts,
+                            label: 'Verticies',
+                            value: `${this.props.resolutionValue*this.props.resolutionValue}`,
+                        },
+                        {
+                            icon: Icon_resolution,
+                            label: 'Resolution',
+                            value: `${this.props.resolutionValue}`,
+                        },
+                        {
+                            icon: Icon_renderTime,
+                            label: 'Render',
+                            value: makeDigits(this.props.timeDisplace),
+                        }
+                    ],
+                    
+                ]}
+                
             />
         );
     }
+}
+
+function makeDigits(num) {
+    let str = String(num)
+
+    while(str.length < 3) {
+        str = `0${str}`
+    }
+
+    return str
 }
 

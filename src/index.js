@@ -6,11 +6,13 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
+const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
 const initialState = {
   GLOBAL_ProjectName: 'unnamedProject',
   GLOBAL_HeightBuffer: [],
   GLOBAL_terrainResolution: 32,
-  GLOBAL_shouldUpdateTerrain: false,
+  GLOBAL_mDate: new Date().toLocaleString('en-US', dateOptions),
 
   GEN_Scale: 1,
   GEN_Persistance: 0.5,
@@ -20,6 +22,8 @@ const initialState = {
   GEN_zScaling: 10,
   GEN_xOff: 0,
   GEN_yOff: 0,
+
+  TIME_displace: 2000,
 };
 
 const reducer = (state = initialState, action) => {
@@ -30,12 +34,21 @@ const reducer = (state = initialState, action) => {
         GLOBAL_HeightBuffer: action.data
       }
     }
-    case 'set_GLOBAL_shouldUpdateTerrain': {
+
+    case 'set_GLOBAL_terrainResolution' : {
       return {
         ...state,
-        GLOBAL_shouldUpdateTerrain: action.data,
+        GLOBAL_terrainResolution: action.data,
       }
     }
+
+    case 'set_GLOBAL_ProjectName': {
+      return {
+        ...state,
+        GLOBAL_ProjectName: action.data,
+      }
+    }
+
     case 'set_GEN': {
       switch (action.label) {
         case 'Scale':
