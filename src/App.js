@@ -3,7 +3,7 @@ import "./App.css";
 import ThreeDViewController from './components/3dView/ThreeDViewController';
 
 import UIRootViewController from './components/ui/TerrainSettings/UIRootViewController';
-import ProjectInfoRootViewController from './components/ui/ProjectSettings/ProjectInfoRootViewController';
+import ProjectInfoRootViewController from './components/ui/projectSettings/ProjectInfoRootViewController';
 import SocialsRootViewController from './components/ui/Socials/SocialsRootViewController';
 
 export default class App extends Component {
