@@ -38,7 +38,7 @@ export class RENDERER {
 
         this.renderer.domElement.style.outline = 'none'
         document.querySelector('.canavs-root').appendChild(this.renderer.domElement)
-        this.camera.position.set(15, 15, 15)
+        this.camera.position.set(0.75, 0.75, 0.75)
 
         
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -91,7 +91,6 @@ export class RENDERER {
     removeObject(name) {
         const toDispose = this.scene.getObjectByProperty('name', name);
         if (toDispose) {
-
             this.objects[toDispose.name] = undefined
 
             toDispose.geometry.dispose();
@@ -99,10 +98,6 @@ export class RENDERER {
             this.scene.remove(toDispose);
             return
         }
-
-
-
-
     }
 
 }

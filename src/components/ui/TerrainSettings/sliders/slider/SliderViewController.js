@@ -6,10 +6,16 @@ export default class SliderViewController extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            value: this.props.def
+            value: this.props.value
         }
 
         this.onChange = this.onChange.bind(this)
+    }
+
+    componentDidUpdate(pProps) {
+        if(pProps.value !== this.props.value) {
+            this.setState({ value: this.props.value })
+        }
     }
 
     onChange = (e, v) => {

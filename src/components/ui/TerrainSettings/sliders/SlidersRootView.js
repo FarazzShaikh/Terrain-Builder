@@ -12,7 +12,7 @@ export default class SlidersRootView extends Component {
                 <div className={'sliders-pair'} key={i}>
                     <SliderViewController
                         label={slider1.label}
-                        def={slider1.def}
+                        value={slider1.def}
                         min={slider1.min}
                         max={slider1.max}
                         step={slider1.step}
@@ -21,7 +21,7 @@ export default class SlidersRootView extends Component {
                     {
                         slider2 ? <SliderViewController
                             label={slider2.label}
-                            def={slider2.def}
+                            value={slider2.def}
                             min={slider2.min}
                             max={slider2.max}
                             step={slider2.step}

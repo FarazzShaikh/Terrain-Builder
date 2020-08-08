@@ -1,0 +1,18 @@
+.ResolutionInputView-main {
+    margin: 8px;
+    
+
+    border: 2px solid #292929;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+
+
+
+}
+
+.ResolutionInputView-main-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -39,7 +39,7 @@ export default class UIRootView extends Component {
                     </div>
                     <Collapse
                         in={this.props.collapseOpen} timeout="auto" unmountOnExit
-                        classes={{ container: 'ProjectInfo-colapse' }}
+                       
                     >
                         <SlidersRootViewController />
                         <IconsRowViewController />

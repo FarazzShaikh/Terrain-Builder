@@ -21,7 +21,7 @@ export function main(args) {
 function initGrid(renderer) {
     let gridObject = renderer.addObject(GRID, {
         name: 'Grid',
-        size: 30,
+        size: 2,
         divisions: 20
     })
 
@@ -32,7 +32,7 @@ function initGrid(renderer) {
 function initAxis(renderer) {
     let axisObject = renderer.addObject(AXIS, {
         name: 'Axis',
-        size: 10,
+        size: 0.75,
     })
 
     return axisObject
@@ -42,32 +42,25 @@ function initTerrain(renderer) {
 
     renderer.addObject(TERRAIN, {
         name: 'Terrain',
-        resolution: options.terrainResolution,
+        resolution: options.GEN_Resolution,
 
-        seed: '1',
-        scale: options.GEN_Scale,
-        persistance: options.GEN_Persistance,
-        lacunarity: options.GEN_Lacunarity,
-        octaves: options.GEN_Octaves,
-        redistribution: options.GEN_Redistribution,
-        zScale: options.GEN_zScaling,
-        xOff: options.GEN_xOff,
-        yOff: options.GEN_yOff
+        ...options
     })
 }
 
 export function refreshTerrain(args) {
     const terrain = renderer.objects.Terrain
-    terrain.updateUniforms({
-        seed: '1',
-        scale: args.GEN_Scale,
-        persistance: args.GEN_Persistance,
-        lacunarity: args.GEN_Lacunarity,
-        octaves: args.GEN_Octaves,
-        redistribution: args.GEN_Redistribution,
-        zScale: args.GEN_zScaling,
-        xOff: args.GEN_xOff,
-        yOff: args.GEN_yOff
+    terrain.updateUniforms({...args})
+
+}
+
+export function rebuildTerrain(args) {
+    renderer.removeObject('Terrain')
+    renderer.addObject(TERRAIN, {
+        name: 'Terrain',
+        resolution: args.GEN_Resolution,
+
+        ...args
     })
 
 }

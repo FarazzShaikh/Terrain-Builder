@@ -7,6 +7,8 @@ import {
 import "./main.css";
 import IconContainerView from './IconContainerView';
 
+import numeral from 'numeral';
+
 export default class IconContainerViewController extends Component {
     render() {
         return (
@@ -16,12 +18,12 @@ export default class IconContainerViewController extends Component {
                         {
                             icon: Icon_verts,
                             label: 'Verticies',
-                            value: `${this.props.resolutionValue*this.props.resolutionValue}`,
+                            value: `${numeral(this.props.resolutionValue*this.props.resolutionValue).format('0.0a')}`,
                         },
                         {
                             icon: Icon_resolution,
                             label: 'Resolution',
-                            value: `${this.props.resolutionValue}`,
+                            value: `${numeral(this.props.resolutionValue).format('0,0')}`,
                         },
                         {
                             icon: Icon_renderTime,

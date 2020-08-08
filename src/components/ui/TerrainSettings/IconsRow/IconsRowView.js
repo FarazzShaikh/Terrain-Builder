@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faDownload as Icons_download,
     faSave as Icon_save,
     faSdCard as Icon_load,
-    faSync as Icon_refresh
+    faRandom as Icon_random,
+    faRedoAlt as Icon_reset
 } from '@fortawesome/free-solid-svg-icons'
 import BasicIcon from '../../miscComponents/BasicIcon';
 
@@ -22,10 +22,9 @@ export default class IconsRowView extends Component {
                     />
                     <BasicIcon
                         tooltip_Placement={"top"}
-                        tooltip_Label={'Save Terrain - COMING SOON'}
+                        tooltip_Label={'Save Terrain'}
                         icon={Icon_save}
-                        onMouseDown={() => { }}
-                        disabled={true}
+                        onMouseDown={() => this.props.onButtonPress('save')}
                     />
                     <BasicIcon
                         tooltip_Placement={"top"}
@@ -35,13 +34,21 @@ export default class IconsRowView extends Component {
 
                     />
                 </div>
-                <BasicIcon
-                    tooltip_Placement={"top"}
-                    tooltip_Label={'Refresh - COMING SOON'}
-                    icon={Icon_refresh}
-                    onMouseDown={() => {}}
-                    disabled={true}
-                />
+                <div className={'ui-icon-contianter'}>
+                    <BasicIcon
+                        tooltip_Placement={"top"}
+                        tooltip_Label={'Randomize Seed'}
+                        icon={Icon_reset}
+                        onMouseDown={() => this.props.onButtonPress('reset')}
+                    />
+                    <BasicIcon
+                        tooltip_Placement={"top"}
+                        tooltip_Label={'Randomize Seed'}
+                        icon={Icon_random}
+                        onMouseDown={() => this.props.onButtonPress('random')}
+                    />
+                </div>
+
             </div>
         );
     }

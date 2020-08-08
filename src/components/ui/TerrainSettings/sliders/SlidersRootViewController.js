@@ -8,7 +8,14 @@ class SlidersRootViewController extends Component {
     constructor(props) {
         super(props)
         this.onCommitChange = this.onCommitChange.bind(this)
-        this.sliders = [
+    }
+
+    onCommitChange = (label, value) => {
+        this.props.set_GEN(label, value)
+    }
+
+    render() {
+        const sliders = [
             {
                 label: 'Scale',
                 min: 0.1,
@@ -18,10 +25,10 @@ class SlidersRootViewController extends Component {
             },
             {
                 label: 'Height',
-                min: 1,
-                max: 50,
-                def: this.props.GEN_zScaling,
-                step: 1,
+                min: 0.1,
+                max: 5,
+                def: this.props.GEN_zScale,
+                step: 0.1,
             },
             {
                 label: 'Lacunarity',
@@ -52,14 +59,14 @@ class SlidersRootViewController extends Component {
                 step: 0.1,
             },
             {
-                label: 'X-Offset',
+                label: 'xOff',
                 min: 0,
                 max: 50,
                 def: this.props.GEN_xOff,
                 step: 0.1,
             },
             {
-                label: 'Y-Offset',
+                label: 'yOff',
                 min: 0,
                 max: 50,
                 def: this.props.GEN_yOff,
@@ -67,16 +74,9 @@ class SlidersRootViewController extends Component {
             },
             
         ]
-    }
-
-    onCommitChange = (label, value) => {
-        this.props.set_GEN(label, value)
-    }
-
-    render() {
         return (
             <SlidersRootView
-                sliders={this.sliders}
+                sliders={sliders}
                 onCommitChange={this.onCommitChange}
             />
         );
@@ -91,7 +91,7 @@ function mapStateToProps(state) {
         GEN_lacunarity: state.GEN_Lacunarity,
         GEN_octaves: state.GEN_Octaves,
         GEN_redistribution: state.GEN_Redistribution,
-        GEN_zScaling: state.GEN_zScaling,
+        GEN_zScale: state.GEN_zScale,
         GEN_xOff: state.GEN_xOff,
         GEN_yOff: state.GEN_yOff
     }

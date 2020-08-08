@@ -9,21 +9,8 @@ import {
     faMugHot as Icon_coffee,
     faBug as Icon_bug
 } from '@fortawesome/free-solid-svg-icons'
-import {
-    Tooltip, 
-    Zoom, 
-    withStyles
-} from '@material-ui/core';
-import BasicIcon from '../miscComponents/BasicIcon';
 
-const LightTooltip = withStyles((theme) => ({
-    tooltip: {
-        backgroundColor: theme.palette.common.white,
-        color: 'rgba(0, 0, 0, 0.87)',
-        boxShadow: theme.shadows[1],
-        fontSize: 11,
-    },
-}))(Tooltip);
+import BasicIcon from '../miscComponents/BasicIcon';
 
 export default class SocialsRootView extends Component {
     render() {
