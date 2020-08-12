@@ -17,7 +17,7 @@ const Defaults = {
     GEN_xOff: 0,
     GEN_yOff: 0,
 
-    TIME_displace: 2000,
+    TIME_displace: 0,
 
     MAP_Resolution: 256,
 }

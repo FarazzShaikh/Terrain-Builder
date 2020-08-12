@@ -23,7 +23,7 @@ export default class IconContainerViewController extends Component {
                         {
                             icon: Icon_resolution,
                             label: 'Resolution',
-                            value: `${numeral(this.props.resolutionValue).format('0,0')}`,
+                            value: `${numeral(this.props.mapResValue).format('0,0')}px`,
                         },
                         {
                             icon: Icon_renderTime,

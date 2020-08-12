@@ -57,6 +57,7 @@ export default class ProjectInfoRootView extends Component {
                         />
                         <IconContainerViewController 
                             resolutionValue={this.props.resolutionValue}
+                            mapResValue={this.props.mapResValue}
 
                             timeDisplace={this.props.timeDisplace}
                         />
