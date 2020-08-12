@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import vShader from '../../../3dView/main/Shaders/CanvasShaders/Canvas_vShader'
 import fShader from '../../../3dView/main/Shaders/CanvasShaders/Canvas_fShader'
 
+
 class MapPreviewViewController extends Component {
 
     constructor(props) {
@@ -20,9 +21,9 @@ class MapPreviewViewController extends Component {
     }
 
     componentDidUpdate(pProps) {
-        if(Number(pProps.MAP_Resolution) !== Number(this.props.MAP_Resolution)) {
+        if (Number(pProps.MAP_Resolution) !== Number(this.props.MAP_Resolution)) {
             this.regl.destroy()
-            this.regl = this.initREGL(this.canvas) 
+            this.regl = this.initREGL(this.canvas)
         }
     }
 
@@ -35,7 +36,6 @@ class MapPreviewViewController extends Component {
 
     initREGL = (canvas) => {
         const gl = canvas.getContext('webgl')
-
         const regl = REGL(gl)
         const geoetry = makePlaneGeo(this.props.MAP_Resolution)
         this.drawHeightMap = regl({
@@ -57,7 +57,6 @@ class MapPreviewViewController extends Component {
             },
             count: geoetry.length
         })
-        this.capture = true
         regl.frame(() => {
             if (this.props.INTERNAL_doesCaptureMap) {
                 var link = document.createElement('a');
@@ -69,12 +68,13 @@ class MapPreviewViewController extends Component {
             }
         })
 
-        this.drawHeightMap({...this.props})
+        this.drawHeightMap({ ...this.props })
+
         return regl
     }
 
     updateCanvas = () => {
-        this.drawHeightMap({...this.props})
+        this.drawHeightMap({ ...this.props })
     }
 
 
@@ -133,9 +133,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        set_INTERNAL_doesCaptureMap: (data) => dispatch({type: 'set_INTERNAL_doesCaptureMap', data: data})
+        set_INTERNAL_doesCaptureMap: (data) => dispatch({ type: 'set_INTERNAL_doesCaptureMap', data: data })
     }
 }
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(MapPreviewViewController)
+export default connect(mapStateToProps, mapDispatchToProps)(MapPreviewViewController)

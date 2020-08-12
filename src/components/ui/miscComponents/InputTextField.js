@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from "@material-ui/core/styles";
 import "./main.css";
+import BasicButton from './BasicButton';
 
 const styles = {
     input: {
@@ -40,9 +41,10 @@ class InputTextField extends Component {
                         className: this.props.classes.input
                     }}
                 />
-                <div className={'ResolutionInputView-button'} onMouseDown={() => this.props.onMouseDown(this.state.value)}>
-                    {this.props.buttonLabel}
-                </div>
+                <BasicButton 
+                    onMouseDown={() => this.props.onMouseDown(this.state.value)}
+                    buttonLabel={this.props.buttonLabel}
+                />
             </div>
         );
     }

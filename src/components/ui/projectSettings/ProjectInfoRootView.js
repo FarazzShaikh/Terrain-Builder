@@ -5,7 +5,8 @@ import {
     faAngleDown as Icon_arrow,
 } from '@fortawesome/free-solid-svg-icons'
 import IconContainerViewController from './IconContainer/IconContainerViewController';
-import ResolutionInputViewController from './InputTextFields/InputTextFieldsViewController';
+import InputTextFieldsViewController from './InputTextFields/InputTextFieldsViewController';
+import ErodeButtonViewController from './ErodeButton/ErodeButtonViewController';
 
 export default class ProjectInfoRootView extends Component {
     render() {
@@ -40,7 +41,10 @@ export default class ProjectInfoRootView extends Component {
                         in={this.props.collapseOpen} timeout="auto" unmountOnExit
                         classes={{ container: 'ProjectInfo-colapse' }}
                     >
-                        <ResolutionInputViewController 
+                        <ErodeButtonViewController 
+
+                        />
+                        <InputTextFieldsViewController 
                             nameValue={this.props.nameValue}
                             resolutionValue={this.props.resolutionValue}
                             seedValue={this.props.seedValue}

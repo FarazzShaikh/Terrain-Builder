@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import vShader from '../Shaders/TerrainShaders/Terrain_vShader'
 import fShader from '../Shaders/TerrainShaders/Terrain_fShader'
 
+
 export class TERRAIN extends BaseObject {
     constructor(options) {
         const res_verts = options.resolution - 1
@@ -27,6 +28,7 @@ export class TERRAIN extends BaseObject {
             wireframe: false,
             side: THREE.DoubleSide,
         });
+
 
         super(geometry, material, {
             name: options.name,

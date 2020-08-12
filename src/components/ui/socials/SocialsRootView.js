@@ -10,7 +10,7 @@ import {
     faBug as Icon_bug
 } from '@fortawesome/free-solid-svg-icons'
 
-import BasicIcon from '../miscComponents/BasicIcon';
+import BasicIcon from '../MiscComponents/BasicIcon';
 
 export default class SocialsRootView extends Component {
     render() {

@@ -6,7 +6,7 @@ import {
     faRandom as Icon_random,
     faRedoAlt as Icon_reset
 } from '@fortawesome/free-solid-svg-icons'
-import BasicIcon from '../../miscComponents/BasicIcon';
+import BasicIcon from '../../MiscComponents/BasicIcon';
 
 export default class IconsRowView extends Component {
     render() {

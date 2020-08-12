@@ -26,5 +26,6 @@ float Displace(vec2 uv, vec2 offset)
     vNoise = (normalizedNoise  / totalAmplitude);
     float final = (normalizedNoise  / totalAmplitude) * zscale;
     return final;
+
 }
 `

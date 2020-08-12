@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import InputTextField from '../../miscComponents/InputTextField';
+import InputTextField from '../../MiscComponents/InputTextField';
 
 
 export default class InputTextFieldsView extends Component {
