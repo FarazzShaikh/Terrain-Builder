@@ -2,7 +2,7 @@
 # 🏔  Terrain Builder.
 Procedural Terrain Right in The Browser, ***Now Accelerated by your GPU!***
 
-[Launch Terrain Builder 2.0](https://terrain-builder-react.herokuapp.com/) **( Not built for mobile. )**
+[Launch Terrain Builder 2.0](https://terrain-builder.herokuapp.com/) **( Not built for mobile. )**
 
 
 ![Screenshot](https://github.com/FarazzShaikh/Threejs-procedural-terrain/blob/master/public/SS.png)
