@@ -8,9 +8,9 @@ const Defaults = {
 
     GEN_Resolution: 256,
     GEN_Seed: Math.random(),
-    GEN_Scale: 2,
+    GEN_Scale: 3,
     GEN_Persistance: 0.5,
-    GEN_Lacunarity: 2,
+    GEN_Lacunarity: 2.2,
     GEN_Octaves: 6,
     GEN_Redistribution: 1,
     GEN_zScale: 0.5,

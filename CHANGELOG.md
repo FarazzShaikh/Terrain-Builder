@@ -7,13 +7,19 @@
 
 All notable changes to this project will be documented in this file.
 
-  
+
+
+# *[2.1.0] - 2020-08-17*
 
   
 
-## [Released]
+### Changes
 
   
+
+- 🏔 Improved Terrain Generation. Now with river-eroded valleys.
+- 👀 Changed the material of the terrain to increase visibility.
+
 
   
 

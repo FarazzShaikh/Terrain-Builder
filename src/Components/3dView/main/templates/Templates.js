@@ -9,6 +9,7 @@ export class BaseObject {
             this.mesh = new options.customMeshClass[0](...options.customMeshClass[1]);
         } else {
             this.mesh = new THREE.Mesh(this.geometry, this.material);
+            
         }
 
         this.mesh.name = options.name || 'Unnamed_Object'

@@ -3,7 +3,7 @@
     width: 100%;
     max-height: 50%;
 
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
 
     border: 2px solid #292929;

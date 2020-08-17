@@ -35,6 +35,7 @@ export class RENDERER {
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         this.renderer.setSize(window.innerWidth * this.width, window.innerHeight);
+        this.renderer.shadowMap.enabled = true
 
         this.renderer.domElement.style.outline = 'none'
         document.querySelector('.canavs-root').appendChild(this.renderer.domElement)
@@ -55,11 +56,11 @@ export class RENDERER {
     }
 
     initLight() {
-        const light = new THREE.PointLight(0x404040, 3)
+        const light = new THREE.PointLight(0x404040, 2)
         light.position.set(3, 10, 3)
         light.rotation.set(1, 1, 1)
         light.castShadow = true;
-        light.shadow.radius = 30;
+        //light.shadow.radius = 30;
         this.scene.add(light)
 
         const ambLight = new THREE.AmbientLight(0x404040, 0.9)

@@ -9,7 +9,7 @@ float Displace(vec2 uv, vec2 offset)
     float amplitude = 1.0;
     float frequency = 1.0;
 
-    float seedOffset = (seed * 100.0) + (seed * 10.0);
+    float seedOffset = (seed * 100.0);
 
     for(int i = 0; i < MAX_ITERATIONS; i++)
     {
@@ -22,9 +22,9 @@ float Displace(vec2 uv, vec2 offset)
         amplitude *= persistance;
     }
 
-    float normalizedNoise = pow(((noise + 1.0) / 2.0), redistribution);
-    vNoise = (normalizedNoise  / totalAmplitude);
-    float final = (normalizedNoise  / totalAmplitude) * zscale;
+    float normalizedNoise = pow(noise, redistribution);
+    float final = abs(((normalizedNoise  / totalAmplitude) * zscale) / 1.0);
+
     return final;
 
 }

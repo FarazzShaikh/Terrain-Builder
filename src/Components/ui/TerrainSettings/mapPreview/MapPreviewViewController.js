@@ -52,7 +52,9 @@ class MapPreviewViewController extends Component {
                 octaves: regl.prop('GEN_octaves'),
                 redistribution: regl.prop('GEN_redistribution'),
                 xoff: regl.prop('GEN_xOff'),
-                yoff: regl.prop('GEN_yOff')
+                yoff: regl.prop('GEN_yOff'),
+
+                island: false
 
             },
             count: geoetry.length
