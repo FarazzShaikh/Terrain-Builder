@@ -1,10 +1,11 @@
-## 🏔  Terrain Builder.
+# 🏔  Terrain Builder.
 Three.js Procedural Terrain Right in The Browser.
 
-Demo : 	https://terrain-builder.herokuapp.com/
+#### Latest working release of Terrain Builder v1. Will be completely replaced by [v2](https://github.com/FarazzShaikh/Terrain-Builder/tree/master).
+Demo : 	https://terrain-builder-1-2-1.herokuapp.com/
 WARNING: FEW FEATURES MAY NOT WORK ON MOBILE
 
-![Demo](https://github.com/FarazzShaikh/Threejs-procedural-terrain/blob/master/public/images/Screenshot.png)
+![Demo](https://github.com/FarazzShaikh/Terrain-Builder/blob/v1.2.1/public/images/Screenshot.png)
 
 ### Controls:
  - Left Mouse + drag : Orbit
@@ -12,22 +13,6 @@ WARNING: FEW FEATURES MAY NOT WORK ON MOBILE
  - Middle Mouse + drag : Zoom
  - Ctrl : Info
  - Right Mouse Click : Settings
-
-### To Run (locally):
-
-```
-git clone https://github.com/FarazzShaikh/Threejs-procedural-terrain.git
-```
-```
-cd Threejs-procedural-terrain
-```
-```
-npm install
-```
-```
-npm start
-```
-Served on http://localhost:3000
 
 ### Libraries Used:
  - Three.js   : https://threejs.org/
