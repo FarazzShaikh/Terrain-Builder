@@ -27,7 +27,7 @@ ${Island}
 
 void main() {
     vec2 offset = vec2(xoff, yoff);
-    float col = Displace(position + 1.0, offset);
+    float col = Displace(position + 1.0, offset) / 2.0;
 
     if(island) {
         col *= makeIsland(position);
@@ -36,6 +36,6 @@ void main() {
     
     fcolor = vec3(col);
     vPos = position;
-    gl_Position = vec4(position, 0, 1);
+    gl_Position = vec4(position, 0.0, 1.0);
 }
 `

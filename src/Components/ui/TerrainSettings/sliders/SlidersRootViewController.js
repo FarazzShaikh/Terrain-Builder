@@ -19,16 +19,16 @@ class SlidersRootViewController extends Component {
             {
                 label: 'Scale',
                 min: 0.1,
-                max: 5,
+                max: 2,
                 def: this.props.GEN_scale,
-                step: 0.1,
+                step: 0.01,
             },
             {
                 label: 'Height',
                 min: 0.1,
-                max: 5,
+                max: 0.5,
                 def: this.props.GEN_zScale,
-                step: 0.1,
+                step: 0.01,
             },
             {
                 label: 'Lacunarity',

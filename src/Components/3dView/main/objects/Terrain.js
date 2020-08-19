@@ -3,8 +3,8 @@ import { BaseObject } from '../templates/Templates';
 import * as THREE from 'three';
 import { CustomShaderMaterial, TYPES } from  'three-custom-shader-material';
 
-import vShader_main from '../Shaders/TerrainShaders/Terrain_vShader_main'
-import fShader_global from '../Shaders/TerrainShaders/Terrain_vShader_global'
+
+import { main, global } from '../Shaders/TerrainShaders/TerrainShders';
 
 
 export class TERRAIN extends BaseObject {
@@ -33,7 +33,7 @@ export class TERRAIN extends BaseObject {
 
         const material = new CustomShaderMaterial({
             baseMaterial: TYPES.PHYSICAL,
-            vShader: [vShader_main, fShader_global],
+            vShader: [main, global],
             uniforms: customUniforms,
             options: {
                 wireframe: false,

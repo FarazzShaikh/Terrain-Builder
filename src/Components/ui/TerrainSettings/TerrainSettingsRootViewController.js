@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import UIRootView from './UIRootView';
+import TerrainSettingsRootView from './TerrainSettingsRootView';
+
 import "./main.css";
 
-export default class UIRootViewController extends Component {
+export default class TerrainSettingsRootViewController extends Component {
 
     constructor(props) {
         super(props)
@@ -18,10 +19,12 @@ export default class UIRootViewController extends Component {
 
     render() {
         return (
-            <UIRootView 
-                collapseOpen={this.state.collapseOpen}
-                onArrowPress={this.onArrowPress}
-            />
+                <TerrainSettingsRootView
+                    collapseOpen={this.state.collapseOpen}
+                    onArrowPress={this.onArrowPress}
+                />
+               
+
         );
     }
 }

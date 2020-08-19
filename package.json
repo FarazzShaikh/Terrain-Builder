@@ -13,12 +13,12 @@
     "numeral": "^2.0.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-draggable": "^4.4.3",
     "react-redux": "^7.2.1",
     "react-scripts": "^3.4.3",
     "redux": "^4.0.5",
     "regl": "^1.6.1",
     "serve": "^11.3.2",
-    "styled-components": "^5.1.1",
     "three": "^0.119.1",
     "three-custom-shader-material": "^1.0.6"
   },

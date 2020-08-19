@@ -57,7 +57,7 @@ export class RENDERER {
 
     initLight() {
         const light = new THREE.PointLight(0x404040, 2)
-        light.position.set(3, 10, 3)
+        light.position.set(-3, 10, -3)
         light.rotation.set(1, 1, 1)
         light.castShadow = true;
         //light.shadow.radius = 30;
