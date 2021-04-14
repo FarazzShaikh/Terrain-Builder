@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import "./App.css";
 
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 function App() {
   const mount = useRef(null);
@@ -28,9 +29,10 @@ function App() {
       canvas: mount.current,
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    const controls = new OrbitControls(camera, renderer.domElement);
 
     const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshNormalMaterial({ color: 0x00ff00 });
+    const material = new THREE.MeshNormalMaterial();
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
@@ -42,6 +44,7 @@ function App() {
       cube.rotation.x += 0.01; // Add little to the X component
       cube.rotation.z += 0.01; // Add little to the Z component
 
+      controls.update();
       renderer.render(scene, camera);
     };
 
