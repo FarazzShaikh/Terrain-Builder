@@ -39,13 +39,13 @@ function App() {
     camera.position.z = 5;
 
     const animate = function () {
-      requestAnimationFrame(animate);
-
       cube.rotation.x += 0.01; // Add little to the X component
       cube.rotation.z += 0.01; // Add little to the Z component
 
       controls.update();
       renderer.render(scene, camera);
+
+      requestAnimationFrame(animate);
     };
 
     animate();
