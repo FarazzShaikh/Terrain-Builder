@@ -31,6 +31,10 @@ function App() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     const controls = new OrbitControls(camera, renderer.domElement);
 
+    controls.enableDamping = true; // Enables inertia on the camera making it come to a more gradual stop.
+    controls.dampingFactor = 0.25; // Inertia factor
+    controls.maxPolarAngle = Math.PI / 2; // Prevents camra from going under our object
+
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshNormalMaterial();
     const cube = new THREE.Mesh(geometry, material);
