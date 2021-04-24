@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import "./App.css";
-import { main } from "./app/main";
+import main from "./app/main";
 
 function App() {
   const mount = useRef(null);
