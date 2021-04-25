@@ -10,4 +10,11 @@ export default function main(mount) {
   plane.rotation.x = -Math.PI / 2;
 
   scene.add(plane);
+
+  const len = plane.geometry.attributes.position.array.length;
+  for (let i = 0; i < len; i += 3) {
+    plane.geometry.attributes.position.array[i + 2] = Math.random() * 0.1;
+  }
+  plane.geometry.attributes.position.needsUpdate = true;
+  plane.geometry.computeVertexNormals();
 }
