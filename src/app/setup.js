@@ -3,7 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 function initCamera() {
   const fov = 45;
-  const aspectRatio = window.innerWidth / window.innerHeight;
+  const aspectRatio = (window.innerWidth * 0.75) / window.innerHeight;
   const nearPlane = 0.1;
   const farPlane = 1000;
 
@@ -14,7 +14,7 @@ function initCamera() {
     farPlane
   );
 
-  camera.position.set(1, 1, 1);
+  camera.position.set(2, 2, 2);
 
   return camera;
 }
@@ -23,8 +23,11 @@ function initRenderer(mount) {
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
     canvas: mount.current,
+    alpha: true,
   });
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setSize(window.innerWidth * 0.75, window.innerHeight);
 
   return renderer;
 }
@@ -35,7 +38,7 @@ function initControls(camera, renderer) {
   controls.enableDamping = true; // Enables inertia on the camera making it come to a more gradual stop.
   controls.dampingFactor = 0.25; // Inertia factor
   controls.maxPolarAngle = Math.PI / 2; // Prevents camra from going under our object
-
+  controls.enablePan = false;
   return controls;
 }
 
@@ -44,10 +47,19 @@ function initHelpers(scene) {
   const divisions = 20; // Number of divisions in the Grid
   const centerLineColor = "#121212"; // Darken center line to make axis more visible
 
-  const axesHelper = new THREE.AxesHelper(1.5); // Takes in the size of the Axis
+  const axesHelper = new THREE.AxesHelper(1.2); // Takes in the size of the Axis
   const gridHelper = new THREE.GridHelper(size, divisions, centerLineColor); // Also
   scene.add(gridHelper);
   scene.add(axesHelper);
+}
+
+function initLights(scene) {
+  const alight = new THREE.AmbientLight(0x404040); // soft white light
+  scene.add(alight);
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+  directionalLight.castShadow = true; // default false
+  scene.add(directionalLight);
 }
 
 export default function setup(mount) {
@@ -57,6 +69,7 @@ export default function setup(mount) {
   const controls = initControls(camera, renderer);
 
   initHelpers(scene);
+  initLights(scene);
 
   const animate = function () {
     controls.update();

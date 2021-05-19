@@ -1,16 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState } from "react";
 import main from "./app/main";
+import { Canvas } from "./components/Canvas";
+import Controls from "./components/Controls";
+import { OPTIONS } from "./Defaults";
 
+console.clear();
 function App() {
-  const mount = useRef(null);
+  const [options, setOptions] = useState(OPTIONS);
 
-  useEffect(() => {
-    main(mount);
-  }, []);
-
+  console.log(options);
   return (
     <div className="App">
-      <canvas width="500px" height="500px" ref={mount} />
+      <Controls options={options} setOptions={setOptions} />
+      <Canvas main={main} options={options} />
     </div>
   );
 }
