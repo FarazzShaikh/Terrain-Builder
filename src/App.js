@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import main from "./app/main";
 import { Canvas } from "./components/Canvas";
 import Controls from "./components/Controls";
 import { OPTIONS } from "./Defaults";
+import { main, update } from "./app/main";
 
 console.clear();
 function App() {
@@ -12,7 +12,7 @@ function App() {
   return (
     <div className="App">
       <Controls options={options} setOptions={setOptions} />
-      <Canvas main={main} options={options} />
+      <Canvas main={main} update={update} options={options} />
     </div>
   );
 }

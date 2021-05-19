@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from "react";
-import { update } from "../app/main";
 
-export function Canvas({ main, octaves }) {
+export function Canvas({ main, update, options }) {
   const mount = useRef(null);
 
   useEffect(() => {
-    main(mount, octaves);
+    if (mount.current) {
+      main(mount, options);
+      mount.current = false;
+    } else {
+      update(options);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    update(octaves);
   });
 
   return <canvas width="500px" height="500px" ref={mount} />;
