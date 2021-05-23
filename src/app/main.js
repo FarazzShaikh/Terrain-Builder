@@ -2,6 +2,14 @@ import * as THREE from "three";
 import setup from "./setup";
 import { FBM } from "three-noise";
 
+import { CustomShaderMaterial, TYPES } from "three-custom-shader-material";
+
+import _defines from "./shaders/defines.glsl";
+import _header from "./shaders/header.glsl";
+import _main from "./shaders/main.glsl";
+
+import { loadShadersCSM, Perlin } from "gl-noise";
+
 let plane, previousPosition;
 
 function displace(attr_position, options) {
@@ -37,22 +45,41 @@ function displace(attr_position, options) {
 }
 
 export function update(options) {
-  displace(previousPosition, options);
+  //   displace(previousPosition, options);
 }
 
 export function main(mount, options) {
-  const scene = setup(mount);
+  const paths = {
+    defines: _defines,
+    header: _header,
+    main: _main,
+  };
+  const chunks = [Perlin];
+  const _mount = { current: mount.current };
 
-  const geometry = new THREE.PlaneBufferGeometry(1, 1, 512, 512);
-  const material = new THREE.MeshPhysicalMaterial({
-    wireframe: false,
-    side: THREE.DoubleSide,
+  loadShadersCSM(paths, chunks).then(({ defines, header, main }) => {
+    const scene = setup(_mount);
+
+    const geometry = new THREE.PlaneBufferGeometry(1, 1, 512, 512);
+    const material = new CustomShaderMaterial({
+      baseMaterial: TYPES.NORMAL,
+      vShader: {
+        defines: defines,
+        header: header,
+        main: main,
+      },
+      uniforms: {},
+      passthrough: {
+        side: THREE.DoubleSide,
+        lights: true,
+      },
+    });
+    plane = new THREE.Mesh(geometry, material);
+    plane.rotation.x = -Math.PI / 2;
+    scene.add(plane);
+
+    const aPosition = plane.geometry.attributes.position;
+    previousPosition = aPosition.clone();
+    //   displace(aPosition, options);
   });
-  plane = new THREE.Mesh(geometry, material);
-  plane.rotation.x = -Math.PI / 2;
-  scene.add(plane);
-
-  const aPosition = plane.geometry.attributes.position;
-  previousPosition = aPosition.clone();
-  displace(aPosition, options);
 }
