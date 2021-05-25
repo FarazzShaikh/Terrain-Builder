@@ -46,7 +46,10 @@ function SliderContainer({ label, def, min, max, step, onChange }) {
         max={max}
         step={step}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onSliderChange(e);
+        }}
         onMouseUp={onSliderChange}
       />
     </_SliderContainer>
