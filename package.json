@@ -19,7 +19,7 @@
     "redux": "^4.0.5",
     "regl": "^1.6.1",
     "serve": "^11.3.2",
-    "three": "^0.119.1",
+    "three": "^0.137.0",
     "three-custom-shader-material": "^1.0.6"
   },
   "scripts": {
